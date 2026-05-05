@@ -5,8 +5,8 @@
 class Ellispe {
 private:
     std::vector<std::pair<int, int>> ellipse;
-    std::pair<int, int> center, a, b;
-    char m;
+    std::pair<int, int> center, a_, b_;
+    char m_;
 
     std::vector<std::pair<int, int>> direct(std::pair<int, int> c,
                                             std::pair<int, int> a,
@@ -29,18 +29,16 @@ private:
     }
 
 public:
-    Ellispe(std::pair<int, int> Center, std::pair<int, int> a_Horizontal, std::pair<int, int> b_vertical, char mode) {
-        center = Center;
-        a = a_Horizontal;
-        b = b_vertical;
-        m = mode;
-    }
-
+    Ellispe() ;
     std::vector<std::pair<int, int>> draw_ellipse(std::pair<int, int> c,
                                                 std::pair<int, int> a,
                                                 std::pair<int, int> b,
                                                 char m) {
-        ellipse.clear(); // Clear old points
+	center = c;
+        a_ = a;
+        b_ = b;
+        m_ = m;
+        ellipse.clear();
         a.second = c.second;
         b.first = c.first;
         switch (m) {
@@ -49,4 +47,5 @@ public:
         }
         return ellipse;
     }
+    ~Ellispe();
 };
