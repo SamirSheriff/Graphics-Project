@@ -33,7 +33,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // ry is the vertical distance from center (click 0) to click 2
             std::pair<int, int> b = { 0, abs(clicks[2].y - clicks[0].y) };
 
-            auto pts = e.draw_ellipse(c, a, b, 'd');
+            auto pts = e.draw_ellipse(c, a, b, 'p');
 
             HDC hdc = GetDC(hwnd);
 
