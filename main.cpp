@@ -41,11 +41,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	    int point = 0;
             for (auto &pt : pts)
             {
-		if (line > 4){
+		if (line > 3){
 			// if you make it -1 the ellipse will be filled and -4 will make strange line go from ellipse to 
 			// boundry and -3 is combination with -4 and -1
-			MoveToEx(hdc,pts[point-5].first, pts[point-5].second,NULL);
-			LineTo(hdc,pts[point].first, pts[point].second);}
+			//MoveToEx(hdc,pts[point-4].first, pts[point-4].second,NULL);
+			//LineTo(hdc,pts[point].first, pts[point].second);
+			}
 	// if(t==0)MoveToEx(hdc,x,y,NULL);else LineTo(hdc,x,y);
                 SetPixel(hdc, pt.first, pt.second, RGB(255, 0, 0)); 
 		line ++ ;

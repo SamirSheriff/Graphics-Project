@@ -100,8 +100,8 @@ public:
 
         // Ensure a and b are relative distances from center
         // if they were passed as absolute coordinates
-        a.first = std::abs(a.first - c.first);
-        b.second = std::abs(b.second - c.second);
+        a.second = c.second;
+        b.first = c.first;
 
         switch (m) {
             case 'd':
