@@ -86,6 +86,48 @@ private:
         }
         return ellipse;
     }
+std::vector<std::pair<int, int>> midpoint(std::pair<int, int> c,
+                                          std::pair<int, int> a,
+                                          std::pair<int, int> b) {
+    double a2 = (double)a.first * a.first;
+    double b2 = (double)b.second * b.second;
+    double a2b2 = a2 * b2;
+
+    // --- Region 1: Top to Side (x is the fast variable) ---
+    int x = 0;
+    int y = b.second;
+    // Boundary check: b^2 * x <= a^2 * y
+    while (b2 * x <= a2 * y) {
+        // Test the midpoint between (x+1, y) and (x+1, y-1)
+        double decision = b2 * (x + 1) * (x + 1) + a2 * (y - 0.5) * (y - 0.5) - a2b2;
+        if (decision > 0) y--; 
+
+        ellipse.push_back({ c.first + x, c.second + y });
+        ellipse.push_back({ c.first - x, c.second + y });
+        ellipse.push_back({ c.first + x, c.second - y });
+        ellipse.push_back({ c.first - x, c.second - y });
+        x++;
+    }
+
+    // --- Region 2: Side to Bottom (y is the fast variable) ---
+    x = a.first;
+    y = 0;
+    // Boundary check: a^2 * y <= b^2 * x
+    while (a2 * y <= b2 * x) {
+        // Test the midpoint between (x, y+1) and (x-1, y+1)
+        double decision = b2 * (x - 0.5) * (x - 0.5) + a2 * (y + 1) * (y + 1) - a2b2;
+        if (decision > 0) x--;
+
+        ellipse.push_back({ c.first + x, c.second + y });
+        ellipse.push_back({ c.first - x, c.second + y });
+        ellipse.push_back({ c.first + x, c.second - y });
+        ellipse.push_back({ c.first - x, c.second - y });
+        y++;
+    }
+
+    return ellipse;
+}
+
 
 public:
     std::vector<std::pair<int, int>> draw_ellipse(std::pair<int, int> c,
@@ -108,6 +150,8 @@ public:
                 return direct(c, a, b);
             case 'p':
                 return polar(c, a, b);
+	    case 'm':
+		return midpoint(c,a,b);
             default:
                 break;
         }

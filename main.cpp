@@ -33,7 +33,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // ry is the vertical distance from center (click 0) to click 2
             std::pair<int, int> b = { 0, abs(clicks[2].y - clicks[0].y) };
 
-            auto pts = e.draw_ellipse(c, a, b, 'p');
+            auto pts = e.draw_ellipse(c, a, b, 'm');
 
             HDC hdc = GetDC(hwnd);
 
@@ -44,7 +44,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		if (line > 3){
 			// if you make it -1 the ellipse will be filled and -4 will make strange line go from ellipse to 
 			// boundry and -3 is combination with -4 and -1
-			//MoveToEx(hdc,pts[point-4].first, pts[point-4].second,NULL);
+			//MoveToEx(hdc,pts[point-1].first, pts[point-1].second,NULL);
 			//LineTo(hdc,pts[point].first, pts[point].second);
 			}
 	// if(t==0)MoveToEx(hdc,x,y,NULL);else LineTo(hdc,x,y);
