@@ -1,0 +1,971 @@
+drawing.cpp:1: error: unterminated #ifndef
+    1 | #ifndef DRAWING_H
+      | 
+In file included from drawing.cpp:4:
+drawing.h:17:6: error: variable or field ‘LineParametric’ declared void
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |      ^~~~~~~~~~~~~~
+drawing.h:17:21: error: ‘HDC’ was not declared in this scope
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                     ^~~
+drawing.h:17:29: error: expected primary-expression before ‘int’
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                             ^~~
+drawing.h:17:36: error: expected primary-expression before ‘int’
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                    ^~~
+drawing.h:17:43: error: expected primary-expression before ‘int’
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                           ^~~
+drawing.h:17:50: error: expected primary-expression before ‘int’
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                                  ^~~
+drawing.h:17:57: error: ‘COLORREF’ was not declared in this scope
+   17 | void LineParametric(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                                         ^~~~~~~~
+drawing.h:18:6: error: variable or field ‘SimpleDDA’ declared void
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |      ^~~~~~~~~
+drawing.h:18:16: error: ‘HDC’ was not declared in this scope
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                ^~~
+drawing.h:18:24: error: expected primary-expression before ‘int’
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                        ^~~
+drawing.h:18:31: error: expected primary-expression before ‘int’
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                               ^~~
+drawing.h:18:38: error: expected primary-expression before ‘int’
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                      ^~~
+drawing.h:18:45: error: expected primary-expression before ‘int’
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                             ^~~
+drawing.h:18:52: error: ‘COLORREF’ was not declared in this scope
+   18 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                                    ^~~~~~~~
+drawing.h:19:6: error: variable or field ‘MidPoint’ declared void
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |      ^~~~~~~~
+drawing.h:19:15: error: ‘HDC’ was not declared in this scope
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |               ^~~
+drawing.h:19:23: error: expected primary-expression before ‘int’
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                       ^~~
+drawing.h:19:30: error: expected primary-expression before ‘int’
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                              ^~~
+drawing.h:19:37: error: expected primary-expression before ‘int’
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                     ^~~
+drawing.h:19:44: error: expected primary-expression before ‘int’
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                            ^~~
+drawing.h:19:51: error: ‘COLORREF’ was not declared in this scope
+   19 | void MidPoint(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color);
+      |                                                   ^~~~~~~~
+drawing.h:25:6: error: variable or field ‘Draw8Points’ declared void
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |      ^~~~~~~~~~~
+drawing.h:25:18: error: ‘HDC’ was not declared in this scope
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |                  ^~~
+drawing.h:25:26: error: expected primary-expression before ‘int’
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |                          ^~~
+drawing.h:25:33: error: expected primary-expression before ‘int’
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |                                 ^~~
+drawing.h:25:41: error: expected primary-expression before ‘int’
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |                                         ^~~
+drawing.h:25:48: error: expected primary-expression before ‘int’
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |                                                ^~~
+drawing.h:25:54: error: ‘COLORREF’ was not declared in this scope
+   25 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color);
+      |                                                      ^~~~~~~~
+drawing.h:26:6: error: variable or field ‘CircleDirect’ declared void
+   26 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |      ^~~~~~~~~~~~
+drawing.h:26:19: error: ‘HDC’ was not declared in this scope
+   26 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                   ^~~
+drawing.h:26:27: error: expected primary-expression before ‘int’
+   26 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                           ^~~
+drawing.h:26:34: error: expected primary-expression before ‘int’
+   26 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                  ^~~
+drawing.h:26:42: error: expected primary-expression before ‘int’
+   26 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                          ^~~
+drawing.h:26:48: error: ‘COLORREF’ was not declared in this scope
+   26 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                ^~~~~~~~
+drawing.h:27:6: error: variable or field ‘CirclePolar’ declared void
+   27 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |      ^~~~~~~~~~~
+drawing.h:27:18: error: ‘HDC’ was not declared in this scope
+   27 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                  ^~~
+drawing.h:27:26: error: expected primary-expression before ‘int’
+   27 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                          ^~~
+drawing.h:27:33: error: expected primary-expression before ‘int’
+   27 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                 ^~~
+drawing.h:27:41: error: expected primary-expression before ‘int’
+   27 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                         ^~~
+drawing.h:27:47: error: ‘COLORREF’ was not declared in this scope
+   27 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                               ^~~~~~~~
+drawing.h:28:6: error: variable or field ‘CircleIterativePolar’ declared void
+   28 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |      ^~~~~~~~~~~~~~~~~~~~
+drawing.h:28:27: error: ‘HDC’ was not declared in this scope
+   28 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                           ^~~
+drawing.h:28:35: error: expected primary-expression before ‘int’
+   28 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                   ^~~
+drawing.h:28:42: error: expected primary-expression before ‘int’
+   28 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                          ^~~
+drawing.h:28:50: error: expected primary-expression before ‘int’
+   28 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                  ^~~
+drawing.h:28:56: error: ‘COLORREF’ was not declared in this scope
+   28 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                        ^~~~~~~~
+drawing.h:29:6: error: variable or field ‘CircleBresenham’ declared void
+   29 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |      ^~~~~~~~~~~~~~~
+drawing.h:29:22: error: ‘HDC’ was not declared in this scope
+   29 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                      ^~~
+drawing.h:29:30: error: expected primary-expression before ‘int’
+   29 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                              ^~~
+drawing.h:29:37: error: expected primary-expression before ‘int’
+   29 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                     ^~~
+drawing.h:29:45: error: expected primary-expression before ‘int’
+   29 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                             ^~~
+drawing.h:29:51: error: ‘COLORREF’ was not declared in this scope
+   29 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                   ^~~~~~~~
+drawing.h:30:6: error: variable or field ‘CircleFasterBresenham’ declared void
+   30 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+drawing.h:30:28: error: ‘HDC’ was not declared in this scope
+   30 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                            ^~~
+drawing.h:30:36: error: expected primary-expression before ‘int’
+   30 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                    ^~~
+drawing.h:30:43: error: expected primary-expression before ‘int’
+   30 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                           ^~~
+drawing.h:30:51: error: expected primary-expression before ‘int’
+   30 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                   ^~~
+drawing.h:30:57: error: ‘COLORREF’ was not declared in this scope
+   30 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                         ^~~~~~~~
+drawing.h:40:6: error: variable or field ‘DrawHermiteCurve’ declared void
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |      ^~~~~~~~~~~~~~~~
+drawing.h:40:23: error: ‘HDC’ was not declared in this scope
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                       ^~~
+drawing.h:40:45: error: expected primary-expression before ‘&’ token
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                             ^
+drawing.h:40:47: error: ‘P0’ was not declared in this scope; did you mean ‘y0’?
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                               ^~
+      |                                               y0
+drawing.h:40:64: error: expected primary-expression before ‘&’ token
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                ^
+drawing.h:40:66: error: ‘T0’ was not declared in this scope; did you mean ‘y0’?
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                  ^~
+      |                                                                  y0
+drawing.h:40:83: error: expected primary-expression before ‘&’ token
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                                   ^
+drawing.h:40:85: error: ‘P1’ was not declared in this scope; did you mean ‘y1’?
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                                     ^~
+      |                                                                                     y1
+drawing.h:40:102: error: expected primary-expression before ‘&’ token
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                                                      ^
+drawing.h:40:104: error: ‘T1’ was not declared in this scope; did you mean ‘y1’?
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                                                        ^~
+      |                                                                                                        y1
+drawing.h:40:108: error: expected primary-expression before ‘int’
+   40 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+      |                                                                                                            ^~~
+drawing.h:42:6: error: variable or field ‘DrawBezierCurve’ declared void
+   42 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
+      |      ^~~~~~~~~~~~~~~
+drawing.h:42:22: error: ‘HDC’ was not declared in this scope
+   42 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
+      |                      ^~~
+drawing.h:42:52: error: expected primary-expression before ‘&’ token
+   42 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
+      |                                                    ^
+drawing.h:42:54: error: ‘points’ was not declared in this scope
+   42 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
+      |                                                      ^~~~~~
+drawing.h:42:62: error: expected primary-expression before ‘int’
+   42 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
+      |                                                              ^~~
+drawing.h:44:6: error: variable or field ‘DrawCardinalSpline’ declared void
+   44 | void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+      |      ^~~~~~~~~~~~~~~~~~
+drawing.h:44:25: error: ‘HDC’ was not declared in this scope
+   44 | void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+      |                         ^~~
+drawing.h:44:54: error: expected primary-expression before ‘&’ token
+   44 | void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+      |                                                      ^
+drawing.h:44:56: error: ‘P’ was not declared in this scope
+   44 | void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+      |                                                        ^
+drawing.h:44:58: error: expected primary-expression before ‘double’
+   44 | void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+      |                                                          ^~~~~~
+drawing.h:44:67: error: expected primary-expression before ‘int’
+   44 | void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+      |                                                                   ^~~
+drawing.h:71:6: error: variable or field ‘DrawSanLines’ declared void
+   71 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color);
+      |      ^~~~~~~~~~~~
+drawing.h:71:19: error: ‘HDC’ was not declared in this scope
+   71 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color);
+      |                   ^~~
+drawing.h:71:33: error: expected primary-expression before ‘table’
+   71 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color);
+      |                                 ^~~~~
+drawing.h:71:41: error: ‘COLORREF’ was not declared in this scope
+   71 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color);
+      |                                         ^~~~~~~~
+drawing.h:72:6: error: variable or field ‘ConvexFill’ declared void
+   72 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color);
+      |      ^~~~~~~~~~
+drawing.h:72:17: error: ‘HDC’ was not declared in this scope
+   72 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color);
+      |                 ^~~
+drawing.h:72:47: error: expected primary-expression before ‘p’
+   72 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color);
+      |                                               ^
+drawing.h:72:49: error: ‘COLORREF’ was not declared in this scope
+   72 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color);
+      |                                                 ^~~~~~~~
+drawing.h:76:6: error: variable or field ‘GeneralPolygonFill’ declared void
+   76 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
+      |      ^~~~~~~~~~~~~~~~~~
+drawing.h:76:25: error: ‘HDC’ was not declared in this scope
+   76 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
+      |                         ^~~
+drawing.h:76:55: error: expected primary-expression before ‘polygon’
+   76 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
+      |                                                       ^~~~~~~
+drawing.h:76:63: error: expected primary-expression before ‘int’
+   76 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
+      |                                                               ^~~
+drawing.h:76:70: error: ‘COLORREF’ was not declared in this scope
+   76 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
+      |                                                                      ^~~~~~~~
+drawing.h:78:6: error: variable or field ‘FloodFill’ declared void
+   78 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |      ^~~~~~~~~
+drawing.h:78:16: error: ‘HDC’ was not declared in this scope
+   78 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                ^~~
+drawing.h:78:24: error: expected primary-expression before ‘int’
+   78 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                        ^~~
+drawing.h:78:30: error: expected primary-expression before ‘int’
+   78 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                              ^~~
+drawing.h:78:36: error: ‘COLORREF’ was not declared in this scope
+   78 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                                    ^~~~~~~~
+drawing.h:78:48: error: ‘COLORREF’ was not declared in this scope
+   78 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                                                ^~~~~~~~
+drawing.h:80:6: error: variable or field ‘NRFloodFill’ declared void
+   80 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |      ^~~~~~~~~~~
+drawing.h:80:18: error: ‘HDC’ was not declared in this scope
+   80 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                  ^~~
+drawing.h:80:26: error: expected primary-expression before ‘int’
+   80 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                          ^~~
+drawing.h:80:32: error: expected primary-expression before ‘int’
+   80 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                                ^~~
+drawing.h:80:38: error: ‘COLORREF’ was not declared in this scope
+   80 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                                      ^~~~~~~~
+drawing.h:80:50: error: ‘COLORREF’ was not declared in this scope
+   80 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+      |                                                  ^~~~~~~~
+drawing.h:82:6: error: variable or field ‘FillSquareWithHermite’ declared void
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+drawing.h:82:28: error: ‘HDC’ was not declared in this scope
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                            ^~~
+drawing.h:82:37: error: expected primary-expression before ‘int’
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                     ^~~
+drawing.h:82:45: error: expected primary-expression before ‘int’
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                             ^~~
+drawing.h:82:53: error: expected primary-expression before ‘int’
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                                     ^~~
+drawing.h:82:61: error: expected primary-expression before ‘int’
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                                             ^~~
+drawing.h:82:69: error: ‘COLORREF’ was not declared in this scope
+   82 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                                                     ^~~~~~~~
+drawing.h:84:6: error: variable or field ‘FillRectangleWithBezier’ declared void
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+drawing.h:84:30: error: ‘HDC’ was not declared in this scope
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                              ^~~
+drawing.h:84:39: error: expected primary-expression before ‘int’
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                       ^~~
+drawing.h:84:47: error: expected primary-expression before ‘int’
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                               ^~~
+drawing.h:84:55: error: expected primary-expression before ‘int’
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                                       ^~~
+drawing.h:84:63: error: expected primary-expression before ‘int’
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                                               ^~~
+drawing.h:84:71: error: ‘COLORREF’ was not declared in this scope
+   84 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+      |                                                                       ^~~~~~~~
+drawing.h:86:6: error: variable or field ‘FillingCircleWithLines’ declared void
+   86 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+      |      ^~~~~~~~~~~~~~~~~~~~~~
+drawing.h:86:29: error: ‘HDC’ was not declared in this scope
+   86 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+      |                             ^~~
+drawing.h:86:38: error: expected primary-expression before ‘int’
+   86 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+      |                                      ^~~
+drawing.h:86:46: error: expected primary-expression before ‘int’
+   86 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+      |                                              ^~~
+drawing.h:86:54: error: expected primary-expression before ‘int’
+   86 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+      |                                                      ^~~
+drawing.h:86:61: error: ‘COLORREF’ was not declared in this scope
+   86 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+      |                                                             ^~~~~~~~
+drawing.h:88:6: error: variable or field ‘fillCircleWithCircles’ declared void
+   88 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |      ^~~~~~~~~~~~~~~~~~~~~
+drawing.h:88:28: error: ‘HDC’ was not declared in this scope
+   88 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                            ^~~
+drawing.h:88:36: error: expected primary-expression before ‘int’
+   88 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                    ^~~
+drawing.h:88:43: error: expected primary-expression before ‘int’
+   88 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                           ^~~
+drawing.h:88:51: error: expected primary-expression before ‘int’
+   88 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                   ^~~
+drawing.h:88:57: error: ‘COLORREF’ was not declared in this scope
+   88 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+      |                                                         ^~~~~~~~
+drawing.h:114:6: error: variable or field ‘PointClipping’ declared void
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |      ^~~~~~~~~~~~~
+drawing.h:114:20: error: ‘HDC’ was not declared in this scope
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                    ^~~
+drawing.h:114:28: error: expected primary-expression before ‘int’
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                            ^~~
+drawing.h:114:34: error: expected primary-expression before ‘int’
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                                  ^~~
+drawing.h:114:40: error: expected primary-expression before ‘int’
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                                        ^~~
+drawing.h:114:50: error: expected primary-expression before ‘int’
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                                                  ^~~
+drawing.h:114:59: error: expected primary-expression before ‘int’
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                                                           ^~~
+drawing.h:114:70: error: expected primary-expression before ‘int’
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                                                                      ^~~
+drawing.h:114:82: error: ‘COLORREF’ was not declared in this scope
+  114 | void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+      |                                                                                  ^~~~~~~~
+drawing.h:119:6: error: variable or field ‘CohenSuth’ declared void
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |      ^~~~~~~~~
+drawing.h:119:16: error: ‘HDC’ was not declared in this scope
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                ^~~
+drawing.h:119:24: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                        ^~~
+drawing.h:119:31: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                               ^~~
+drawing.h:119:38: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                                      ^~~
+drawing.h:119:45: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                                             ^~~
+drawing.h:119:52: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                                                    ^~~
+drawing.h:119:62: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                                                              ^~~
+drawing.h:119:71: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                                                                       ^~~
+drawing.h:119:82: error: expected primary-expression before ‘int’
+  119 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+      |                                                                                  ^~~
+drawing.h:128:6: error: variable or field ‘PolygonClip’ declared void
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |      ^~~~~~~~~~~
+drawing.h:128:18: error: ‘HDC’ was not declared in this scope
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                  ^~~
+drawing.h:128:26: error: ‘POINT’ was not declared in this scope
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                          ^~~~~
+drawing.h:128:33: error: ‘p’ was not declared in this scope
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                                 ^
+drawing.h:128:35: error: expected primary-expression before ‘int’
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                                   ^~~
+drawing.h:128:41: error: expected primary-expression before ‘int’
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                                         ^~~
+drawing.h:128:51: error: expected primary-expression before ‘int’
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                                                   ^~~
+drawing.h:128:60: error: expected primary-expression before ‘int’
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                                                            ^~~
+drawing.h:128:71: error: expected primary-expression before ‘int’
+  128 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+      |                                                                       ^~~
+drawing.cpp:11:6: error: variable or field ‘LineParametric’ declared void
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |      ^~~~~~~~~~~~~~
+drawing.cpp:11:21: error: ‘HDC’ was not declared in this scope
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                     ^~~
+drawing.cpp:11:30: error: expected primary-expression before ‘int’
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                              ^~~
+drawing.cpp:11:38: error: expected primary-expression before ‘int’
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                      ^~~
+drawing.cpp:11:46: error: expected primary-expression before ‘int’
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                              ^~~
+drawing.cpp:11:54: error: expected primary-expression before ‘int’
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                      ^~~
+drawing.cpp:11:62: error: ‘COLORREF’ was not declared in this scope
+   11 | void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                              ^~~~~~~~
+drawing.cpp:25:6: error: variable or field ‘SimpleDDA’ declared void
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |      ^~~~~~~~~
+drawing.cpp:25:16: error: ‘HDC’ was not declared in this scope
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |                ^~~
+drawing.cpp:25:24: error: expected primary-expression before ‘int’
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |                        ^~~
+drawing.cpp:25:31: error: expected primary-expression before ‘int’
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |                               ^~~
+drawing.cpp:25:38: error: expected primary-expression before ‘int’
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |                                      ^~~
+drawing.cpp:25:45: error: expected primary-expression before ‘int’
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |                                             ^~~
+drawing.cpp:25:52: error: ‘COLORREF’ was not declared in this scope
+   25 | void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
+      |                                                    ^~~~~~~~
+drawing.cpp:54:6: error: variable or field ‘MidPoint’ declared void
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |      ^~~~~~~~
+drawing.cpp:54:15: error: ‘HDC’ was not declared in this scope
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |               ^~~
+drawing.cpp:54:24: error: expected primary-expression before ‘int’
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                        ^~~
+drawing.cpp:54:32: error: expected primary-expression before ‘int’
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                ^~~
+drawing.cpp:54:40: error: expected primary-expression before ‘int’
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                        ^~~
+drawing.cpp:54:48: error: expected primary-expression before ‘int’
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                ^~~
+drawing.cpp:54:56: error: ‘COLORREF’ was not declared in this scope
+   54 | void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                        ^~~~~~~~
+drawing.cpp:115:6: error: variable or field ‘Draw8Points’ declared void
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |      ^~~~~~~~~~~
+drawing.cpp:115:18: error: ‘HDC’ was not declared in this scope
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |                  ^~~
+drawing.cpp:115:26: error: expected primary-expression before ‘int’
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |                          ^~~
+drawing.cpp:115:33: error: expected primary-expression before ‘int’
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |                                 ^~~
+drawing.cpp:115:41: error: expected primary-expression before ‘int’
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |                                         ^~~
+drawing.cpp:115:48: error: expected primary-expression before ‘int’
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |                                                ^~~
+drawing.cpp:115:54: error: ‘COLORREF’ was not declared in this scope
+  115 | void Draw8Points(HDC hdc,int xc,int yc, int a, int b,COLORREF color)
+      |                                                      ^~~~~~~~
+drawing.cpp:127:6: error: variable or field ‘CircleDirect’ declared void
+  127 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |      ^~~~~~~~~~~~
+drawing.cpp:127:19: error: ‘HDC’ was not declared in this scope
+  127 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                   ^~~
+drawing.cpp:127:27: error: expected primary-expression before ‘int’
+  127 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                           ^~~
+drawing.cpp:127:34: error: expected primary-expression before ‘int’
+  127 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                  ^~~
+drawing.cpp:127:42: error: expected primary-expression before ‘int’
+  127 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                          ^~~
+drawing.cpp:127:48: error: ‘COLORREF’ was not declared in this scope
+  127 | void CircleDirect(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                ^~~~~~~~
+drawing.cpp:140:6: error: variable or field ‘CirclePolar’ declared void
+  140 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |      ^~~~~~~~~~~
+drawing.cpp:140:18: error: ‘HDC’ was not declared in this scope
+  140 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                  ^~~
+drawing.cpp:140:26: error: expected primary-expression before ‘int’
+  140 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                          ^~~
+drawing.cpp:140:33: error: expected primary-expression before ‘int’
+  140 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                 ^~~
+drawing.cpp:140:41: error: expected primary-expression before ‘int’
+  140 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                         ^~~
+drawing.cpp:140:47: error: ‘COLORREF’ was not declared in this scope
+  140 | void CirclePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                               ^~~~~~~~
+drawing.cpp:154:6: error: variable or field ‘CircleIterativePolar’ declared void
+  154 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |      ^~~~~~~~~~~~~~~~~~~~
+drawing.cpp:154:27: error: ‘HDC’ was not declared in this scope
+  154 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                           ^~~
+drawing.cpp:154:35: error: expected primary-expression before ‘int’
+  154 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                   ^~~
+drawing.cpp:154:42: error: expected primary-expression before ‘int’
+  154 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                          ^~~
+drawing.cpp:154:50: error: expected primary-expression before ‘int’
+  154 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                  ^~~
+drawing.cpp:154:56: error: ‘COLORREF’ was not declared in this scope
+  154 | void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                        ^~~~~~~~
+drawing.cpp:169:6: error: variable or field ‘CircleBresenham’ declared void
+  169 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |      ^~~~~~~~~~~~~~~
+drawing.cpp:169:22: error: ‘HDC’ was not declared in this scope
+  169 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                      ^~~
+drawing.cpp:169:30: error: expected primary-expression before ‘int’
+  169 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                              ^~~
+drawing.cpp:169:37: error: expected primary-expression before ‘int’
+  169 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                     ^~~
+drawing.cpp:169:45: error: expected primary-expression before ‘int’
+  169 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                             ^~~
+drawing.cpp:169:51: error: ‘COLORREF’ was not declared in this scope
+  169 | void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                   ^~~~~~~~
+drawing.cpp:187:6: error: variable or field ‘CircleFasterBresenham’ declared void
+  187 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |      ^~~~~~~~~~~~~~~~~~~~~
+drawing.cpp:187:28: error: ‘HDC’ was not declared in this scope
+  187 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                            ^~~
+drawing.cpp:187:36: error: expected primary-expression before ‘int’
+  187 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                    ^~~
+drawing.cpp:187:43: error: expected primary-expression before ‘int’
+  187 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                           ^~~
+drawing.cpp:187:51: error: expected primary-expression before ‘int’
+  187 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                   ^~~
+drawing.cpp:187:57: error: ‘COLORREF’ was not declared in this scope
+  187 | void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                         ^~~~~~~~
+drawing.cpp:237:6: error: variable or field ‘DrawHermiteCurve’ declared void
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |      ^~~~~~~~~~~~~~~~
+drawing.cpp:237:23: error: ‘HDC’ was not declared in this scope
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                       ^~~
+drawing.cpp:237:45: error: expected primary-expression before ‘&’ token
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                             ^
+drawing.cpp:237:47: error: ‘P0’ was not declared in this scope; did you mean ‘y0’?
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                               ^~
+      |                                               y0
+drawing.cpp:237:64: error: expected primary-expression before ‘&’ token
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                ^
+drawing.cpp:237:66: error: ‘T0’ was not declared in this scope; did you mean ‘y0’?
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                  ^~
+      |                                                                  y0
+drawing.cpp:237:83: error: expected primary-expression before ‘&’ token
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                                   ^
+drawing.cpp:237:85: error: ‘P1’ was not declared in this scope; did you mean ‘y1’?
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                                     ^~
+      |                                                                                     y1
+drawing.cpp:237:102: error: expected primary-expression before ‘&’ token
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                                                      ^
+drawing.cpp:237:104: error: ‘T1’ was not declared in this scope; did you mean ‘y1’?
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                                                        ^~
+      |                                                                                                        y1
+drawing.cpp:237:108: error: expected primary-expression before ‘int’
+  237 | void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+      |                                                                                                            ^~~
+drawing.cpp:265:6: error: variable or field ‘DrawBezierCurve’ declared void
+  265 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
+      |      ^~~~~~~~~~~~~~~
+drawing.cpp:265:22: error: ‘HDC’ was not declared in this scope
+  265 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
+      |                      ^~~
+drawing.cpp:265:52: error: expected primary-expression before ‘&’ token
+  265 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
+      |                                                    ^
+drawing.cpp:265:54: error: ‘points’ was not declared in this scope
+  265 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
+      |                                                      ^~~~~~
+drawing.cpp:265:62: error: expected primary-expression before ‘int’
+  265 | void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
+      |                                                              ^~~
+drawing.cpp:279:6: error: variable or field ‘DrawCardinalSpline’ declared void
+  279 | void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+      |      ^~~~~~~~~~~~~~~~~~
+drawing.cpp:279:25: error: ‘HDC’ was not declared in this scope
+  279 | void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+      |                         ^~~
+drawing.cpp:279:55: error: expected primary-expression before ‘&’ token
+  279 | void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+      |                                                       ^
+drawing.cpp:279:57: error: ‘P’ was not declared in this scope
+  279 | void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+      |                                                         ^
+drawing.cpp:279:59: error: expected primary-expression before ‘double’
+  279 | void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+      |                                                           ^~~~~~
+drawing.cpp:279:68: error: expected primary-expression before ‘int’
+  279 | void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+      |                                                                    ^~~
+drawing.cpp: In function ‘void InitEntries(Entry*)’:
+drawing.cpp:300:23: warning: integer overflow in expression of type ‘int’ results in ‘-2147483648’ [-Woverflow]
+  300 |         table[i].xmax=-INT_MIN;
+      |                       ^
+drawing.cpp: At global scope:
+drawing.cpp:320:6: error: variable or field ‘DrawSanLines’ declared void
+  320 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color)
+      |      ^~~~~~~~~~~~
+drawing.cpp:320:19: error: ‘HDC’ was not declared in this scope
+  320 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color)
+      |                   ^~~
+drawing.cpp:320:33: error: expected primary-expression before ‘table’
+  320 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color)
+      |                                 ^~~~~
+drawing.cpp:320:41: error: ‘COLORREF’ was not declared in this scope
+  320 | void DrawSanLines(HDC hdc,Entry table[],COLORREF color)
+      |                                         ^~~~~~~~
+drawing.cpp:328:6: error: variable or field ‘ConvexFill’ declared void
+  328 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
+      |      ^~~~~~~~~~
+drawing.cpp:328:17: error: ‘HDC’ was not declared in this scope
+  328 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
+      |                 ^~~
+drawing.cpp:328:47: error: expected primary-expression before ‘p’
+  328 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
+      |                                               ^
+drawing.cpp:328:49: error: ‘COLORREF’ was not declared in this scope
+  328 | void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
+      |                                                 ^~~~~~~~
+drawing.cpp:367:6: error: variable or field ‘GeneralPolygonFill’ declared void
+  367 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
+      |      ^~~~~~~~~~~~~~~~~~
+drawing.cpp:367:25: error: ‘HDC’ was not declared in this scope
+  367 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
+      |                         ^~~
+drawing.cpp:367:55: error: expected primary-expression before ‘polygon’
+  367 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
+      |                                                       ^~~~~~~
+drawing.cpp:367:63: error: expected primary-expression before ‘int’
+  367 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
+      |                                                               ^~~
+drawing.cpp:367:69: error: ‘COLORREF’ was not declared in this scope
+  367 | void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
+      |                                                                     ^~~~~~~~
+drawing.cpp:396:6: error: variable or field ‘FloodFill’ declared void
+  396 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |      ^~~~~~~~~
+drawing.cpp:396:16: error: ‘HDC’ was not declared in this scope
+  396 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                ^~~
+drawing.cpp:396:24: error: expected primary-expression before ‘int’
+  396 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                        ^~~
+drawing.cpp:396:30: error: expected primary-expression before ‘int’
+  396 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                              ^~~
+drawing.cpp:396:36: error: ‘COLORREF’ was not declared in this scope
+  396 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                                    ^~~~~~~~
+drawing.cpp:396:48: error: ‘COLORREF’ was not declared in this scope
+  396 | void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                                                ^~~~~~~~
+drawing.cpp:407:6: error: variable or field ‘NRFloodFill’ declared void
+  407 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |      ^~~~~~~~~~~
+drawing.cpp:407:18: error: ‘HDC’ was not declared in this scope
+  407 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                  ^~~
+drawing.cpp:407:26: error: expected primary-expression before ‘int’
+  407 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                          ^~~
+drawing.cpp:407:32: error: expected primary-expression before ‘int’
+  407 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                                ^~~
+drawing.cpp:407:38: error: ‘COLORREF’ was not declared in this scope
+  407 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                                      ^~~~~~~~
+drawing.cpp:407:50: error: ‘COLORREF’ was not declared in this scope
+  407 | void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+      |                                                  ^~~~~~~~
+drawing.cpp:425:6: error: variable or field ‘FillSquareWithHermite’ declared void
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |      ^~~~~~~~~~~~~~~~~~~~~
+drawing.cpp:425:28: error: ‘HDC’ was not declared in this scope
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                            ^~~
+drawing.cpp:425:37: error: expected primary-expression before ‘int’
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                     ^~~
+drawing.cpp:425:45: error: expected primary-expression before ‘int’
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                             ^~~
+drawing.cpp:425:53: error: expected primary-expression before ‘int’
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                     ^~~
+drawing.cpp:425:61: error: expected primary-expression before ‘int’
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                             ^~~
+drawing.cpp:425:69: error: ‘COLORREF’ was not declared in this scope
+  425 | void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                                     ^~~~~~~~
+drawing.cpp:437:6: error: variable or field ‘FillRectangleWithBezier’ declared void
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+drawing.cpp:437:30: error: ‘HDC’ was not declared in this scope
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                              ^~~
+drawing.cpp:437:39: error: expected primary-expression before ‘int’
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                       ^~~
+drawing.cpp:437:47: error: expected primary-expression before ‘int’
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                               ^~~
+drawing.cpp:437:55: error: expected primary-expression before ‘int’
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                       ^~~
+drawing.cpp:437:63: error: expected primary-expression before ‘int’
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                               ^~~
+drawing.cpp:437:71: error: ‘COLORREF’ was not declared in this scope
+  437 | void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+      |                                                                       ^~~~~~~~
+drawing.cpp:453:6: error: variable or field ‘fillCircleWithCircles’ declared void
+  453 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |      ^~~~~~~~~~~~~~~~~~~~~
+drawing.cpp:453:28: error: ‘HDC’ was not declared in this scope
+  453 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                            ^~~
+drawing.cpp:453:36: error: expected primary-expression before ‘int’
+  453 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                    ^~~
+drawing.cpp:453:43: error: expected primary-expression before ‘int’
+  453 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                           ^~~
+drawing.cpp:453:51: error: expected primary-expression before ‘int’
+  453 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                   ^~~
+drawing.cpp:453:57: error: ‘COLORREF’ was not declared in this scope
+  453 | void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+      |                                                         ^~~~~~~~
+drawing.cpp:461:6: error: variable or field ‘FillingCircleWithLines’ declared void
+  461 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+      |      ^~~~~~~~~~~~~~~~~~~~~~
+drawing.cpp:461:29: error: ‘HDC’ was not declared in this scope
+  461 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+      |                             ^~~
+drawing.cpp:461:38: error: expected primary-expression before ‘int’
+  461 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+      |                                      ^~~
+drawing.cpp:461:46: error: expected primary-expression before ‘int’
+  461 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+      |                                              ^~~
+drawing.cpp:461:54: error: expected primary-expression before ‘int’
+  461 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+      |                                                      ^~~
+drawing.cpp:461:61: error: ‘COLORREF’ was not declared in this scope
+  461 | void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+      |                                                             ^~~~~~~~
+drawing.cpp:496:6: error: variable or field ‘PointClipping’ declared void
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |      ^~~~~~~~~~~~~
+drawing.cpp:496:20: error: ‘HDC’ was not declared in this scope
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                    ^~~
+drawing.cpp:496:29: error: expected primary-expression before ‘int’
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                             ^~~
+drawing.cpp:496:35: error: expected primary-expression before ‘int’
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                                   ^~~
+drawing.cpp:496:41: error: expected primary-expression before ‘int’
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                                         ^~~
+drawing.cpp:496:51: error: expected primary-expression before ‘int’
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                                                   ^~~
+drawing.cpp:496:60: error: expected primary-expression before ‘int’
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                                                            ^~~
+drawing.cpp:496:71: error: expected primary-expression before ‘int’
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                                                                       ^~~
+drawing.cpp:496:83: error: ‘COLORREF’ was not declared in this scope
+  496 | void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+      |                                                                                   ^~~~~~~~
+drawing.cpp:525:6: error: variable or field ‘CohenSuth’ declared void
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |      ^~~~~~~~~
+drawing.cpp:525:16: error: ‘HDC’ was not declared in this scope
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                ^~~
+drawing.cpp:525:24: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                        ^~~
+drawing.cpp:525:31: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                               ^~~
+drawing.cpp:525:38: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                                      ^~~
+drawing.cpp:525:45: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                                             ^~~
+drawing.cpp:525:52: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                                                    ^~~
+drawing.cpp:525:62: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                                                              ^~~
+drawing.cpp:525:71: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                                                                       ^~~
+drawing.cpp:525:82: error: expected primary-expression before ‘int’
+  525 | void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+      |                                                                                  ^~~
+drawing.cpp:617:6: error: variable or field ‘PolygonClip’ declared void
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |      ^~~~~~~~~~~
+drawing.cpp:617:18: error: ‘HDC’ was not declared in this scope
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                  ^~~
+drawing.cpp:617:26: error: ‘POINT’ was not declared in this scope
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                          ^~~~~
+drawing.cpp:617:33: error: ‘p’ was not declared in this scope
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                                 ^
+drawing.cpp:617:35: error: expected primary-expression before ‘int’
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                                   ^~~
+drawing.cpp:617:41: error: expected primary-expression before ‘int’
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                                         ^~~
+drawing.cpp:617:51: error: expected primary-expression before ‘int’
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                                                   ^~~
+drawing.cpp:617:60: error: expected primary-expression before ‘int’
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                                                            ^~~
+drawing.cpp:617:71: error: expected primary-expression before ‘int’
+  617 | void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+      |                                                                       ^~~

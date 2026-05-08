@@ -1,15 +1,20 @@
 #ifndef DRAWING_H_INCLUDED
 #define DRAWING_H_INCLUDED
 
-#define MAXENTRIES 600
-
+#include <windows.h>  // <--- ADD THIS (Crucial for HDC and COLORREF)
 #include <cmath>
 #include <vector>
 #include <list>
 #include <climits>
 #include <stack>
+#include <utility>    // <--- ADD THIS (For std::pair)
 
 using namespace std;
+
+#define MAXENTRIES 600
+
+// ... rest of your function declarations ...
+
 
 //================
 // Line Algorithms

@@ -1,5 +1,6 @@
 #include "drawing.h"
 
+
 //================
 // Line Algorithms
 //=================
@@ -293,7 +294,7 @@ void InitEntries(Entry table[])
     for(int i=0;i<MAXENTRIES;i++)
     {
         table[i].xmin=INT_MAX;
-        table[i].xmax=-INT_MIN;
+        table[i].xmax=-2000000;
     }
 }
 
@@ -408,9 +409,9 @@ void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
     {
         pair<int,int> v=S.top();
         S.pop();
-        COLORREF c=GetPixel(v.x,v.y);
+        COLORREF c=GetPixel(hdc,v.first,v.second);
         if(c==Cb || c==Cf)continue;
-        SetPixel(hdc,v.x,v.y,Cf);
+        SetPixel(hdc,v.first,v.second,Cf);
         S.push(make_pair(v.first+1,v.second));
         S.push(make_pair(v.first-1,v.second));
         S.push(make_pair(v.first,v.second+1));
