@@ -4,20 +4,16 @@
 // Line Algorithms
 //=================
 
-void ParametricLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+void LineParametric(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
 {
     int dx = x2 - x1;
     int dy = y2 - y1;
-
     int steps = max(abs(dx), abs(dy));
-
     for (int i = 0; i <= steps; i++)
     {
         double t = (double)i / steps;
-
         int x = x1 + t * dx;
         int y = y1 + t * dy;
-
         SetPixel(hdc, x, y, color);
     }
 }
@@ -36,6 +32,7 @@ void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
             x+=xinc;
             y+=yinc;
             SetPixel(hdc,x,round(y),color);
+        }
     }
     else
     {
@@ -69,11 +66,9 @@ void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
     if (dx >= dy) // Case 1: |slope| <= 1
     {
         int d = 2 * dy - dx;
-
         while (x != x2)
         {
             x += x_inc;
-
             if (d < 0)
             {
                 d += 2 * dy;
@@ -90,11 +85,9 @@ void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
     else // Case 2: |slope| > 1
     {
         int d = 2 * dx - dy;
-
         while (y != y2)
         {
             y += y_inc;
-
             if (d < 0)
             {
                 d += 2 * dx;
@@ -237,7 +230,7 @@ vector<double> GetHermiteCoeff(double x0, double s0, double x1, double s1)
     return res;
 }
 
-void DrawHermiteCurve (HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
 {
     vector<double> xcoeff = GetHermiteCoeff(P0.first, T0.first, P1.first, T1.first);
     vector<double> ycoeff = GetHermiteCoeff(P0.second, T0.second, P1.second, T1.second);
@@ -279,18 +272,17 @@ void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
 }
 
 
-void DrawCardinalSpline(HDC hdc,Vector2 P[],int n,double c,int numpix)
+void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
 {
     double c1=1-c;
-    Vector2 T0(c1*(P[2].x-P[0].x),c1*(P[2].y-P[0].y));
-    for(int i=2;i<n-1;i++)
+    pair<int,int> T0(c1*(P[2].first-P[0].first),c1*(P[2].second-P[0].second));
+    for(int i=2;i<P.size()-1;i++)
     {
-        Vector2 T1(c1*(P[i+1].x-P[i-1].x),c1*(P[i+1].y-P[i-1].y));
+        pair<int,int> T1(c1*(P[i+1].first-P[i-1].first),c1*(P[i+1].second-P[i-1].second));
         DrawHermiteCurve(hdc,P[i-1],T0,P[i],T1,numpix);
         T0=T1;
     }
 }
-
 
 
 //=======================
@@ -300,8 +292,8 @@ void InitEntries(Entry table[])
 {
     for(int i=0;i<MAXENTRIES;i++)
     {
-        table[i].xmin=MAXINT;
-        table[i].xmax=-MAXINT;
+        table[i].xmin=INT_MAX;
+        table[i].xmax=-INT_MIN;
     }
 }
 
@@ -329,12 +321,12 @@ void DrawSanLines(HDC hdc,Entry table[],COLORREF color)
                 SetPixel(hdc,x,y,color);
 }
 
-void ConvexFill(HDC hdc,pair<int,int> p[],int n,COLORREF color)
+void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
 {
     Entry *table=new Entry[MAXENTRIES];
     InitEntries(table);
-    pair<int,int> v1=p[n-1];
-    for(int i=0;i<n;i++)
+    pair<int,int> v1 = p[p.size()-1];
+    for(int i=0;i<p.size();i++)
     {
         pair<int,int> v2=p[i];
         ScanEdge(v1,v2,table);
@@ -355,7 +347,7 @@ EdgeRec InitEdgeRec(pair<int,int>& v1, pair<int,int>& v2)
     return rec;
 }
 
-void InitEdgeTable(pair<int,int> *polygon,int n,EdgeList table[])
+void InitEdgeTable(vector<pair<int,int>> polygon,int n,EdgeList table[])
 {
     pair<int,int> v1=polygon[n-1];
     for(int i=0;i<n;i++)
@@ -363,12 +355,12 @@ void InitEdgeTable(pair<int,int> *polygon,int n,EdgeList table[])
         pair<int,int> v2=polygon[i];
         if(v1.second==v2.second){v1=v2;continue;}
         EdgeRec rec=InitEdgeRec(v1, v2);
-        table[v1.y].push_back(rec);
+        table[v1.second].push_back(rec);
         v1=polygon[i];
     }
 }
 
-void GeneralPolygonFill(HDC hdc,pair<int,int> *polygon,int n,COLORREF c)
+void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
 {
     EdgeList *table=new EdgeList [MAXENTRIES];
     InitEdgeTable(polygon,n,table);
@@ -401,7 +393,7 @@ void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
 {
     COLORREF C=GetPixel(hdc,x,y);
     if(C==Cb || C==Cf)return;
-    SetPixel(hdc,x,y,cf);
+    SetPixel(hdc,x,y,Cf);
     FloodFill(hdc,x+1,y,Cb,Cf);
     FloodFill(hdc,x-1,y,Cb,Cf);
     FloodFill(hdc,x,y+1,Cb,Cf);
@@ -423,5 +415,215 @@ void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
         S.push(make_pair(v.first-1,v.second));
         S.push(make_pair(v.first,v.second+1));
         S.push(make_pair(v.first,v.second-1));
+    }
+}
+
+void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+{
+    for(int x = x1; x <= x2; x += 1)
+    {
+        pair<int, int> p1 = make_pair(x, y2);
+        pair<int, int> p2 = make_pair(x, y1);
+        pair<int, int> t1 = make_pair(0, 1050); // the value of t1 that actually draw the line
+        pair<int, int> t2 = make_pair(0, 1050);
+        DrawHermiteCurve(hdc, p1,t1, p2, t2, 100);
+    }
+}
+
+void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+{
+    vector<pair<int,int>> points;
+
+    for(int y = y1; y <= y2; y += 1)
+    {
+        points.push_back(make_pair(x1, y));
+        points.push_back(make_pair(x1 + (x2-x1)/3, y));
+        points.push_back(make_pair(x1 + 2*(x2-x1)/3, y));
+        points.push_back(make_pair(x2, y));
+        DrawBezierCurve(hdc, points, 100);
+
+        points.clear();
+    }
+}
+
+void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+{
+    for(int r = 0; r <= R; r++)
+    {
+        CircleFasterBresenham(hdc, xc, yc, R, color);
+    }
+}
+
+void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+{
+    int x = 0, y = r;
+    int d = 1 - r;
+
+    while(x <= y)
+    {
+        // draw horizontal lines instead of points
+        for(int i = xc - x; i <= xc + x; i++)
+        {
+            SetPixel(hdc, i, yc + y, color);
+            SetPixel(hdc, i, yc - y, color);
+        }
+        for(int i = xc - y; i <= xc + y; i++)
+        {
+            SetPixel(hdc, i, yc + x, color);
+            SetPixel(hdc, i, yc - x, color);
+        }
+
+        if(d < 0)
+            d += 2*x + 3;
+        else
+        {
+            d += 2*(x - y) + 5;
+            y--;
+        }
+        x++;
+    }
+}
+
+
+//=======================
+// Clipping Algorithms
+//=======================
+
+void PointClipping(HDC hdc, int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color)
+{
+    if(x>=xleft && x<= xright && y>=ytop && y<=ybottom)
+    SetPixel(hdc,x,y,color);
+}
+
+OutCode GetOutCode(double x,double y,int xleft,int ytop,int xright,int ybottom)
+{
+    OutCode out;
+    out.All=0;
+    if(x<xleft)out.left=1;
+    else if(x>xright)out.right=1;
+    if(y<ytop)out.top=1;
+    else if(y>ybottom)out.bottom=1;
+    return out;
+}
+
+
+void VIntersect(double xs,double ys,double xe,double ye,int x,double *xi,double *yi)
+{
+    *xi=x;
+    *yi=ys+(x-xs)*(ye-ys)/(xe-xs);
+}
+void HIntersect(double xs,double ys,double xe,double ye,int y,double *xi,double *yi)
+{
+    *yi=y;
+    *xi=xs+(y-ys)*(xe-xs)/(ye-ys);
+}
+
+void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom)
+{
+    double x1=xs,y1=ys,x2=xe,y2=ye;
+    OutCode out1=GetOutCode(x1,y1,xleft,ytop,xright,ybottom);
+    OutCode out2=GetOutCode(x2,y2,xleft,ytop,xright,ybottom);
+    while( (out1.All || out2.All) && !(out1.All & out2.All))
+    {
+    double xi,yi;
+    if(out1.All)
+    {
+        if(out1.left)VIntersect(x1,y1,x2,y2,xleft,&xi,&yi);
+        else if(out1.top)HIntersect(x1,y1,x2,y2,ytop,&xi,&yi);
+        else if(out1.right)VIntersect(x1,y1,x2,y2,xright,&xi,&yi);
+        else HIntersect(x1,y1,x2,y2,ybottom,&xi,&yi);
+        x1=xi;
+        y1=yi;
+        out1=GetOutCode(x1,y1,xleft,ytop,xright,ybottom);
+    } else
+    {
+        if(out2.left)VIntersect(x1,y1,x2,y2,xleft,&xi,&yi);
+        else if(out2.top)HIntersect(x1,y1,x2,y2,ytop,&xi,&yi);
+        else if(out2.right)VIntersect(x1,y1,x2,y2,xright,&xi,&yi);
+        else HIntersect(x1,y1,x2,y2,ybottom,&xi,&yi);
+        x2=xi;
+        y2=yi;
+        out2=GetOutCode(x2,y2,xleft,ytop,xright,ybottom);
+    }
+    }
+    if(!out1.All && !out2.All)
+    {
+        MoveToEx(hdc,round(x1),round(y1),NULL);
+        LineTo(hdc,round(x2),round(y2));
+    }
+}
+
+VertexList ClipWithEdge(VertexList p,int edge,IsInFunc In,IntersectFunc Intersect)
+{
+    VertexList OutList;
+    Vertex v1=p[p.size()-1];
+    bool v1_in=In(v1,edge);
+    for(int i=0;i<(int)p.size();i++)
+    {
+        Vertex v2=p[i];
+        bool v2_in=In(v2,edge);
+        if(!v1_in && v2_in)
+        {
+            OutList.push_back(Intersect(v1,v2,edge));
+            OutList.push_back(v2);
+        }
+        else if(v1_in && v2_in) OutList.push_back(v2);
+        else if(v1_in) OutList.push_back(Intersect(v1,v2,edge));
+        v1=v2;
+        v1_in=v2_in;
+        }
+    return OutList;
+}
+
+bool InLeft(Vertex& v,int edge)
+{
+    return v.x>=edge;
+}
+
+bool InRight(Vertex& v,int edge)
+{
+    return v.x<=edge;
+}
+
+bool InTop(Vertex& v,int edge)
+{
+    return v.y>=edge;
+}
+
+bool InBottom(Vertex& v,int edge)
+{
+    return v.y<=edge;
+}
+
+Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge)
+{
+    Vertex res;
+    res.x=xedge;
+    res.y=v1.y+(xedge-v1.x)*(v2.y-v1.y)/(v2.x-v1.x);
+    return res;
+}
+Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge)
+{
+    Vertex res;
+    res.y=yedge;
+    res.x=v1.x+(yedge-v1.y)*(v2.x-v1.x)/(v2.y-v1.y);
+    return res;
+}
+
+void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+{
+    VertexList vlist;
+    for(int i=0;i<n;i++)vlist.push_back(Vertex(p[i].x,p[i].y));
+    vlist=ClipWithEdge(vlist,xleft,InLeft,VIntersect);
+    vlist=ClipWithEdge(vlist,ytop,InTop,HIntersect);
+    vlist=ClipWithEdge(vlist,xright,InRight,VIntersect);
+    vlist=ClipWithEdge(vlist,ybottom,InBottom,HIntersect);
+    Vertex v1=vlist[vlist.size()-1];
+    for(int i=0;i<(int)vlist.size();i++)
+    {
+        Vertex v2=vlist[i];
+        MoveToEx(hdc,round(v1.x),round(v1.y),NULL);
+        LineTo(hdc,round(v2.x),round(v2.y));
+        v1=v2;
     }
 }

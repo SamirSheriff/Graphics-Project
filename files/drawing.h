@@ -1,13 +1,13 @@
 #ifndef DRAWING_H_INCLUDED
 #define DRAWING_H_INCLUDED
 
-#define MAXENTRIES 600;
-
-
-#endif // DRAWING_H_INCLUDED
+#define MAXENTRIES 600
 
 #include <cmath>
 #include <vector>
+#include <list>
+#include <climits>
+#include <stack>
 
 using namespace std;
 
@@ -30,12 +30,6 @@ void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
 void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
 
 
-//===================
-// Ellipse Algorithms
-//===================
-
-
-
 //=======================
 // Curve Algorithms
 //=======================
@@ -43,11 +37,11 @@ double DotProduct(vector<double>& a,vector<double>& b);
 
 vector<double> GetHermiteCoeff(double x0, double s0, double x1, double s1);
 
-void DrawHermiteCurve (HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
 
 void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
 
-void DrawCardinalSpline(HDC hdc,Vector2 P[],int n,double c,int numpix);
+void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
 
 
 //=======================
@@ -73,24 +67,65 @@ struct EdgeRec
 typedef list<EdgeRec> EdgeList;
 
 void InitEntries(Entry table[]);
-
 void ScanEdge(pair<int,int> v1,pair<int,int> v2,Entry table[]);
-
 void DrawSanLines(HDC hdc,Entry table[],COLORREF color);
-
-void ConvexFill(HDC hdc,pair<int,int> p[],int n,COLORREF color);
+void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color);
 
 EdgeRec InitEdgeRec(pair<int,int>& v1,pair<int,int>& v2);
-
-void InitEdgeTable(pair<int,int> *polygon,int n,EdgeList table[])
-
-void GeneralPolygonFill(HDC hdc,pair<int,int> *polygon,int n,COLORREF c);
+void InitEdgeTable(vector<pair<int,int>> polygon, int n,EdgeList table[]);
+void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
 
 void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
 
 void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
 
+void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+
+void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+
+void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+
+void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
 
 //=======================
 // Clipping Algorithms
 //=======================
+
+union OutCode
+{
+    unsigned All:4;
+    struct{unsigned left:1,top:1,right:1,bottom:1;};
+};
+
+struct Vertex
+{
+    double x,y;
+    Vertex(int x1=0,int y1=0)
+    {
+        x=x1;
+        y=y1;
+    }
+};
+
+typedef vector<Vertex> VertexList;
+typedef bool (*IsInFunc)(Vertex& v,int edge);
+typedef Vertex (*IntersectFunc)(Vertex& v1,Vertex& v2,int edge);
+
+void PointClipping(HDC hdc,int x,int y,int xleft,int ytop,int xright,int ybottom,COLORREF color);
+
+OutCode GetOutCode(double x,double y,int xleft,int ytop,int xright,int ybottom);
+void VIntersect(double xs,double ys,double xe,double ye,int x,double *xi,double *yi);
+void HIntersect(double xs,double ys,double xe,double ye,int y,double *xi,double *yi);
+void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
+
+VertexList ClipWithEdge(VertexList p,int edge,IsInFunc In,IntersectFunc Intersect);
+bool InLeft(Vertex& v,int edge);
+bool InRight(Vertex& v,int edge);
+bool InTop(Vertex& v,int edge);
+bool InBottom(Vertex& v,int edge);
+Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge);
+Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge);
+void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+
+
+#endif // DRAWING_H_INCLUDED

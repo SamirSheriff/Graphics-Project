@@ -5,13 +5,67 @@
 #endif
 
 #include <tchar.h>
-#include <windows.h>
+#include <sstream>
+#include "shapes.h"
+
+using namespace std;
+
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
 /*  Make the class name into a global variable  */
 TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
+
+vector<shape*> shapes;
+
+void SaveShapes(const string filename)
+{
+    ofstream out(filename);
+
+    for(auto s : shapes)
+        s->save(out);
+}
+
+
+void ClearShapes(vector<shape*>& shapes, HWND hwnd)
+{
+    // 1. Free memory
+    for(auto s : shapes)
+        delete s;
+
+    // 2. Clear vector
+    shapes.clear();
+
+    // 3. Redraw window
+    InvalidateRect(hwnd, NULL, TRUE);
+}
+
+void LoadShapes(const char* filename, vector<shape*>& shapes)
+{
+    ifstream in(filename);
+    if(!in) return;
+
+    shapes.clear();
+
+    string type;
+
+    while(in >> type)
+    {
+        // ================= LINE =================
+        if(type == "LINE")
+        {
+            int algo, x1, y1, x2, y2;
+            int r, g, b;
+
+            in >> algo >> x1 >> y1 >> x2 >> y2 >> r >> g >> b;
+
+            COLORREF color = RGB(r,g,b);
+
+            shapes.push_back(new Line(x1,y1,x2,y2,algo,color));
+        }
+    }
+}
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                      HINSTANCE hPrevInstance,
@@ -58,6 +112,63 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
            hThisInstance,       /* Program Instance handler */
            NULL                 /* No Window Creation data */
            );
+
+    // MENU
+    HMENU menu=CreateMenu();
+    HMENU file=CreateMenu();
+    HMENU Pref=CreateMenu();
+    HMENU line=CreateMenu();
+    HMENU circle=CreateMenu();
+    HMENU Ellipse=CreateMenu();
+    HMENU Curve=CreateMenu();
+    HMENU Filling=CreateMenu();
+    HMENU Clipping=CreateMenu();
+    HMENU faces=CreateMenu();
+
+    AppendMenu(file,MF_STRING,1,"Clear");
+    AppendMenu(file,MF_STRING,2,"Save");
+    AppendMenu(file,MF_STRING,3,"Load");
+
+    AppendMenu(Pref,MF_STRING,10,"Make background white");
+    AppendMenu(Pref,MF_STRING,11,"Cursor");
+    AppendMenu(Pref,MF_STRING,12,"Color");
+
+    AppendMenu(line,MF_STRING,20,"Parametric");
+    AppendMenu(line,MF_STRING,21,"DDA");
+    AppendMenu(line,MF_STRING,22,"Midpoint");
+
+    AppendMenu(circle,MF_STRING,30,"Direct");
+    AppendMenu(circle,MF_STRING,31,"Polar,");
+    AppendMenu(circle,MF_STRING,32,"Iterative Polar");
+    AppendMenu(circle,MF_STRING,33,"Midpoint");
+    AppendMenu(circle,MF_STRING,34,"Modified Midpoint");
+
+    AppendMenu(Ellipse,MF_STRING,40,"Direct,");
+    AppendMenu(Ellipse,MF_STRING,41,"Polar");
+    AppendMenu(Ellipse,MF_STRING,42,"Midpoint");
+
+    AppendMenu(Curve,MF_STRING,50,"Cardinal Spline");
+
+    AppendMenu(Filling,MF_STRING,60,"Filling Circle with lines");
+    AppendMenu(Filling,MF_STRING,61,"Filling Circle with CircleS");
+    AppendMenu(Filling,MF_STRING,62,"Filling Square with Hermit");
+    AppendMenu(Filling,MF_STRING,63,"Filling Rectangle with Bezier");
+    AppendMenu(Filling,MF_STRING,64,"Convex Filling");
+    AppendMenu(Filling,MF_STRING,65,"Non-Convex Filling");
+    AppendMenu(Filling,MF_STRING,66,"Recursive Flood Fill");
+    AppendMenu(Filling,MF_STRING,67,"Non-Recursive Flood Fill");
+
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)file,"File");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)Pref,"Preferences");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)line,"Lines");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)circle,"Circles");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)Ellipse,"Ellipse");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)Curve,"Curve");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)Filling,"Filling");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)Clipping,"Clipping");
+    AppendMenu(menu,MF_POPUP,(UINT_PTR)faces,"faces");
+
+    SetMenu(hwnd,menu);
 
     /* Make the window visible on the screen */
     ShowWindow (hwnd, nCmdShow);
