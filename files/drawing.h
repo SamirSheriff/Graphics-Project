@@ -133,4 +133,13 @@ Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge);
 void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
 
 
+//=======================
+// Faces Algorithms
+//=======================
+
+void DrawHappyFace(HDC hdc, int xc, int yc, int r, COLORREF color);
+
+void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color);
+
+
 #endif // DRAWING_H_INCLUDED

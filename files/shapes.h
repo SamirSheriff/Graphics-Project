@@ -1,7 +1,6 @@
 #ifndef SHAPES_H_INCLUDED
 #define SHAPES_H_INCLUDED
 
-#pragma once
 #include <windows.h>
 #include <fstream>
 #include "drawing.h"
@@ -23,7 +22,7 @@ class shape
         virtual void draw(HDC hdc) = 0;
         virtual void save(ofstream& out) = 0;
 
-        virtual ~shape();
+        ~shape();
 };
 
 
@@ -43,6 +42,26 @@ public:
 
     ~Line();
 };
+
+
+//===================
+// Circle Class
+//===================
+class Circle : public shape
+{
+public:
+    int xc, yc, r;
+    int algo;
+
+    Circle(int a, int b, int c, int algo, COLORREF col);
+
+    void draw(HDC hdc) override;
+    void save(ofstream& out) override;
+
+     ~Circle();
+};
+
+
 //===================
 // Ellipse Class
 //===================
@@ -72,24 +91,8 @@ public:
     vector<pair<int, int>> draw_ellipse(pair<int, int> c, pair<int, int> a, pair<int, int> b, char m);  // BIG PROBLEM
 
     //void save(ofstream& out) override;
-};
 
-
-//===================
-// Circle Class
-//===================
-class Circle : public shape
-{
-public:
-    int xc, yc, r;
-    int algo;
-
-    Circle(int a, int b, int c, int algo, COLORREF col);
-
-    void draw(HDC hdc) override;
-    void save(ofstream& out) override;
-
-    ~Circle();
+    ~myEllipse();
 };
 
 
@@ -148,7 +151,6 @@ class FillingCircles : public shape
 public:
     int xc, yc, r;
     int algo;
-    COLORREF color;
 
     FillingCircles(int x, int y, int R, int alg, COLORREF col);
 
@@ -162,11 +164,10 @@ public:
 class FillingWithCurves : public shape
 {
 public:
-    int x1, y1, x2, y2;
+    int xc, yc;
     int algo;
-    COLORREF color;
 
-    FillingWithCurves(int xs, int ys, int xe, int ye, int alg, COLORREF col);
+    FillingWithCurves(int x, int y, int alg, COLORREF col);
 
     void draw(HDC hdc) override;
     void save(ofstream& out) override;
@@ -181,7 +182,6 @@ public:
     vector<pair<int,int>> points;
     int sz;
     int algo;
-    COLORREF color;
 
     PolygonFilling(vector<pair<int,int>> p, int n, int alg, COLORREF col);
 
@@ -204,8 +204,26 @@ public:
     void draw(HDC hdc) override;
     void save(ofstream& out) override;
 
-    ~FloodFillShape();
+     ~FloodFillShape();
 };
 
+
+//===================
+// Face Class
+//===================
+
+class Face : public shape
+{
+public:
+    int xc, yc, r;
+    int algo;
+
+    Face(int a, int b, int c, int alg, COLORREF col);
+
+    void draw(HDC hdc) override;
+    void save(ofstream& out) override;
+
+     ~Face();
+};
 
 #endif // SHAPES_H_INCLUDED

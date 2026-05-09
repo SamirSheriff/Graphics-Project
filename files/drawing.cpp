@@ -363,29 +363,33 @@ void InitEdgeTable(vector<pair<int,int>> polygon,int n,EdgeList table[])
 
 void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
 {
-    EdgeList *table=new EdgeList [MAXENTRIES];
-    InitEdgeTable(polygon,n,table);
+    EdgeList *table = new EdgeList [MAXENTRIES];
+    InitEdgeTable(polygon, n, table);
     int y=0;
-    while(y<MAXENTRIES && table[y].size()==0)y++;
-    if(y==MAXENTRIES)return;
-    EdgeList ActiveList=table[y];
+    while(y < MAXENTRIES && table[y].size() == 0) y++;
+    if(y == MAXENTRIES)return;
+    EdgeList ActiveList = table[y];
     while (ActiveList.size()>0)
     {
         ActiveList.sort();
-        for(EdgeList::iterator it=ActiveList.begin();it!=ActiveList.end();it++)
+        for(EdgeList::iterator it=ActiveList.begin(); it != ActiveList.end(); it++)
         {
-            int x1=(int)ceil(it->x);
+            int x1 = (int)ceil(it->x);
             it++;
-            int x2=(int)floor(it->x);
-            for(int x=x1;x<=x2;x++)SetPixel(hdc,x,y,c);
+            int x2 = (int)floor(it->x);
+            for(int x=x1;x<=x2;x++)
+                SetPixel(hdc,x,y,c);
         }
         y++;
-        EdgeList::iterator it=ActiveList.begin();
-        while(it!=ActiveList.end())
-            if(y==it->ymax) it=ActiveList.erase(it); else it++;
-        for(EdgeList::iterator it=ActiveList.begin();it!=ActiveList.end();it++)
-            it->x+=it->minv;
-        ActiveList.insert(ActiveList.end(),table[y].begin(),table[y].end());
+        EdgeList::iterator it = ActiveList.begin();
+        while(it != ActiveList.end())
+            if(y == it->ymax)
+                it = ActiveList.erase(it);
+            else
+                it++;
+        for(EdgeList::iterator it = ActiveList.begin(); it != ActiveList.end(); it++)
+            it->x += it->minv;
+        ActiveList.insert(ActiveList.end(), table[y].begin(), table[y].end());
     }
     delete[] table;
 }
@@ -425,8 +429,8 @@ void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF col
     {
         pair<int, int> p1 = make_pair(x, y2);
         pair<int, int> p2 = make_pair(x, y1);
-        pair<int, int> t1 = make_pair(0, 1050); // the value of t1 that actually draw the line
-        pair<int, int> t2 = make_pair(0, 1050);
+        pair<int, int> t1 = make_pair(0, 525); // the value of t1 that actually draw the line
+        pair<int, int> t2 = make_pair(0, 525);
         DrawHermiteCurve(hdc, p1,t1, p2, t2, 100);
     }
 }
@@ -451,7 +455,7 @@ void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
 {
     for(int r = 0; r <= R; r++)
     {
-        CircleFasterBresenham(hdc, xc, yc, R, color);
+        CircleFasterBresenham(hdc, xc, yc, r, color);
     }
 }
 
@@ -627,4 +631,60 @@ void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybotto
         LineTo(hdc,round(v2.x),round(v2.y));
         v1=v2;
     }
+}
+
+
+//=======================
+// Faces Algorithms
+//=======================
+
+void DrawHappyFace(HDC hdc, int xc, int yc, int r, COLORREF color)
+{
+    // ================= FACE =================
+    CircleBresenham(hdc, xc, yc, r, color);
+
+    // ================= EYES =================
+    CircleBresenham(hdc, xc - r/3, yc - r/3, r/10, color);
+    CircleBresenham(hdc, xc + r/3, yc - r/3, r/10, color);
+
+    // ================= NOSE =================
+    MidPoint(hdc, xc, yc - r/8, xc, yc + r/4, color);
+
+    // ================= MOUTH =================
+    vector<pair<int,int>> mouth;
+
+    mouth.push_back({xc - r/2, yc + r/4});
+    mouth.push_back({xc - r/4, yc + r/2});
+    mouth.push_back({xc + r/4, yc + r/2});
+    mouth.push_back({xc + r/2, yc + r/4});
+
+    DrawBezierCurve(hdc, mouth, 100);
+}
+
+void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color)
+{
+    // ================= FACE =================
+    CircleBresenham(hdc, xc, yc, r, color);
+
+    // ================= EYES =================
+    CircleBresenham(hdc, xc - r/3, yc - r/3, r/10, color);
+    CircleBresenham(hdc, xc + r/3, yc - r/3, r/10, color);
+
+    // ================= NOSE =================
+    MidPoint(hdc,
+             xc,
+             yc - r/8,
+             xc,
+             yc + r/4,
+             color);
+
+    // ================= MOUTH =================
+    vector<pair<int,int>> mouth;
+
+    mouth.push_back({xc - r/2, yc + r/2});
+    mouth.push_back({xc - r/4, yc + r/4});
+    mouth.push_back({xc + r/4, yc + r/4});
+    mouth.push_back({xc + r/2, yc + r/2});
+
+    DrawBezierCurve(hdc, mouth, 100);
 }

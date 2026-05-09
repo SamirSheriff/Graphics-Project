@@ -1,4 +1,5 @@
 #include "shapes.h"
+#include <string>
 
 
 shape::shape(COLORREF col)
@@ -41,7 +42,7 @@ void Line::draw(HDC hdc)
 void Line::save(ofstream& out)
 {
     out << "LINE " << algo << " " << x1 << " " << y1 << " "
-        << x2 << " " << y2 << " " << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+        << x2 << " " << y2 << " " << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 
@@ -84,7 +85,7 @@ void Circle::draw(HDC hdc)
 void Circle::save(ofstream& out)
 {
     out << "CIRCLE " << algo << " " << xc << " " << yc << " " << r << " "
-    << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+    << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 
@@ -107,14 +108,14 @@ void myEllipse::compute_factorials(int number) {
     }
 }
 
-vector<std::pair<int, int>> myEllipse::direct(std::pair<int, int> c,
-                                        std::pair<int, int> a,
-                                        std::pair<int, int> b) {
+vector<pair<int, int>> myEllipse::direct(pair<int, int> c,
+                                        pair<int, int> a,
+                                        pair<int, int> b) {
     double a2 = (double)a.first * a.first;
     int x = 0;
 
     while (x <= a.first) {
-        int y = std::round(b.second * std::sqrt(1.0 - ((double)x * x) / a2));
+        int y = round(b.second * sqrt(1.0 - ((double)x * x) / a2));
 
         // Symmetry points
         ellipse.push_back({ c.first + x, c.second + y });
@@ -127,9 +128,9 @@ vector<std::pair<int, int>> myEllipse::direct(std::pair<int, int> c,
     return ellipse;
 }
 
-vector<std::pair<int, int>> myEllipse::polar(std::pair<int, int> c,
-                                       std::pair<int, int> a,
-                                       std::pair<int, int> b) {
+vector<pair<int, int>> myEllipse::polar(pair<int, int> c,
+                                       pair<int, int> a,
+                                       pair<int, int> b) {
     double rx = a.first;
     double ry = b.second;
 
@@ -137,7 +138,7 @@ vector<std::pair<int, int>> myEllipse::polar(std::pair<int, int> c,
     compute_factorials(10);
 
     // Determine step size based on circumference approximation
-    double num_steps = std::max(rx, ry) * 2;
+    double num_steps = max(rx, ry) * 2;
     double d_theta = (M_PI / 2.0) / num_steps;
     double theta = 0;
 
@@ -148,8 +149,8 @@ vector<std::pair<int, int>> myEllipse::polar(std::pair<int, int> c,
         double s_val = powers[1] - (powers[3]/factorials[3]) + (powers[5]/factorials[5]) - (powers[7]/factorials[7]) + (powers[9]/factorials[9]);
         double c_val = powers[0] - (powers[2]/factorials[2]) + (powers[4]/factorials[4]) - (powers[6]/factorials[6]) + (powers[8]/factorials[8]);
 
-        int x_p = std::round(rx * c_val);
-        int y_p = std::round(ry * s_val);
+        int x_p = round(rx * c_val);
+        int y_p = round(ry * s_val);
 
         // Symmetry points for all four quadrants
         ellipse.push_back({ c.first + x_p, c.second + y_p });
@@ -162,9 +163,9 @@ vector<std::pair<int, int>> myEllipse::polar(std::pair<int, int> c,
     return ellipse;
 }
 
-vector<std::pair<int, int>> myEllipse::midpoint(std::pair<int, int> c,
-                                          std::pair<int, int> a,
-                                          std::pair<int, int> b) {
+vector<pair<int, int>> myEllipse::midpoint(pair<int, int> c,
+                                          pair<int, int> a,
+                                          pair<int, int> b) {
     double a2 = (double)a.first * a.first;
     double b2 = (double)b.second * b.second;
     double a2b2 = a2 * b2;
@@ -205,9 +206,9 @@ vector<std::pair<int, int>> myEllipse::midpoint(std::pair<int, int> c,
 }
 
 
-vector<std::pair<int, int>> myEllipse::draw_ellipse(std::pair<int, int> c,
-                                                  std::pair<int, int> a,
-                                                  std::pair<int, int> b,
+vector<pair<int, int>> myEllipse::draw_ellipse(pair<int, int> c,
+                                                  pair<int, int> a,
+                                                  pair<int, int> b,
                                                   char m) {
         center = c;
         a_ = a;
@@ -238,7 +239,7 @@ vector<std::pair<int, int>> myEllipse::draw_ellipse(std::pair<int, int> c,
 //{
 //    out << "Ellipse " << algo << center.first << " " << center.second << " "
 //        << a_.first << " " << a_.second << " " << b_.first << " " << b_.second << " "
-//        << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+//        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 //}
 
 
@@ -261,7 +262,7 @@ void BezierCurve::save(ofstream& out)
 {
     out << "BezierCurve " << points[0].first << " " << points[0].second << " " << points[1].first << " " << points[1].second<< " "
         << points[2].first << " " << points[2].second << " " << points[3].first << " " << points[3].second << " "
-        << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 // Hermite Functions
@@ -282,7 +283,7 @@ void HermiteCurve::save(ofstream& out)
 {
     out << "HermiteCurve " << p1.first << " " << p1.second << " " << t1.first << " " << t1.second<< " "
         << p2.first << " " << p2.second << " " << t2.first << " " << t2.second << " "
-        << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 // CardinalSpline Functions
@@ -304,7 +305,7 @@ void CardinalSplineCurve::save(ofstream& out)
     {
         out << points[i].first << " " << points[i].second << " ";
     }
-    out << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+    out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 
@@ -338,16 +339,14 @@ void FillingCircles::draw(HDC hdc)
 void FillingCircles::save(ofstream& out)
 {
     out << "FillingCircles " << algo << " " << xc << " " << yc << " " << r << " "
-        << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 
-FillingWithCurves::FillingWithCurves(int xs, int ys, int xe, int ye, int alg, COLORREF col): shape(col)
+FillingWithCurves::FillingWithCurves(int x, int y, int alg, COLORREF col): shape(col)
 {
-    x1 = xs;
-    y1 = ys;
-    x2 = xe;
-    y2 = ye;
+    xc = x;
+    yc = y;
     algo = alg;
 }
 
@@ -356,10 +355,10 @@ void FillingWithCurves::draw(HDC hdc)
     switch(algo)
     {
     case 1:
-        FillSquareWithHermite(hdc, x1, y1, x2, y2, color);
+        FillSquareWithHermite(hdc, xc - 50, yc, xc + 50, yc, color);
         break;
     case 2:
-        FillRectangleWithBezier(hdc, x1, y1, x2, y2, color);
+        FillRectangleWithBezier(hdc, xc - 50, yc - 25, xc + 50, yc + 25, color);
         break;
     default:
         cout << "No algo in filling with curves" << endl;
@@ -368,8 +367,8 @@ void FillingWithCurves::draw(HDC hdc)
 
 void FillingWithCurves::save(ofstream& out)
 {
-    out << "FillingWithCurves " << algo << " " << x1 << " " << y1 << " " << x2 << " " << y2 << " "
-        << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+    out << "FillingWithCurves " << algo << " " << xc << " " << yc << " "
+        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 
@@ -402,7 +401,7 @@ void PolygonFilling::save(ofstream& out)
     {
         out << points[i].first << " " << points[i].second << " ";
     }
-    out << GetRValue(color) << " " << GetGValue(color) << " " <<  GetBValue(color) << " " << "\n";
+    out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 
@@ -433,10 +432,40 @@ void FloodFillShape::draw(HDC hdc)
 void FloodFillShape::save(ofstream& out)
 {
     out << "FloodFill " << algo << " " << x << " " << y << " "
-        << GetRValue(cb) << " " << GetGValue(cb) << " " <<  GetBValue(cb) << " "
-        << GetRValue(cf) << " " << GetGValue(cf) << " " <<  GetBValue(cf) << " "<< "\n";
+        << (int)GetRValue(cb) << " " << (int)GetGValue(cb) << " " <<  (int)GetBValue(cb) << " "
+        << (int)GetRValue(cf) << " " << (int)GetGValue(cf) << " " <<  (int)GetBValue(cf) << " "<< "\n";
 }
 
+
+Face::Face(int a, int b, int c, int alg, COLORREF col): shape(col)
+{
+    xc = a;
+    yc = b;
+    r = c;
+    algo = alg;
+}
+
+
+void Face::draw(HDC hdc)
+{
+    switch(algo)
+    {
+    case 1:
+         DrawHappyFace(hdc, xc, yc, r, color);
+         break;
+    case 2:
+        DrawSadFace(hdc, xc, yc, r, color);
+        break;
+    default:
+        cout << "No algo in faces shape" << endl;
+    }
+}
+
+void Face::save(ofstream& out)
+{
+    out << "Face " << algo << " " << xc << " " << yc << " " << r << " "
+    << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+}
 
 
 
@@ -459,3 +488,5 @@ FillingWithCurves::~FillingWithCurves() {}
 PolygonFilling::~PolygonFilling() {}
 
 FloodFillShape::~FloodFillShape() {}
+
+Face::~Face() {}
