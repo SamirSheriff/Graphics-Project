@@ -350,7 +350,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     AppendMenu(line,MF_STRING,22,"Midpoint");
 
     AppendMenu(circle,MF_STRING,30,"Direct");
-    AppendMenu(circle,MF_STRING,31,"Polar,");
+    AppendMenu(circle,MF_STRING,31,"Polar");
     AppendMenu(circle,MF_STRING,32,"Iterative Polar");
     AppendMenu(circle,MF_STRING,33,"Midpoint");
     AppendMenu(circle,MF_STRING,34,"Modified Midpoint");
@@ -375,14 +375,14 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     AppendMenu(Clipping,MF_POPUP,(UINT_PTR)CircleWind,"Circle Window");
 
     AppendMenu(RectWind,MF_STRING,70,"Point");
-    AppendMenu(RectWind,MF_STRING,71,"Line,");
+    AppendMenu(RectWind,MF_STRING,71,"Line");
     AppendMenu(RectWind,MF_STRING,72,"Polygon");
 
     AppendMenu(SqrWind,MF_STRING,73,"Point");
-    AppendMenu(SqrWind,MF_STRING,74,"Line,");
+    AppendMenu(SqrWind,MF_STRING,74,"Line");
 
     AppendMenu(CircleWind,MF_STRING,75,"Point");
-    AppendMenu(CircleWind,MF_STRING,76,"Line,");
+    AppendMenu(CircleWind,MF_STRING,76,"Line");
 
     AppendMenu(faces,MF_STRING,80,"Happy Face");
     AppendMenu(faces,MF_STRING,81,"Sad Face");
@@ -798,6 +798,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         s4->draw(hdc);
 
                         points.clear();
+                        isClipWind = false;
                     }
                     else
                     {
@@ -806,16 +807,17 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         int x2 = points[1].first;
                         int y2 = points[0].second;
 
-                        shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
+                        //shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
                         shape *s2 = new clipping(points, clipLeft, clipRight, clipTop, clipBottom, 2, currentColor);
 
-                        shapes.push_back(s1);
+                        //shapes.push_back(s1);
                         shapes.push_back(s2);
 
-                        s1->draw(hdc);
+                        //s1->draw(hdc);
                         s2->draw(hdc);
 
                         points.clear();
+                        isClipWind = true;
                     }
                 }
             break;
