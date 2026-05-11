@@ -4,9 +4,10 @@
     #define UNICODE
 #endif
 
+#include "shapes.h"
 #include <tchar.h>
 #include <sstream>
-#include "shapes.h"
+#include <commdlg.h>
 
 using namespace std;
 
@@ -217,8 +218,58 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
 
             shapes.push_back(new FloodFillShape(x,y,algo,RGB(r1,g1,b1),RGB(r2,g2,b2)));
         }
+
+        else if(type == "clipping")
+        {
+            int alg;
+
+            vector<pair<int,int>> pts;
+
+            // Read unknown number of points until color remains
+            // (assume last 3 ints are color)
+            vector<int> temp;
+            int val;
+
+            in >> alg;
+
+            // Read whole line
+            string line;
+            getline(in, line);
+            stringstream ss(line);
+
+            while(ss >> val)
+                temp.push_back(val);
+
+            if(temp.size() < 3) continue;
+
+            int left = temp[temp.size()-7];
+            int right = temp[temp.size()-6];
+            int top = temp[temp.size()-5];
+            int bottom = temp[temp.size()-4];
+            int r = temp[temp.size()-3];
+            int g = temp[temp.size()-2];
+            int b = temp[temp.size()-1];
+
+            for(size_t i=0;i<temp.size()-3;i+=2)
+                pts.push_back(make_pair(temp[i], temp[i+1]));
+
+            COLORREF color = RGB(r,g,b);
+
+            shapes.push_back(new clipping(pts, left, right, top, bottom, alg, color));
+        }
+
+        else if(type == "Face")
+        {
+            int algo, xc, yc, rad;
+            int r,g,b;
+
+            in >> algo >> xc >> yc >> rad >> r >> g >> b;
+
+            shapes.push_back(new Face(xc, yc, rad, algo, RGB(r,g,b)));
+        }
     }
 }
+
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                      HINSTANCE hPrevInstance,
@@ -277,6 +328,9 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     HMENU Curve=CreateMenu();
     HMENU Filling=CreateMenu();
     HMENU Clipping=CreateMenu();
+    HMENU RectWind=CreateMenu();
+    HMENU SqrWind=CreateMenu();
+    HMENU CircleWind=CreateMenu();
     HMENU faces=CreateMenu();
 
     AppendMenu(file,MF_STRING,1,"Clear");
@@ -315,6 +369,20 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     AppendMenu(Filling,MF_STRING,65,"Non-Convex Filling");
     AppendMenu(Filling,MF_STRING,66,"Recursive Flood Fill");
     AppendMenu(Filling,MF_STRING,67,"Non-Recursive Flood Fill");
+
+    AppendMenu(Clipping,MF_POPUP,(UINT_PTR)RectWind,"Rectangle Window");
+    AppendMenu(Clipping,MF_POPUP,(UINT_PTR)SqrWind,"Square Window");
+    AppendMenu(Clipping,MF_POPUP,(UINT_PTR)CircleWind,"Circle Window");
+
+    AppendMenu(RectWind,MF_STRING,70,"Point");
+    AppendMenu(RectWind,MF_STRING,71,"Line,");
+    AppendMenu(RectWind,MF_STRING,72,"Polygon");
+
+    AppendMenu(SqrWind,MF_STRING,73,"Point");
+    AppendMenu(SqrWind,MF_STRING,74,"Line,");
+
+    AppendMenu(CircleWind,MF_STRING,75,"Point");
+    AppendMenu(CircleWind,MF_STRING,76,"Line,");
 
     AppendMenu(faces,MF_STRING,80,"Happy Face");
     AppendMenu(faces,MF_STRING,81,"Sad Face");
@@ -356,6 +424,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
     // Store clicked points
     static vector<pair<int,int>> points;
+    static int clipLeft, clipRight, clipTop, clipBottom;
+    static bool isClipWind = true;
 
     switch (message)
     {
@@ -538,6 +608,45 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             points.clear();
             break;
 
+        // ================= Clipping =================
+
+        case 70:
+            currentAlgo = 70;
+            points.clear();
+            break;
+
+        case 71:
+            currentAlgo = 71;
+            points.clear();
+            break;
+
+        case 72:
+            currentAlgo = 72;
+            points.clear();
+            break;
+
+        case 73:
+            currentAlgo = 73;
+            points.clear();
+            break;
+
+        case 74:
+            currentAlgo = 74;
+            points.clear();
+            break;
+
+        case 75:
+            currentAlgo = 75;
+            points.clear();
+            break;
+
+        case 76:
+            currentAlgo = 76;
+            points.clear();
+            break;
+
+        // ================= Faces =================
+
         case 80:
             currentAlgo = 80;
             points.clear();
@@ -555,7 +664,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     // ======================================================
     // MOUSE LEFT CLICK
     // ======================================================
-    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
     {
         int x = LOWORD(lParam);
         int y = HIWORD(lParam);
@@ -656,6 +765,60 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     points.clear();
                 }
                 break;
+
+            case 74:
+                {
+                    if(isClipWind)
+                    {
+                        int xc = points[0].first;
+                        int yc = points[0].second;
+                        int x = points[1].first;
+                        int y = points[0].second;
+
+                        int halfSide = max(abs(x - xc), abs(y - yc));
+
+                        clipLeft   = xc - halfSide;
+                        clipRight  = xc + halfSide;
+                        clipTop    = yc - halfSide;
+                        clipBottom = yc + halfSide;
+
+                        shape *s1 = new Line(clipLeft, clipTop, clipRight, clipTop, 2, currentColor);
+                        shape *s2 = new Line(clipRight, clipTop, clipRight, clipBottom, 2, currentColor);
+                        shape *s3 = new Line(clipRight, clipBottom, clipLeft, clipBottom, 2, currentColor);
+                        shape *s4 = new Line(clipLeft, clipBottom, clipLeft, clipTop, 2, currentColor);
+
+                        shapes.push_back(s1);
+                        shapes.push_back(s2);
+                        shapes.push_back(s3);
+                        shapes.push_back(s4);
+
+                        s1->draw(hdc);
+                        s2->draw(hdc);
+                        s3->draw(hdc);
+                        s4->draw(hdc);
+
+                        points.clear();
+                    }
+                    else
+                    {
+                        int x1 = points[0].first;
+                        int y1 = points[0].second;
+                        int x2 = points[1].first;
+                        int y2 = points[0].second;
+
+                        shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
+                        shape *s2 = new clipping(points, clipLeft, clipRight, clipTop, clipBottom, 2, currentColor);
+
+                        shapes.push_back(s1);
+                        shapes.push_back(s2);
+
+                        s1->draw(hdc);
+                        s2->draw(hdc);
+
+                        points.clear();
+                    }
+                }
+            break;
 
             case 80:
             case 81:

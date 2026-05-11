@@ -334,7 +334,7 @@ void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
         v1=p[i];
     }
     DrawSanLines(hdc,table,color);
-    delete table;
+    delete[] table;
 }
 
 
@@ -604,25 +604,34 @@ Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge)
 {
     Vertex res;
     res.x=xedge;
-    res.y=v1.y+(xedge-v1.x)*(v2.y-v1.y)/(v2.x-v1.x);
+    if(v2.x == v1.x)
+        res.y = v1.y;
+    else
+        res.y = v1.y + (xedge-v1.x)*(v2.y-v1.y)/(v2.x-v1.x);
     return res;
 }
 Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge)
 {
     Vertex res;
     res.y=yedge;
-    res.x=v1.x+(yedge-v1.y)*(v2.x-v1.x)/(v2.y-v1.y);
+    if(v2.y == v1.y)
+        res.x = v1.x;
+    else
+        res.x = v1.x + (yedge-v1.y)*(v2.x-v1.x)/(v2.y-v1.y);
+
     return res;
 }
 
-void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom)
+void PolygonClip(HDC hdc,const vector<pair<int,int>>& p, int xleft,int ytop,int xright,int ybottom)
 {
     VertexList vlist;
-    for(int i=0;i<n;i++)vlist.push_back(Vertex(p[i].x,p[i].y));
+    for(int i = 0; i < p.size(); i++)
+        vlist.push_back(Vertex(p[i].first, p[i].second));
     vlist=ClipWithEdge(vlist,xleft,InLeft,VIntersect);
     vlist=ClipWithEdge(vlist,ytop,InTop,HIntersect);
     vlist=ClipWithEdge(vlist,xright,InRight,VIntersect);
     vlist=ClipWithEdge(vlist,ybottom,InBottom,HIntersect);
+    if(vlist.empty()) return;
     Vertex v1=vlist[vlist.size()-1];
     for(int i=0;i<(int)vlist.size();i++)
     {

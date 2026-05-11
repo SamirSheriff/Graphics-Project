@@ -130,7 +130,7 @@ bool InTop(Vertex& v,int edge);
 bool InBottom(Vertex& v,int edge);
 Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge);
 Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge);
-void PolygonClip(HDC hdc,POINT *p,int n,int xleft,int ytop,int xright,int ybottom);
+void PolygonClip(HDC hdc,const vector<pair<int,int>>& p,int xleft,int ytop,int xright,int ybottom);
 
 
 //=======================

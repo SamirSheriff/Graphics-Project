@@ -2,16 +2,20 @@
 #include <string>
 
 
+//===================
+// Parent Class
+//===================
 shape::shape(COLORREF col)
 {
     color = col;
 }
 
+shape::~shape() {}
+
 
 //================
 // Line Class
 //=================
-
 Line::Line(int a, int b, int c, int d, int alg, COLORREF col): shape(col)
 {
     x1 = a;
@@ -45,6 +49,7 @@ void Line::save(ofstream& out)
         << x2 << " " << y2 << " " << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
+Line::~Line() {}
 
 //===================
 // Circle Class
@@ -87,6 +92,8 @@ void Circle::save(ofstream& out)
     out << "CIRCLE " << algo << " " << xc << " " << yc << " " << r << " "
     << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
+
+Circle::~Circle() {}
 
 
 //===================
@@ -242,6 +249,8 @@ vector<pair<int, int>> myEllipse::draw_ellipse(pair<int, int> c,
 //        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 //}
 
+myEllipse::~myEllipse() {}
+
 
 //===================
 // Curve Classes
@@ -265,6 +274,9 @@ void BezierCurve::save(ofstream& out)
         << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
+BezierCurve::~BezierCurve() {}
+
+
 // Hermite Functions
 HermiteCurve::HermiteCurve(pair<int,int> a, pair<int,int> b, pair<int,int> c, pair<int,int> d, COLORREF col): shape(col)
 {
@@ -286,6 +298,9 @@ void HermiteCurve::save(ofstream& out)
         << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
+HermiteCurve::~HermiteCurve() {}
+
+
 // CardinalSpline Functions
 CardinalSplineCurve::CardinalSplineCurve(vector<pair<int,int>> p, double a, COLORREF col): shape(col)
 {
@@ -301,12 +316,14 @@ void CardinalSplineCurve::draw(HDC hdc)
 void CardinalSplineCurve::save(ofstream& out)
 {
     out << "CardinalSplineCurve " << c << " ";
-    for(int i = 0; i < points.size(); i++)
+    for(size_t i = 0; i < points.size(); i++)
     {
         out << points[i].first << " " << points[i].second << " ";
     }
     out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
+
+CardinalSplineCurve::~CardinalSplineCurve() {}
 
 
 //===================
@@ -342,6 +359,8 @@ void FillingCircles::save(ofstream& out)
         << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
+FillingCircles::~FillingCircles() {}
+
 
 FillingWithCurves::FillingWithCurves(int x, int y, int alg, COLORREF col): shape(col)
 {
@@ -371,6 +390,8 @@ void FillingWithCurves::save(ofstream& out)
         << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
+FillingWithCurves::~FillingWithCurves() {}
+
 
 PolygonFilling::PolygonFilling(vector<pair<int,int>> p, int n, int alg, COLORREF col): shape(col)
 {
@@ -397,12 +418,14 @@ void PolygonFilling::draw(HDC hdc)
 void PolygonFilling::save(ofstream& out)
 {
     out << "PolygonFilling " << algo << " " << sz << " ";
-    for(int i = 0; i < points.size(); i++)
+    for(size_t i = 0; i < points.size(); i++)
     {
         out << points[i].first << " " << points[i].second << " ";
     }
     out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
+
+PolygonFilling::~PolygonFilling() {}
 
 
 FloodFillShape ::FloodFillShape (int a, int b, int alg, COLORREF color1, COLORREF color2): shape(color2)
@@ -436,7 +459,55 @@ void FloodFillShape::save(ofstream& out)
         << (int)GetRValue(cf) << " " << (int)GetGValue(cf) << " " <<  (int)GetBValue(cf) << " "<< "\n";
 }
 
+FloodFillShape::~FloodFillShape() {}
 
+//===================
+// Clipping Class
+//===================
+clipping::clipping(vector<pair<int,int>> p, int l, int r, int t, int b, int alg, COLORREF c):shape(c)
+{
+    pts = p;
+    left = l;
+    right = r;
+    top = t;
+    bottom = b;
+    algo = alg;
+}
+
+void clipping::draw(HDC hdc)
+{
+     switch(algo)
+    {
+    case 1:
+        PointClipping(hdc, pts[0].first, pts[0].second, left, top, right, bottom, color);
+        break;
+    case 2:
+        CohenSuth(hdc,pts[0].first, pts[0].second, pts[1].first, pts[1].second, left, top, right, bottom);
+        break;
+    case 3:
+        PolygonClip(hdc, pts, left, top, right, bottom);
+        break;
+    default:
+        cout << "No algo in clipping" << endl;
+    }
+}
+
+void clipping::save(ofstream& out)
+{
+    out << "clipping " << algo << " ";
+    for(size_t i = 0; i < pts.size(); i++)
+    {
+        out << pts[i].first << " " << pts[i].second << " ";
+    }
+    out << left << " " << right << " " << top << " " << bottom << " " << (int)GetRValue(color)
+        << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+}
+
+clipping::~clipping() {}
+
+//===================
+// Face Class
+//===================
 Face::Face(int a, int b, int c, int alg, COLORREF col): shape(col)
 {
     xc = a;
@@ -466,27 +537,5 @@ void Face::save(ofstream& out)
     out << "Face " << algo << " " << xc << " " << yc << " " << r << " "
     << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
-
-
-
-shape::~shape() {}
-
-Line::~Line() {}
-
-Circle::~Circle() {}
-
-BezierCurve::~BezierCurve() {}
-
-HermiteCurve::~HermiteCurve() {}
-
-CardinalSplineCurve::~CardinalSplineCurve() {}
-
-FillingCircles::~FillingCircles() {}
-
-FillingWithCurves::~FillingWithCurves() {}
-
-PolygonFilling::~PolygonFilling() {}
-
-FloodFillShape::~FloodFillShape() {}
 
 Face::~Face() {}

@@ -1,10 +1,8 @@
 #ifndef SHAPES_H_INCLUDED
 #define SHAPES_H_INCLUDED
 
-#include <windows.h>
-#include <fstream>
 #include "drawing.h"
-#include <utility>
+#include <fstream>
 #include <iostream>
 
 using namespace std;
@@ -22,7 +20,7 @@ class shape
         virtual void draw(HDC hdc) = 0;
         virtual void save(ofstream& out) = 0;
 
-        ~shape();
+        virtual ~shape();
 };
 
 
@@ -205,6 +203,25 @@ public:
     void save(ofstream& out) override;
 
      ~FloodFillShape();
+};
+
+
+//===================
+// Clipping Class
+//===================
+class clipping : public shape
+{
+public:
+    vector<pair<int,int>> pts;
+    int left, right, top, bottom;
+    int algo;
+
+    clipping(vector<pair<int,int>> p, int l, int r, int t, int b, int alg, COLORREF c);
+
+    void draw(HDC hdc) override;
+    void save(ofstream& out) override;
+
+    ~clipping();
 };
 
 
