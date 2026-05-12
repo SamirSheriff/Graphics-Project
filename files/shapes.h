@@ -63,12 +63,11 @@ public:
 //===================
 // Ellipse Class
 //===================
-class myEllipse //: public shape
+class myEllipse : public shape
 {
 private:
-    vector<pair<int, int>> ellipse;
     pair<int, int> center, a_, b_;
-    char m_;
+    int m_;
     vector<double> factorials;
     vector<double> powers;
 
@@ -78,17 +77,20 @@ private:
     // Generates factorials up to number!
     void compute_factorials(int number);
 
-    vector<pair<int, int>> direct(pair<int, int> c, pair<int, int> a, pair<int, int> b);
+    void direct(HDC hdc);
 
-    vector<pair<int, int>> polar(pair<int, int> c, pair<int, int> a, pair<int, int> b);
+    void polar(HDC hdc);
 
-    vector<pair<int, int>> midpoint(pair<int, int> c, pair<int, int> a, pair<int, int> b);
+    void midpoint(HDC hdc);
 
 
 public:
-    vector<pair<int, int>> draw_ellipse(pair<int, int> c, pair<int, int> a, pair<int, int> b, char m);  // BIG PROBLEM
 
-    //void save(ofstream& out) override;
+    myEllipse(pair<int, int> c, pair<int, int> a, pair<int, int> b, int mode, COLORREF col);
+
+    void draw(HDC hdc) override;
+
+    void save(ofstream& out) override;
 
     ~myEllipse();
 };

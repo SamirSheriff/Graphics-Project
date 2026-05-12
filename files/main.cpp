@@ -9,6 +9,7 @@
 #include <sstream>
 #include <commdlg.h>
 
+
 using namespace std;
 
 
@@ -22,6 +23,7 @@ vector<shape*> shapes;
 COLORREF currentColor = RGB(0,0,0);
 HBRUSH bgBrush = CreateSolidBrush(RGB(240,240,240));
 HCURSOR currentCursor = LoadCursor(NULL, IDC_ARROW);
+int Left, Right, Top, Bottom;
 
 void SaveShapes(const string filename)
 {
@@ -79,28 +81,21 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
         }
 
         // ================= ELLIPSE =================
-//        else if(type == "Ellipse")
-//        {
-//            int algo;
-//            int cx, cy;
-//            int ax, ay, bx, by;
-//            int r, g, b;
-//
-//            in >> algo >> cx >> cy
-//               >> ax >> ay >> bx >> by
-//               >> r >> g >> b;
-//
-//            COLORREF color = RGB(r,g,b);
-//
-//            myEllipse* e = new myEllipse();
-//            e->center = {cx, cy};
-//            e->a_ = {ax, ay};
-//            e->b_ = {bx, by};
-//            e->color = color;
-//            e->algo = algo;
-//
-//            shapes.push_back(e);
-//        }
+        else if(type == "Ellipse")
+        {
+            int algo;
+            pair<int,int> center;
+            pair<int,int> a, b;
+            int red, green, blue;
+
+            in >> algo >> center.first >> center.second
+               >> a.first >> a.second >> b.first >> b.second
+               >> red >> green >> blue;
+
+            COLORREF color = RGB(red, green, blue);
+
+            shapes.push_back(new myEllipse(center, a, b, algo, color));
+        }
 
         else if(type == "BezierCurve")
         {
@@ -270,6 +265,68 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
     }
 }
 
+void drawSquare(HDC hdc, const  vector<pair<int,int>>& points)
+{
+    int xc = points[0].first;
+    int yc = points[0].second;
+    int x = points[1].first;
+    int y = points[1].second;
+
+    int halfSide = max(abs(x - xc), abs(y - yc));
+
+    Left   = xc - halfSide;
+    Right  = xc + halfSide;
+    Top    = yc - halfSide;
+    Bottom = yc + halfSide;
+
+    shape *s1 = new Line(Left, Top, Right, Top, 2, currentColor);
+    shape *s2 = new Line(Right, Top, Right, Bottom, 2, currentColor);
+    shape *s3 = new Line(Right, Bottom, Left, Bottom, 2, currentColor);
+    shape *s4 = new Line(Left, Bottom, Left, Top, 2, currentColor);
+
+    shapes.push_back(s1);
+    shapes.push_back(s2);
+    shapes.push_back(s3);
+    shapes.push_back(s4);
+
+    s1->draw(hdc);
+    s2->draw(hdc);
+    s3->draw(hdc);
+    s4->draw(hdc);
+}
+
+void drawRect(HDC hdc, const vector<pair<int,int>>& points)
+{
+    int xc = points[0].first;
+    int yc = points[0].second;
+    int x1 = points[1].first;
+    int y1 = points[1].second;
+    int x2 = points[2].first;
+    int y2 = points[2].second;
+
+    int halfx= max (abs(xc - x1), abs(yc-y1)),  halfy= max(abs(xc - x2), abs(yc-y2));
+
+    Left   = xc - halfx;
+    Right  = xc + halfx;
+    Top    = yc - halfy;
+    Bottom = yc + halfy;
+
+    shape *s1 = new Line(Left, Top, Right, Top, 2, currentColor);
+    shape *s2 = new Line(Right, Top, Right, Bottom, 2, currentColor);
+    shape *s3 = new Line(Right, Bottom, Left, Bottom, 2, currentColor);
+    shape *s4 = new Line(Left, Bottom, Left, Top, 2, currentColor);
+
+    shapes.push_back(s1);
+    shapes.push_back(s2);
+    shapes.push_back(s3);
+    shapes.push_back(s4);
+
+    s1->draw(hdc);
+    s2->draw(hdc);
+    s3->draw(hdc);
+    s4->draw(hdc);
+}
+
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                      HINSTANCE hPrevInstance,
@@ -355,7 +412,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     AppendMenu(circle,MF_STRING,33,"Midpoint");
     AppendMenu(circle,MF_STRING,34,"Modified Midpoint");
 
-    AppendMenu(Ellipse,MF_STRING,40,"Direct,");
+    AppendMenu(Ellipse,MF_STRING,40,"Direct");
     AppendMenu(Ellipse,MF_STRING,41,"Polar");
     AppendMenu(Ellipse,MF_STRING,42,"Midpoint");
 
@@ -420,11 +477,9 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static int currentAlgo = 0;
-
     // Store clicked points
     static vector<pair<int,int>> points;
-    static int clipLeft, clipRight, clipTop, clipBottom;
+    static int currentAlgo = 0;
     static bool isClipWind = true;
 
     switch (message)
@@ -702,6 +757,20 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     points.clear();
                 }
                 break;
+
+            case 70:
+            case 73:
+                {
+                if(!isClipWind)
+                    {
+                        shape *s = new clipping(points, Left, Right, Top, Bottom, 1, currentColor);
+                        shapes.push_back(s);
+                        s->draw(hdc);
+                        points.clear();
+                        isClipWind = true;
+                    }
+                }
+            break;
             }
         }
 
@@ -766,37 +835,36 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 }
                 break;
 
+            case 71:
+                {
+                    if(!isClipWind)
+                    {
+                        int x1 = points[0].first;
+                        int y1 = points[0].second;
+                        int x2 = points[1].first;
+                        int y2 = points[1].second;
+
+                        shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
+                        shape *s2 = new clipping(points, Left, Right, Top, Bottom, 2, currentColor);
+
+                        shapes.push_back(s1);
+                        shapes.push_back(s2);
+
+                        s1->draw(hdc);
+                        s2->draw(hdc);
+
+                        points.clear();
+                        isClipWind = true;
+                    }
+
+                }
+                break;
+
             case 74:
                 {
                     if(isClipWind)
                     {
-                        int xc = points[0].first;
-                        int yc = points[0].second;
-                        int x = points[1].first;
-                        int y = points[0].second;
-
-                        int halfSide = max(abs(x - xc), abs(y - yc));
-
-                        clipLeft   = xc - halfSide;
-                        clipRight  = xc + halfSide;
-                        clipTop    = yc - halfSide;
-                        clipBottom = yc + halfSide;
-
-                        shape *s1 = new Line(clipLeft, clipTop, clipRight, clipTop, 2, currentColor);
-                        shape *s2 = new Line(clipRight, clipTop, clipRight, clipBottom, 2, currentColor);
-                        shape *s3 = new Line(clipRight, clipBottom, clipLeft, clipBottom, 2, currentColor);
-                        shape *s4 = new Line(clipLeft, clipBottom, clipLeft, clipTop, 2, currentColor);
-
-                        shapes.push_back(s1);
-                        shapes.push_back(s2);
-                        shapes.push_back(s3);
-                        shapes.push_back(s4);
-
-                        s1->draw(hdc);
-                        s2->draw(hdc);
-                        s3->draw(hdc);
-                        s4->draw(hdc);
-
+                        drawSquare(hdc, points);
                         points.clear();
                         isClipWind = false;
                     }
@@ -805,15 +873,15 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         int x1 = points[0].first;
                         int y1 = points[0].second;
                         int x2 = points[1].first;
-                        int y2 = points[0].second;
+                        int y2 = points[1].second;
 
-                        //shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
-                        shape *s2 = new clipping(points, clipLeft, clipRight, clipTop, clipBottom, 2, currentColor);
+                        shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
+                        shape *s2 = new clipping(points, Left, Right, Top, Bottom, 2, currentColor);
 
-                        //shapes.push_back(s1);
+                        shapes.push_back(s1);
                         shapes.push_back(s2);
 
-                        //s1->draw(hdc);
+                        s1->draw(hdc);
                         s2->draw(hdc);
 
                         points.clear();
@@ -835,6 +903,39 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();
+                }
+                break;
+            }
+        }
+
+        else if(points.size() == 3)
+        {
+            switch(currentAlgo)
+            {
+            case 40:
+            case 41:
+            case 42:
+                {
+                    pair<int,int> center = points[0];
+                    pair<int,int> a = points[1];
+                    pair<int,int> b = points[2];
+
+                    int algo = currentAlgo - 39;
+
+                    shape *s = new myEllipse(center, a, b, algo, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
+            case 70:
+            case 71:
+            case 72:
+                if(isClipWind)
+                {
+                    drawRect(hdc, points);
+                    points.clear();
+                    isClipWind = false;
                 }
                 break;
             }

@@ -99,6 +99,14 @@ Circle::~Circle() {}
 //===================
 // Ellips Class
 //===================
+myEllipse::myEllipse(pair<int, int> c, pair<int, int> a, pair<int, int> b, int mode, COLORREF col):shape(col)
+{
+    center = c;
+    a_ = a;
+    b_ = b;
+    m_ = mode;
+}
+
 void myEllipse::compute_powers(double theta) {
     powers.clear();
     powers.push_back(1.0); // theta^0
@@ -115,31 +123,26 @@ void myEllipse::compute_factorials(int number) {
     }
 }
 
-vector<pair<int, int>> myEllipse::direct(pair<int, int> c,
-                                        pair<int, int> a,
-                                        pair<int, int> b) {
-    double a2 = (double)a.first * a.first;
+void myEllipse::direct(HDC hdc) {
+    double a2 = (double)a_.first * a_.first;
     int x = 0;
 
-    while (x <= a.first) {
-        int y = round(b.second * sqrt(1.0 - ((double)x * x) / a2));
+    while (x <= a_.first) {
+        int y = round(b_.second * sqrt(1.0 - ((double)x * x) / a2));
 
         // Symmetry points
-        ellipse.push_back({ c.first + x, c.second + y });
-        ellipse.push_back({ c.first - x, c.second + y });
-        ellipse.push_back({ c.first + x, c.second - y });
-        ellipse.push_back({ c.first - x, c.second - y });
+        SetPixel(hdc, center.first + x, center.second + y, color);
+        SetPixel(hdc, center.first - x, center.second + y, color);
+        SetPixel(hdc, center.first + x, center.second - y, color);
+        SetPixel(hdc, center.first - x, center.second - y, color);
 
         x++;
     }
-    return ellipse;
 }
 
-vector<pair<int, int>> myEllipse::polar(pair<int, int> c,
-                                       pair<int, int> a,
-                                       pair<int, int> b) {
-    double rx = a.first;
-    double ry = b.second;
+void myEllipse::polar(HDC hdc) {
+    double rx = a_.first;
+    double ry = b_.second;
 
     // Pre-calculate factorials once to save CPU
     compute_factorials(10);
@@ -160,41 +163,39 @@ vector<pair<int, int>> myEllipse::polar(pair<int, int> c,
         int y_p = round(ry * s_val);
 
         // Symmetry points for all four quadrants
-        ellipse.push_back({ c.first + x_p, c.second + y_p });
-        ellipse.push_back({ c.first - x_p, c.second + y_p });
-        ellipse.push_back({ c.first + x_p, c.second - y_p });
-        ellipse.push_back({ c.first - x_p, c.second - y_p });
+        SetPixel(hdc, center.first + x_p, center.second + y_p, color);
+        SetPixel(hdc, center.first - x_p, center.second + y_p, color);
+        SetPixel(hdc, center.first + x_p, center.second - y_p, color);
+        SetPixel(hdc, center.first - x_p, center.second - y_p, color);
 
         theta += d_theta;
     }
-    return ellipse;
 }
 
-vector<pair<int, int>> myEllipse::midpoint(pair<int, int> c,
-                                          pair<int, int> a,
-                                          pair<int, int> b) {
-    double a2 = (double)a.first * a.first;
-    double b2 = (double)b.second * b.second;
+void myEllipse::midpoint(HDC hdc) {
+    double a2 = (double)a_.first * a_.first;
+    double b2 = (double)b_.second * b_.second;
     double a2b2 = a2 * b2;
 
     // --- Region 1: Top to Side (x is the fast variable) ---
     int x = 0;
-    int y = b.second;
+    int y = b_.second;
     // Boundary check: b^2 * x <= a^2 * y
     while (b2 * x <= a2 * y) {
         // Test the midpoint between (x+1, y) and (x+1, y-1)
         double decision = b2 * (x + 1) * (x + 1) + a2 * (y - 0.5) * (y - 0.5) - a2b2;
         if (decision > 0) y--;
 
-        ellipse.push_back({ c.first + x, c.second + y });
-        ellipse.push_back({ c.first - x, c.second + y });
-        ellipse.push_back({ c.first + x, c.second - y });
-        ellipse.push_back({ c.first - x, c.second - y });
+        SetPixel(hdc, center.first + x, center.second + y, color);
+        SetPixel(hdc, center.first - x, center.second + y, color);
+        SetPixel(hdc, center.first + x, center.second - y, color);
+        SetPixel(hdc, center.first - x, center.second - y, color);
+
         x++;
     }
 
     // --- Region 2: Side to Bottom (y is the fast variable) ---
-    x = a.first;
+    x = a_.first;
     y = 0;
     // Boundary check: a^2 * y <= b^2 * x
     while (a2 * y <= b2 * x) {
@@ -202,52 +203,43 @@ vector<pair<int, int>> myEllipse::midpoint(pair<int, int> c,
         double decision = b2 * (x - 0.5) * (x - 0.5) + a2 * (y + 1) * (y + 1) - a2b2;
         if (decision > 0) x--;
 
-        ellipse.push_back({ c.first + x, c.second + y });
-        ellipse.push_back({ c.first - x, c.second + y });
-        ellipse.push_back({ c.first + x, c.second - y });
-        ellipse.push_back({ c.first - x, c.second - y });
+        SetPixel(hdc, center.first + x, center.second + y, color);
+        SetPixel(hdc, center.first - x, center.second + y, color);
+        SetPixel(hdc, center.first + x, center.second - y, color);
+        SetPixel(hdc, center.first - x, center.second - y, color);
+
         y++;
     }
-
-    return ellipse;
 }
 
 
-vector<pair<int, int>> myEllipse::draw_ellipse(pair<int, int> c,
-                                                  pair<int, int> a,
-                                                  pair<int, int> b,
-                                                  char m) {
-        center = c;
-        a_ = a;
-        b_ = b;
-        m_ = m;
-        ellipse.clear();
-
+void myEllipse::draw(HDC hdc) {
         // Ensure a and b are relative distances from center
         // if they were passed as absolute coordinates
-        a.second = c.second;
-        b.first = c.first;
+        a_.second = center.second;
+        b_.first = center.first;
 
-        switch (m) {
-            case 'd':
-                return direct(c, a, b);
-            case 'p':
-                return polar(c, a, b);
-	    case 'm':
-		return midpoint(c,a,b);
+        switch (m_) {
+            case '1':
+                direct(hdc);
+                break;
+            case '2':
+                polar(hdc);
+                break;
+            case '3':
+                midpoint(hdc);
+                break;
             default:
                 break;
         }
-
-        return ellipse;
 }
 
-//void myEllipse::save(ofstream& out)
-//{
-//    out << "Ellipse " << algo << center.first << " " << center.second << " "
-//        << a_.first << " " << a_.second << " " << b_.first << " " << b_.second << " "
-//        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
-//}
+void myEllipse::save(ofstream& out)
+{
+    out << "Ellipse " << m_ << " " << center.first << " " << center.second << " "
+        << a_.first << " " << a_.second << " " << b_.first << " " << b_.second << " "
+        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+}
 
 myEllipse::~myEllipse() {}
 

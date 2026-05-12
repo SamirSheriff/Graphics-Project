@@ -1,6 +1,5 @@
 #include "drawing.h"
 
-
 //================
 // Line Algorithms
 //=================
