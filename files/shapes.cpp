@@ -218,7 +218,7 @@ void myEllipse::draw(HDC hdc) {
         // if they were passed as absolute coordinates
         a_.second = center.second;
         b_.first = center.first;
-		
+
         switch (m_) {
             case 1:
                 direct(hdc);
@@ -466,6 +466,15 @@ clipping::clipping(vector<pair<int,int>> p, int l, int r, int t, int b, int alg,
     algo = alg;
 }
 
+clipping::clipping(vector<pair<int,int>> p, int _xc, int _yc, int rad, int alg, COLORREF c):shape(c)
+{
+    pts = p;
+    xc = _xc;
+    yc = _yc;
+    r = rad;
+    algo = alg;
+}
+
 void clipping::draw(HDC hdc)
 {
      switch(algo)
@@ -479,6 +488,12 @@ void clipping::draw(HDC hdc)
     case 3:
         PolygonClip(hdc, pts, left, top, right, bottom);
         break;
+    case 4:
+        PointClippingInsideCircle(hdc, pts[0].first, pts[0].second, xc, yc, r, color);
+        break;
+    case 5:
+        ClipLineCircle(hdc, pts[0].first, pts[0].second, pts[1].first, pts[1].second, xc, yc, r, color);
+        break;
     default:
         cout << "No algo in clipping" << endl;
     }
@@ -486,13 +501,26 @@ void clipping::draw(HDC hdc)
 
 void clipping::save(ofstream& out)
 {
-    out << "clipping " << algo << " ";
-    for(size_t i = 0; i < pts.size(); i++)
+    if(algo == 1)
     {
-        out << pts[i].first << " " << pts[i].second << " ";
+        out << "clipping " << algo << " ";
+        for(size_t i = 0; i < pts.size(); i++)
+        {
+            out << pts[i].first << " " << pts[i].second << " ";
+        }
+        out << left << " " << right << " " << top << " " << bottom << " " << (int)GetRValue(color)
+            << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
     }
-    out << left << " " << right << " " << top << " " << bottom << " " << (int)GetRValue(color)
-        << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+    else
+    {
+        out << "clippingCircle " << algo << " ";
+        for(size_t i = 0; i < pts.size(); i++)
+        {
+            out << pts[i].first << " " << pts[i].second << " ";
+        }
+        out << xc << " " << yc << " " << r << (int)GetRValue(color) << " "
+            << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+    }
 }
 
 clipping::~clipping() {}

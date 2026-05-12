@@ -216,9 +216,11 @@ class clipping : public shape
 public:
     vector<pair<int,int>> pts;
     int left, right, top, bottom;
+    int xc, yc, r;
     int algo;
 
     clipping(vector<pair<int,int>> p, int l, int r, int t, int b, int alg, COLORREF c);
+    clipping(vector<pair<int,int>> p, int _xc, int _yc, int rad, int alg, COLORREF c);
 
     void draw(HDC hdc) override;
     void save(ofstream& out) override;

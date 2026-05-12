@@ -132,6 +132,10 @@ Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge);
 Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge);
 void PolygonClip(HDC hdc,const vector<pair<int,int>>& p,int xleft,int ytop,int xright,int ybottom);
 
+void PointClippingInsideCircle(HDC hdc, int x,int y,int xc,int yc,int r, COLORREF color);
+
+void ClipLineCircle(HDC hdc, int x1, int y1, int x2, int y2, int xc, int yc, int r, COLORREF color);
+
 
 //=======================
 // Faces Algorithms

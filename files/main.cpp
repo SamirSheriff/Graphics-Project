@@ -327,6 +327,19 @@ void drawRect(HDC hdc, const vector<pair<int,int>>& points)
     s4->draw(hdc);
 }
 
+void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts)
+{
+    for(int i = 0; i < pts.size()-1; i++)
+    {
+        shape *edge = new Line(pts[i].first, pts[i].second, pts[i+1].first, pts[i+1].second, 2, currentColor);
+        shapes.push_back(edge);
+        edge->draw(hdc);
+    }
+    shape *edge = new Line(pts.back().first, pts.back().second, pts[0].first, pts[0].second, 2, currentColor);
+    shapes.push_back(edge);
+    edge->draw(hdc);
+}
+
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                      HINSTANCE hPrevInstance,
@@ -481,6 +494,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     static vector<pair<int,int>> points;
     static int currentAlgo = 0;
     static bool isClipWind = true;
+    static int xc, yc, rad;
 
     switch (message)
     {
@@ -771,8 +785,21 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     }
                 }
             break;
-            }
+
+            case 75:
+                {
+                    if(!isClipWind)
+                    {
+                        shape *s = new clipping(points, xc, yc, rad, 4, currentColor);
+                        shapes.push_back(s);
+                        s->draw(hdc);
+                        points.clear();
+                        isClipWind = true;
+                    }
+                }
+                break;
         }
+    }
 
         else if(points.size() == 2)
         {
@@ -860,6 +887,17 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 }
                 break;
 
+            case 73:
+                {
+                    if(isClipWind)
+                    {
+                        drawSquare(hdc, points);
+                        points.clear();
+                        isClipWind = false;
+                    }
+                }
+                break;
+
             case 74:
                 {
                     if(isClipWind)
@@ -890,6 +928,28 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 }
             break;
 
+            case 75:
+            case 76:
+                {
+                    if(isClipWind)
+                    {
+                        xc = p1.first;
+                        yc = p1.second;
+
+                        int dx = p2.first - xc;
+                        int dy = p2.second - yc;
+
+                        rad = sqrt(dx*dx + dy*dy);
+
+                        shape *s = new Circle(xc, yc, rad, 5, currentColor);
+                        shapes.push_back(s);
+                        s->draw(hdc);
+                        points.clear();
+                        isClipWind = true;
+                    }
+                }
+                break;
+
             case 80:
             case 81:
                 {
@@ -910,9 +970,10 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         else if(points.size() == 3)
         {
-			pair<int,int> center = points[0];
+            pair<int,int> center = points[0];
             pair<int,int> a = points[1];
             pair<int,int> b = points[2];
+
             switch(currentAlgo)
             {
             case 40:
@@ -920,8 +981,10 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             case 42:
                 {
                     int algo = currentAlgo - 39;
-					a.first = abs(a.first - center.first);
+
+                    a.first = abs(a.first - center.first);
 					b.second = abs(b.second - center.second);
+
                     shape *s = new myEllipse(center, a, b, algo, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
@@ -949,15 +1012,35 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             shapes.push_back(s);
             s->draw(hdc);
             points.clear();
-
         }
 
-        else if(points.size() == 6 && currentAlgo == 50)
+        else if(points.size() == 5 && currentAlgo == 72)
         {
-            shape *s = new CardinalSplineCurve(points, 0.5, currentColor);
-            shapes.push_back(s);
-            s->draw(hdc);
-            points.clear();
+            if(!isClipWind)
+            {
+                drawPolygon(hdc, points);
+                shape *s = new clipping(points, Left, Right, Top, Bottom, 3, currentColor);
+                shapes.push_back(s);
+                s->draw(hdc);
+                points.clear();
+                isClipWind = true;
+            }
+        }
+
+        else if(points.size() == 6)
+        {
+            switch(currentAlgo)
+            {
+            case 50:
+                {
+                    shape *s = new CardinalSplineCurve(points, 0.5, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
+
+            }
         }
 
         else if(points.size() == 8 && currentAlgo == 65)

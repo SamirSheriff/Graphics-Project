@@ -609,6 +609,7 @@ Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge)
         res.y = v1.y + (xedge-v1.x)*(v2.y-v1.y)/(v2.x-v1.x);
     return res;
 }
+
 Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge)
 {
     Vertex res;
@@ -639,6 +640,62 @@ void PolygonClip(HDC hdc,const vector<pair<int,int>>& p, int xleft,int ytop,int 
         LineTo(hdc,round(v2.x),round(v2.y));
         v1=v2;
     }
+}
+
+void PointClippingInsideCircle(HDC hdc, int x,int y,int xc,int yc,int r, COLORREF color)
+{
+    int dx = x - xc;
+    int dy = y - yc;
+
+    if(dx*dx + dy*dy <= r*r)
+    {
+        SetPixel(hdc,x,y,color);
+    }
+}
+
+void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int r, COLORREF color)
+{
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+
+    double a = dx*dx + dy*dy;
+
+    double b = 2 * (
+        dx*(x1 - xc) +
+        dy*(y1 - yc)
+    );
+
+    double c =
+        (x1 - xc)*(x1 - xc) +
+        (y1 - yc)*(y1 - yc) -
+        r*r;
+
+    double disc = b*b - 4*a*c;
+
+    // no intersection
+    if(disc < 0)
+        return;
+
+    disc = sqrt(disc);
+
+    double t1 = (-b - disc)/(2*a);
+    double t2 = (-b + disc)/(2*a);
+
+    // line completely outside segment range
+    if(t1 > 1 || t2 < 0)
+        return;
+
+    t1 = max(0.0, t1);
+    t2 = min(1.0, t2);
+
+    double nx1 = x1 + t1*dx;
+    double ny1 = y1 + t1*dy;
+
+    double nx2 = x1 + t2*dx;
+    double ny2 = y1 + t2*dy;
+
+    // draw clipped line
+    SimpleDDA(hdc, round(nx1), round(ny1), round(nx2), round(ny2), color);
 }
 
 
