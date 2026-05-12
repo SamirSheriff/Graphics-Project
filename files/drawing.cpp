@@ -404,17 +404,29 @@ void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
     FloodFill(hdc,x,y-1,Cb,Cf);
 }
 
-void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+void NRFloodFill(HDC hdc,int x,int y,COLORREF old,COLORREF newColor)
 {
+    COLORREF oldColor = GetPixel(hdc,x,y);
+
+    if(oldColor == newColor)
+        return;
+
     stack<pair<int,int>> S;
+
     S.push(make_pair(x,y));
+
     while(!S.empty())
     {
-        pair<int,int> v=S.top();
+        pair<int,int> v = S.top();
         S.pop();
-        COLORREF c=GetPixel(hdc,v.first,v.second);
-        if(c != Cb)continue;
-        SetPixel(hdc,v.first,v.second,Cf);
+
+        COLORREF c = GetPixel(hdc,v.first,v.second);
+
+        if(c != oldColor)
+            continue;
+
+        SetPixel(hdc,v.first,v.second,newColor);
+
         S.push(make_pair(v.first+1,v.second));
         S.push(make_pair(v.first-1,v.second));
         S.push(make_pair(v.first,v.second+1));

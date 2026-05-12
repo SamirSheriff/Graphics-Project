@@ -10,7 +10,7 @@
 #include <commdlg.h>
 
 using namespace std;
-COLORREF background_color; 
+COLORREF background_color = RGB(240,240,240); 
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -20,6 +20,8 @@ TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
 
 vector<shape*> shapes;
 COLORREF currentColor = RGB(250,0,0);
+COLORREF currentColor1;
+
 HBRUSH bgBrush = CreateSolidBrush(RGB(240,240,240));
 HCURSOR currentCursor = LoadCursor(NULL, IDC_ARROW);
 int Left, Right, Top, Bottom;
@@ -577,18 +579,18 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		{
 			DeleteObject(bgBrush);
 		
-			CHOOSECOLOR cc = { sizeof(CHOOSECOLOR) };
-			static COLORREF colors[16];
+			CHOOSECOLOR gg = { sizeof(CHOOSECOLOR) };
+			static COLORREF colors_2[16];
 		
-			cc.lpCustColors = colors;
-			cc.rgbResult = currentColor;
-			cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+			gg.lpCustColors = colors_2;
+			gg.rgbResult = currentColor1;
+			gg.Flags = CC_FULLOPEN | CC_RGBINIT;
 		
-			if (ChooseColor(&cc))
+			if (ChooseColor(&gg))
 			{
-				currentColor = cc.rgbResult;
-				bgBrush = CreateSolidBrush(currentColor);
-				background_color = cc.rgbResult;
+				currentColor1 = gg.rgbResult;
+				bgBrush = CreateSolidBrush(currentColor1);
+				background_color = gg.rgbResult;
 			}
 		
 			InvalidateRect(hwnd, NULL, TRUE);
