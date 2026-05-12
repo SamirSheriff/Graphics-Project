@@ -148,6 +148,10 @@ void myEllipse::direct(HDC hdc) {
 			
 			}
 		else{
+			
+			HPEN pen = CreatePen(PS_SOLID, 1, color);
+			HPEN oldPen = (HPEN)SelectObject(hdc, pen);
+
 			MoveToEx(hdc,center.first + x, center.second + y,NULL);
 			LineTo(hdc,arr[0].first, arr[0].second);
 			
@@ -159,6 +163,9 @@ void myEllipse::direct(HDC hdc) {
 
 			MoveToEx(hdc,center.first - x, center.second - y,NULL);
 			LineTo(hdc,arr[3].first, arr[3].second);
+			
+			SelectObject(hdc, oldPen);
+			DeleteObject(pen);
 			f=1;
 			
 			
