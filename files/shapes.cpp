@@ -516,9 +516,9 @@ void clipping::draw(HDC hdc)
     case 3:
         PolygonClip(hdc, pts, left, top, right, bottom);
         break;
-    case 4:
-        PointClippingInsideCircle(hdc, pts[0].first, pts[0].second, xc, yc, r, color);
-        break;
+//    case 4:
+//        PointClippingInsideCircle(hdc, pts[0].first, pts[0].second, xc, yc, r, color);
+//        break;
     case 5:
         ClipLineCircle(hdc, pts[0].first, pts[0].second, pts[1].first, pts[1].second, xc, yc, r, color);
         break;

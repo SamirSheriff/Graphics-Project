@@ -9,7 +9,6 @@
 #include <sstream>
 #include <commdlg.h>
 
-
 using namespace std;
 
 
@@ -20,7 +19,7 @@ LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
 
 vector<shape*> shapes;
-COLORREF currentColor = RGB(0,0,0);
+COLORREF currentColor = RGB(250,0,0);
 HBRUSH bgBrush = CreateSolidBrush(RGB(240,240,240));
 HCURSOR currentCursor = LoadCursor(NULL, IDC_ARROW);
 int Left, Right, Top, Bottom;
@@ -866,12 +865,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 {
                     if(!isClipWind)
                     {
-                        int x1 = points[0].first;
-                        int y1 = points[0].second;
-                        int x2 = points[1].first;
-                        int y2 = points[1].second;
-
-                        shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
+                        shape *s1 = new Line(p1.first, p1.second, p2.first, p2.second, 2, currentColor);
                         shape *s2 = new clipping(points, Left, Right, Top, Bottom, 2, currentColor);
 
                         shapes.push_back(s1);
@@ -908,12 +902,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     }
                     else
                     {
-                        int x1 = points[0].first;
-                        int y1 = points[0].second;
-                        int x2 = points[1].first;
-                        int y2 = points[1].second;
-
-                        shape *s1 = new Line(x1, y1, x2, y2, 2, currentColor);
+                        shape *s1 = new Line(p1.first, p1.second, p2.first, p2.second, 2, currentColor);
                         shape *s2 = new clipping(points, Left, Right, Top, Bottom, 2, currentColor);
 
                         shapes.push_back(s1);
@@ -944,6 +933,21 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         shape *s = new Circle(xc, yc, rad, 5, currentColor);
                         shapes.push_back(s);
                         s->draw(hdc);
+                        points.clear();
+                        isClipWind = false;
+                    }
+
+                    else if(currentAlgo == 76)
+                    {
+                        shape *s1 = new Line(p1.first, p1.second, p2.first, p2.second, 2, currentColor);
+                        shape *s2 = new clipping(points, xc, yc, rad, 5, currentColor);
+
+                        shapes.push_back(s1);
+                        shapes.push_back(s2);
+
+                        s1->draw(hdc);
+                        s2->draw(hdc);
+
                         points.clear();
                         isClipWind = true;
                     }

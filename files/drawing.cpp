@@ -42,7 +42,7 @@ void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
         {
             x+=xinc;
             y+=yinc;
-            SetPixel(hdc,round(x),y,color);
+            SetPixel(hdc, round(x), y, RGB(0,0,0));
         }
     }
 }
@@ -642,15 +642,12 @@ void PolygonClip(HDC hdc,const vector<pair<int,int>>& p, int xleft,int ytop,int 
     }
 }
 
-void PointClippingInsideCircle(HDC hdc, int x,int y,int xc,int yc,int r, COLORREF color)
+bool PointClippingInsideCircle(int x,int y,int xc,int yc,int r) ////////////////////////////////////////////////////////////////////////////////////
 {
     int dx = x - xc;
     int dy = y - yc;
 
-    if(dx*dx + dy*dy <= r*r)
-    {
-        SetPixel(hdc,x,y,color);
-    }
+    return (dx * dx + dy * dy <= r * r);
 }
 
 void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int r, COLORREF color)
@@ -658,44 +655,137 @@ void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int 
     double dx = x2 - x1;
     double dy = y2 - y1;
 
-    double a = dx*dx + dy*dy;
+    //------------------------------------
+    // Quadratic Equation
+    //------------------------------------
+    double a = dx * dx + dy * dy;
 
-    double b = 2 * (
-        dx*(x1 - xc) +
-        dy*(y1 - yc)
-    );
+    double b =
+        2 * (
+            dx * (x1 - xc)
+            + dy * (y1 - yc)
+        );
 
     double c =
-        (x1 - xc)*(x1 - xc) +
-        (y1 - yc)*(y1 - yc) -
-        r*r;
+        (x1 - xc) * (x1 - xc)
+        + (y1 - yc) * (y1 - yc)
+        - r * r;
 
-    double disc = b*b - 4*a*c;
+    //------------------------------------
+    // Discriminant
+    //------------------------------------
+    double disc = b * b - 4 * a * c;
 
-    // no intersection
-    if(disc < 0)
+    //------------------------------------
+    // No Intersection
+    //------------------------------------
+    if (disc < 0)
+    {
+        bool inside1 = PointClippingInsideCircle(x1, y1, xc, yc, r);
+        bool inside2 = PointClippingInsideCircle(x2, y2, xc, yc, r);
+
+        // Entirely inside
+        if (inside1 && inside2)
+        {
+            SimpleDDA(
+                hdc,
+                x1, y1,
+                x2, y2,
+                RGB(0, 0, 0)
+            );
+        }
+        else
+        {
+            SimpleDDA(
+                hdc,
+                x1, y1,
+                x2, y2,
+                color
+            );
+        }
+
         return;
+    }
 
-    disc = sqrt(disc);
+    //------------------------------------
+    // Intersections Exist
+    //------------------------------------
+    double sqrtDisc = sqrt(disc);
 
-    double t1 = (-b - disc)/(2*a);
-    double t2 = (-b + disc)/(2*a);
+    double t1 =
+        (-b - sqrtDisc) / (2 * a);
 
-    // line completely outside segment range
-    if(t1 > 1 || t2 < 0)
+    double t2 =
+        (-b + sqrtDisc) / (2 * a);
+
+    if (t1 > t2)
+        swap(t1, t2);
+
+    //------------------------------------
+    // Completely Outside
+    //------------------------------------
+    if (t1 > 1 || t2 < 0)
+    {
+        SimpleDDA(
+            hdc,
+            x1, y1,
+            x2, y2,
+            color
+        );
+
         return;
+    }
 
-    t1 = max(0.0, t1);
-    t2 = min(1.0, t2);
+    //------------------------------------
+    // Clamp Values
+    //------------------------------------
+    double tt1 = max(0.0, t1);
+    double tt2 = min(1.0, t2);
 
-    double nx1 = x1 + t1*dx;
-    double ny1 = y1 + t1*dy;
+    //------------------------------------
+    // Intersection Points
+    //------------------------------------
+    int ix1 = round(x1 + tt1 * dx);
+    int iy1 = round(y1 + tt1 * dy);
 
-    double nx2 = x1 + t2*dx;
-    double ny2 = y1 + t2*dy;
+    int ix2 = round(x1 + tt2 * dx);
+    int iy2 = round(y1 + tt2 * dy);
 
-    // draw clipped line
-    SimpleDDA(hdc, round(nx1), round(ny1), round(nx2), round(ny2), color);
+    //------------------------------------
+    // First Outside Segment
+    //------------------------------------
+    if (tt1 > 0)
+    {
+        SimpleDDA(
+            hdc,
+            x1, y1,
+            ix1, iy1,
+            color
+        );
+    }
+
+    //------------------------------------
+    // Inside Segment (RED)
+    //------------------------------------
+    SimpleDDA(
+        hdc,
+        ix1, iy1,
+        ix2, iy2,
+        RGB(0, 0, 0)
+    );
+
+    //------------------------------------
+    // Second Outside Segment
+    //------------------------------------
+    if (tt2 < 1)
+    {
+        SimpleDDA(
+            hdc,
+            ix2, iy2,
+            x2, y2,
+            color
+        );
+    }
 }
 
 
