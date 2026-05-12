@@ -218,15 +218,15 @@ void myEllipse::draw(HDC hdc) {
         // if they were passed as absolute coordinates
         a_.second = center.second;
         b_.first = center.first;
-
+		
         switch (m_) {
-            case '1':
+            case 1:
                 direct(hdc);
                 break;
-            case '2':
+            case 2:
                 polar(hdc);
                 break;
-            case '3':
+            case 3:
                 midpoint(hdc);
                 break;
             default:

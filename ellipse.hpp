@@ -150,11 +150,11 @@ public:
                 return direct(c, a, b);
             case 'p':
                 return polar(c, a, b);
-	    case 'm':
-		return midpoint(c,a,b);
-            default:
-                break;
-        }
+			case 'm':
+			return midpoint(c,a,b);
+				default:
+					break;
+			}
 
         return ellipse;
     }

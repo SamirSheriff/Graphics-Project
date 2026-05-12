@@ -910,18 +910,18 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         else if(points.size() == 3)
         {
+			pair<int,int> center = points[0];
+            pair<int,int> a = points[1];
+            pair<int,int> b = points[2];
             switch(currentAlgo)
             {
             case 40:
             case 41:
             case 42:
                 {
-                    pair<int,int> center = points[0];
-                    pair<int,int> a = points[1];
-                    pair<int,int> b = points[2];
-
                     int algo = currentAlgo - 39;
-
+					a.first = abs(a.first - center.first);
+					b.second = abs(b.second - center.second);
                     shape *s = new myEllipse(center, a, b, algo, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
