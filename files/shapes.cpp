@@ -126,20 +126,20 @@ void myEllipse::compute_factorials(int number) {
 void myEllipse::direct(HDC hdc) {
     double a2 = (double)a_.first * a_.first;
     int x = 0;
-	
+	short int f =2;
+    pair<int,int> arr[4];
     while (x <= a_.first) {
         int y = round(b_.second * sqrt(1.0 - ((double)x * x) / a2));
 		
         // Symmetry points
         // to draw line between the pairs 
-        bool f =1;
-        pair<int,int> arr[4];
+
         SetPixel(hdc, center.first + x, center.second + y, color);
         SetPixel(hdc, center.first - x, center.second + y, color);
         SetPixel(hdc, center.first + x, center.second - y, color);
         SetPixel(hdc, center.first - x, center.second - y, color);
 
-		if (f==1){
+		if (f==2){
 			arr[0] = make_pair(center.first +x , center.second+y);
 			arr[1] = make_pair(center.first -x , center.second+y);
 			arr[2] = make_pair(center.first +x , center.second -y);
@@ -160,6 +160,13 @@ void myEllipse::direct(HDC hdc) {
 			MoveToEx(hdc,center.first - x, center.second - y,NULL);
 			LineTo(hdc,arr[3].first, arr[3].second);
 			f=1;
+			
+			
+			
+			arr[0] = make_pair(center.first +x , center.second+y);
+			arr[1] = make_pair(center.first -x , center.second+y);
+			arr[2] = make_pair(center.first +x , center.second -y);
+			arr[3] = make_pair(center.first -x , center.second-y);
 			}
 			
 
