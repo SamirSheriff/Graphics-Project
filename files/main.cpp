@@ -10,7 +10,7 @@
 #include <commdlg.h>
 
 using namespace std;
-
+COLORREF background_color; 
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -406,7 +406,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     AppendMenu(file,MF_STRING,2,"Save");
     AppendMenu(file,MF_STRING,3,"Load");
 
-    AppendMenu(Pref,MF_STRING,10,"White background");
+    AppendMenu(Pref,MF_STRING,10,"background Color");
     AppendMenu(Pref,MF_POPUP,(UINT_PTR)Cursor,"Cursor");
     AppendMenu(Pref,MF_STRING,12,"Choose Color");
 
@@ -529,11 +529,27 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         // ================= PREFERENCES =================
 
-        case 10:
-            DeleteObject(bgBrush);
-            bgBrush = CreateSolidBrush(RGB(255,255,255));
-            InvalidateRect(hwnd, NULL, TRUE);
-            break;
+		case 10:
+		{
+			DeleteObject(bgBrush);
+		
+			CHOOSECOLOR cc = { sizeof(CHOOSECOLOR) };
+			static COLORREF colors[16];
+		
+			cc.lpCustColors = colors;
+			cc.rgbResult = currentColor;
+			cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+		
+			if (ChooseColor(&cc))
+			{
+				currentColor = cc.rgbResult;
+				bgBrush = CreateSolidBrush(currentColor);
+				background_color = cc.rgbResult;
+			}
+		
+			InvalidateRect(hwnd, NULL, TRUE);
+		}
+			break;
 
         case 111:
             currentCursor = LoadCursor(NULL, IDC_ARROW);
@@ -764,7 +780,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             case 67:
                 {
                     int algo = currentAlgo - 65;
-                    shape *s = new FloodFillShape(p1.first, p1.second, algo, currentColor, currentColor);
+                    shape *s = new FloodFillShape(p1.first, p1.second, algo, background_color, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();

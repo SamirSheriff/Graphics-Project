@@ -396,7 +396,7 @@ void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
 void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
 {
     COLORREF C=GetPixel(hdc,x,y);
-    if(C==Cb || C==Cf)return;
+    if(C != Cb)return;
     SetPixel(hdc,x,y,Cf);
     FloodFill(hdc,x+1,y,Cb,Cf);
     FloodFill(hdc,x-1,y,Cb,Cf);
@@ -413,7 +413,7 @@ void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
         pair<int,int> v=S.top();
         S.pop();
         COLORREF c=GetPixel(hdc,v.first,v.second);
-        if(c==Cb || c==Cf)continue;
+        if(c != Cb)continue;
         SetPixel(hdc,v.first,v.second,Cf);
         S.push(make_pair(v.first+1,v.second));
         S.push(make_pair(v.first-1,v.second));
