@@ -42,7 +42,7 @@ void SimpleDDA(HDC hdc,int xs,int ys,int xe,int ye,COLORREF color)
         {
             x+=xinc;
             y+=yinc;
-            SetPixel(hdc, round(x), y, RGB(0,0,0));
+            SetPixel(hdc, round(x), y, color);
         }
     }
 }
