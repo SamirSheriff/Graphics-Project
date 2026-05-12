@@ -173,12 +173,33 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
 
         else if(type == "FillingWithCurves")
         {
-            int algo,xc,yc;
-            int r,g,b;
+            int algo;
+            vector<pair<int,int>> pts;
+            vector<int> temp;
+            int val;
 
-            in >> algo >> xc >> yc >> r >> g >> b;
+            in >> algo;
 
-            shapes.push_back(new FillingWithCurves(xc,yc,algo,RGB(r,g,b)));
+            // Read whole line
+            string line;
+            getline(in, line);
+            stringstream ss(line);
+
+            while(ss >> val)
+                temp.push_back(val);
+
+            if(temp.size() < 3) continue;
+
+            int r = temp[temp.size()-3];
+            int g = temp[temp.size()-2];
+            int b = temp[temp.size()-1];
+
+            for(size_t i=0;i<temp.size()-3;i+=2)
+                pts.push_back({temp[i], temp[i+1]});
+
+            COLORREF color = RGB(r,g,b);
+
+            shapes.push_back(new FillingWithCurves(pts, algo, RGB(r,g,b)));
         }
 
         else if(type == "PolygonFilling")
@@ -215,16 +236,12 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
 
         else if(type == "clipping")
         {
-            int alg;
-
             vector<pair<int,int>> pts;
+            vector<int> temp; // Read unknown number of points until color remains (assume last 3 ints are color)
+            int left, right, top, bottom;
+            int alg, val;
 
-            // Read unknown number of points until color remains
-            // (assume last 3 ints are color)
-            vector<int> temp;
-            int val;
-
-            in >> alg;
+            in >> alg >> left >> right >> top >> bottom;
 
             // Read whole line
             string line;
@@ -236,10 +253,6 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
 
             if(temp.size() < 3) continue;
 
-            int left = temp[temp.size()-7];
-            int right = temp[temp.size()-6];
-            int top = temp[temp.size()-5];
-            int bottom = temp[temp.size()-4];
             int r = temp[temp.size()-3];
             int g = temp[temp.size()-2];
             int b = temp[temp.size()-1];
@@ -250,6 +263,37 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
             COLORREF color = RGB(r,g,b);
 
             shapes.push_back(new clipping(pts, left, right, top, bottom, alg, color));
+        }
+
+        else if(type == "clippingCircle")
+        {
+            vector<pair<int,int>> pts;
+            vector<int> temp; // Read unknown number of points until color remains (assume last 3 ints are color)
+            int xc, yc, rad;
+            int alg, val;
+
+            in >> alg >> xc >> yc >> rad;
+
+            // Read whole line
+            string line;
+            getline(in, line);
+            stringstream ss(line);
+
+            while(ss >> val)
+                temp.push_back(val);
+
+            if(temp.size() < 3) continue;
+
+            int r = temp[temp.size()-3];
+            int g = temp[temp.size()-2];
+            int b = temp[temp.size()-1];
+
+            for(size_t i=0;i<temp.size()-3;i+=2)
+                pts.push_back(make_pair(temp[i], temp[i+1]));
+
+            COLORREF color = RGB(r,g,b);
+
+            shapes.push_back(new clipping(pts, xc, yc, rad, alg, color));
         }
 
         else if(type == "Face")
@@ -749,16 +793,15 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
             switch(currentAlgo)
             {
-            case 62:
-            case 63:
-                {
-                    int algo = currentAlgo - 61;
-                    shape *s = new FillingWithCurves(p1.first, p1.second, algo, currentColor);
-                    shapes.push_back(s);
-                    s->draw(hdc);
-                    points.clear();
-                }
-                break;
+//            case 62:
+//                {
+//                    int algo = currentAlgo - 61;
+//                    shape *s = new FillingWithCurves(p1.first, p1.second, algo, currentColor);
+//                    shapes.push_back(s);
+//                    s->draw(hdc);
+//                    points.clear();
+//                }
+//                break;
 
             case 66:
             case 67:
@@ -783,7 +826,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         isClipWind = true;
                     }
                 }
-            break;
+                break;
 
             case 75:
                 {
@@ -974,16 +1017,16 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         else if(points.size() == 3)
         {
-            pair<int,int> center = points[0];
-            pair<int,int> a = points[1];
-            pair<int,int> b = points[2];
-
             switch(currentAlgo)
             {
             case 40:
             case 41:
             case 42:
                 {
+                    pair<int,int> center = points[0];
+                    pair<int,int> a = points[1];
+                    pair<int,int> b = points[2];
+
                     int algo = currentAlgo - 39;
 
                     a.first = abs(a.first - center.first);
@@ -995,14 +1038,32 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     points.clear();
                 }
                 break;
-            case 70:
-            case 71:
-            case 72:
-                if(isClipWind)
+
+            case 63:
                 {
                     drawRect(hdc, points);
                     points.clear();
-                    isClipWind = false;
+
+                    points.push_back(make_pair(Left + 1, Top + 1));
+                    points.push_back(make_pair(Right, Bottom - 1));
+
+                    shape *s = new FillingWithCurves(points, 2, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
+
+            case 70:
+            case 71:
+            case 72:
+                {
+                    if(isClipWind)
+                    {
+                        drawRect(hdc, points);
+                        points.clear();
+                        isClipWind = false;
+                    }
                 }
                 break;
             }

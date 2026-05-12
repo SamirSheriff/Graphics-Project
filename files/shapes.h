@@ -164,10 +164,10 @@ public:
 class FillingWithCurves : public shape
 {
 public:
-    int xc, yc;
+    vector<pair<int,int>> pts;
     int algo;
 
-    FillingWithCurves(int x, int y, int alg, COLORREF col);
+    FillingWithCurves(vector<pair<int,int>> p, int alg, COLORREF col);
 
     void draw(HDC hdc) override;
     void save(ofstream& out) override;

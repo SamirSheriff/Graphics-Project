@@ -452,6 +452,7 @@ void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c
 
 void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
 {
+
     for(int r = 0; r <= R; r++)
     {
         CircleFasterBresenham(hdc, xc, yc, r, color);

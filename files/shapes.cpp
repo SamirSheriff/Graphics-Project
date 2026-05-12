@@ -126,58 +126,55 @@ void myEllipse::compute_factorials(int number) {
 void myEllipse::direct(HDC hdc) {
     double a2 = (double)a_.first * a_.first;
     int x = 0;
-	short int f =2;
-    pair<int,int> arr[4];
-    while (x <= a_.first) {
-        int y = round(b_.second * sqrt(1.0 - ((double)x * x) / a2));
-		
-        // Symmetry points
-        // to draw line between the pairs 
 
+    short int f =2;
+    pair<int,int> arr[4];
+
+    while (x <= a_.first)
+    {
+        int y = round(b_.second * sqrt(1.0 - ((double)x * x) / a2));
+
+        // Symmetry points
         SetPixel(hdc, center.first + x, center.second + y, color);
         SetPixel(hdc, center.first - x, center.second + y, color);
         SetPixel(hdc, center.first + x, center.second - y, color);
         SetPixel(hdc, center.first - x, center.second - y, color);
 
-		if (f==2){
-			arr[0] = make_pair(center.first +x , center.second+y);
-			arr[1] = make_pair(center.first -x , center.second+y);
-			arr[2] = make_pair(center.first +x , center.second -y);
-			arr[3] = make_pair(center.first -x , center.second-y);
-			f = 0;
-			
-			}
-		else{
-			
-			HPEN pen = CreatePen(PS_SOLID, 1, color);
-			HPEN oldPen = (HPEN)SelectObject(hdc, pen);
+        if (f==2)
+        {
+            arr[0] = make_pair(center.first +x , center.second+y);
+            arr[1] = make_pair(center.first -x , center.second+y);
+            arr[2] = make_pair(center.first +x , center.second -y);
+            arr[3] = make_pair(center.first -x , center.second-y);
+            f = 0;
+        }
+    else
+    {
+        HPEN pen = CreatePen(PS_SOLID, 1, color);
+        HPEN oldPen = (HPEN)SelectObject(hdc, pen);
 
-			MoveToEx(hdc,center.first + x, center.second + y,NULL);
-			LineTo(hdc,arr[0].first, arr[0].second);
-			
-			MoveToEx(hdc,center.first - x, center.second + y,NULL);
-			LineTo(hdc,arr[1].first, arr[1].second);
+        MoveToEx(hdc,center.first + x, center.second + y,NULL);
+        LineTo(hdc,arr[0].first, arr[0].second);
 
-			MoveToEx(hdc,center.first + x, center.second - y,NULL);
-			LineTo(hdc,arr[2].first, arr[2].second);
+        MoveToEx(hdc,center.first - x, center.second + y,NULL);
+        LineTo(hdc,arr[1].first, arr[1].second);
 
-			MoveToEx(hdc,center.first - x, center.second - y,NULL);
-			LineTo(hdc,arr[3].first, arr[3].second);
-			
-			SelectObject(hdc, oldPen);
-			DeleteObject(pen);
-			f=1;
-			
-			
-			
-			arr[0] = make_pair(center.first +x , center.second+y);
-			arr[1] = make_pair(center.first -x , center.second+y);
-			arr[2] = make_pair(center.first +x , center.second -y);
-			arr[3] = make_pair(center.first -x , center.second-y);
-			}
-			
+        MoveToEx(hdc,center.first + x, center.second - y,NULL);
+        LineTo(hdc,arr[2].first, arr[2].second);
 
+        MoveToEx(hdc,center.first - x, center.second - y,NULL);
+        LineTo(hdc,arr[3].first, arr[3].second);
 
+        SelectObject(hdc, oldPen);
+        DeleteObject(pen);
+
+        f=1;
+
+        arr[0] = make_pair(center.first +x , center.second+y);
+        arr[1] = make_pair(center.first -x , center.second+y);
+        arr[2] = make_pair(center.first +x , center.second -y);
+        arr[3] = make_pair(center.first -x , center.second-y);
+    }
         x++;
     }
 }
@@ -389,17 +386,20 @@ void FillingCircles::draw(HDC hdc)
 
 void FillingCircles::save(ofstream& out)
 {
-    out << "FillingCircles " << algo << " " << xc << " " << yc << " " << r << " "
-        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+    out << "FillingCircles " << algo << " ";
+//    for(size_t i = 0; i < points.size(); i++)
+//    {
+//        out << points[i].first << " " << points[i].second << " ";
+//    }
+//    out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 FillingCircles::~FillingCircles() {}
 
 
-FillingWithCurves::FillingWithCurves(int x, int y, int alg, COLORREF col): shape(col)
+FillingWithCurves::FillingWithCurves(vector<pair<int,int>> p, int alg, COLORREF col): shape(col)
 {
-    xc = x;
-    yc = y;
+    pts = p;
     algo = alg;
 }
 
@@ -408,10 +408,10 @@ void FillingWithCurves::draw(HDC hdc)
     switch(algo)
     {
     case 1:
-        FillSquareWithHermite(hdc, xc - 50, yc, xc + 50, yc, color);
+        //FillSquareWithHermite(hdc, xc - 50, yc, xc + 50, yc, color);
         break;
     case 2:
-        FillRectangleWithBezier(hdc, xc - 50, yc - 25, xc + 50, yc + 25, color);
+        FillRectangleWithBezier(hdc, pts[0].first, pts[0].second, pts[1].first, pts[1].second, color);
         break;
     default:
         cout << "No algo in filling with curves" << endl;
@@ -420,8 +420,12 @@ void FillingWithCurves::draw(HDC hdc)
 
 void FillingWithCurves::save(ofstream& out)
 {
-    out << "FillingWithCurves " << algo << " " << xc << " " << yc << " "
-        << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+    out << "FillingWithCurves " << algo << " ";
+    for(size_t i = 0; i < pts.size(); i++)
+    {
+        out << pts[i].first << " " << pts[i].second << " ";
+    }
+    out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 FillingWithCurves::~FillingWithCurves() {}
@@ -530,9 +534,15 @@ void clipping::draw(HDC hdc)
     case 3:
         PolygonClip(hdc, pts, left, top, right, bottom);
         break;
-//    case 4:
-//        PointClippingInsideCircle(hdc, pts[0].first, pts[0].second, xc, yc, r, color);
-//        break;
+    case 4:
+        {
+            bool isInside = PointClippingInsideCircle(pts[0].first, pts[0].second, xc, yc, r);
+            if (isInside)
+                SetPixel(hdc, pts[0].first, pts[0].second, RGB(0,0,0));
+            else
+                SetPixel(hdc, pts[0].first, pts[0].second, color);
+        }
+        break;
     case 5:
         ClipLineCircle(hdc, pts[0].first, pts[0].second, pts[1].first, pts[1].second, xc, yc, r, color);
         break;
@@ -545,23 +555,21 @@ void clipping::save(ofstream& out)
 {
     if(algo == 1)
     {
-        out << "clipping " << algo << " ";
+        out << "clipping " << algo << " " << left << " " << right << " " << top << " " << bottom << " ";
         for(size_t i = 0; i < pts.size(); i++)
         {
             out << pts[i].first << " " << pts[i].second << " ";
         }
-        out << left << " " << right << " " << top << " " << bottom << " " << (int)GetRValue(color)
-            << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+        out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
     }
     else
     {
-        out << "clippingCircle " << algo << " ";
+        out << "clippingCircle " << algo << " " << xc << " " << yc << " " << r << " ";
         for(size_t i = 0; i < pts.size(); i++)
         {
             out << pts[i].first << " " << pts[i].second << " ";
         }
-        out << xc << " " << yc << " " << r << (int)GetRValue(color) << " "
-            << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+        out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
     }
 }
 
