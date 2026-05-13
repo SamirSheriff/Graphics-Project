@@ -457,6 +457,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     static int currentAlgo = 0;
     static bool isClipWind = true;
     static int xc, yc, rad;
+    static int polygonVertices = 0;
 
     switch (message)
     {
@@ -666,6 +667,10 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         case 72:
             currentAlgo = 72;
             points.clear();
+
+            cout << "Enter number of polygon vertices: ";
+            cin >> polygonVertices;
+            polygonVertices++;
             break;
 
         case 73:
@@ -999,7 +1004,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             points.clear();
         }
 
-        else if(points.size() == 5 && currentAlgo == 72)
+        else if(points.size() == polygonVertices && currentAlgo == 72)
         {
             if(!isClipWind)
             {

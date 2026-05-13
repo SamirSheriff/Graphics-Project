@@ -291,12 +291,23 @@ vector<double> GetHermiteCoeff(double x0, double s0, double x1, double s1)
     return res;
 }
 
-void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints)
+void DrawHermiteCurve(HDC hdc,
+                      pair<int,int>& P0, pair<int,int>& T0,
+                      pair<int,int>& P1, pair<int,int>& T1 ,
+                      int numpoints, COLORREF color)
 {
+    HPEN pen = CreatePen(PS_SOLID, 1, color);
+    HPEN oldPen = (HPEN)SelectObject(hdc, pen);
+
     vector<double> xcoeff = GetHermiteCoeff(P0.first, T0.first, P1.first, T1.first);
     vector<double> ycoeff = GetHermiteCoeff(P0.second, T0.second, P1.second, T1.second);
 
-    if(numpoints < 2) return;
+    if(numpoints < 2)
+    {
+        SelectObject(hdc, oldPen);
+        DeleteObject(pen);
+        return;
+    }
 
     double dt = 1.0 / (numpoints - 1);
     for(double t = 0; t <= 1; t += dt)
@@ -317,9 +328,12 @@ void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,in
         else
             LineTo(hdc,x,y);
     }
+
+    SelectObject(hdc, oldPen);
+    DeleteObject(pen);
 }
 
-void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
+void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints, COLORREF color)
 {
     pair<int,int> P0 = points[0];
     pair<int,int> P1 = points[1];
@@ -329,19 +343,18 @@ void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints)
     pair<int,int> T0 = make_pair(3 * (P1.first - P0.first), 3 * (P1.second - P0.second));
     pair<int,int> T1 = make_pair(3 * (P3.first - P2.first), 3 * (P3.second - P2.second));
 
-    DrawHermiteCurve(hdc, P0, T0, P3, T1, numpoints);
+    DrawHermiteCurve(hdc, P0, T0, P3, T1, numpoints, color);
 }
 
-
-void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix)
+void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix, COLORREF color)
 {
-    double c1=1-c;
-    pair<int,int> T0(c1*(P[2].first-P[0].first),c1*(P[2].second-P[0].second));
-    for(int i=2;i<P.size()-1;i++)
+    double c1 = 1 - c;
+    pair<int,int> T0(c1 * (P[2].first - P[0].first), c1 * (P[2].second - P[0].second));
+    for(int i = 2; i < P.size()-1; i++)
     {
-        pair<int,int> T1(c1*(P[i+1].first-P[i-1].first),c1*(P[i+1].second-P[i-1].second));
-        DrawHermiteCurve(hdc,P[i-1],T0,P[i],T1,numpix);
-        T0=T1;
+        pair<int,int> T1(c1 * (P[i+1].first - P[i-1].first), c1 * (P[i+1].second - P[i-1].second));
+        DrawHermiteCurve(hdc, P[i-1], T0, P[i], T1, numpix, color);
+        T0 = T1;
     }
 }
 
@@ -493,7 +506,7 @@ void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF col
         pair<int, int> p2 = make_pair(x, y1);
         pair<int, int> t1 = make_pair(0, 525); // the value of t1 that actually draw the line
         pair<int, int> t2 = make_pair(0, 525);
-        DrawHermiteCurve(hdc, p1,t1, p2, t2, 100);
+        DrawHermiteCurve(hdc, p1,t1, p2, t2, 100, color);
     }
 }
 
@@ -507,7 +520,7 @@ void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c
         points.push_back(make_pair(x1 + (x2-x1)/3, y));
         points.push_back(make_pair(x1 + 2*(x2-x1)/3, y));
         points.push_back(make_pair(x2, y));
-        DrawBezierCurve(hdc, points, 100);
+        DrawBezierCurve(hdc, points, 100, color);
 
         points.clear();
     }
@@ -808,16 +821,9 @@ void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int 
     //------------------------------------
     double a = dx * dx + dy * dy;
 
-    double b =
-        2 * (
-            dx * (x1 - xc)
-            + dy * (y1 - yc)
-        );
+    double b = 2 * (dx * (x1 - xc) + dy * (y1 - yc));
 
-    double c =
-        (x1 - xc) * (x1 - xc)
-        + (y1 - yc) * (y1 - yc)
-        - r * r;
+    double c = (x1 - xc) * (x1 - xc) + (y1 - yc) * (y1 - yc) - r * r;
 
     //------------------------------------
     // Discriminant
@@ -834,23 +840,9 @@ void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int 
 
         // Entirely inside
         if (inside1 && inside2)
-        {
-            SimpleDDA(
-                hdc,
-                x1, y1,
-                x2, y2,
-                RGB(0, 0, 0)
-            );
-        }
+            SimpleDDA(hdc, x1, y1, x2, y2, RGB(0, 0, 0));
         else
-        {
-            SimpleDDA(
-                hdc,
-                x1, y1,
-                x2, y2,
-                color
-            );
-        }
+            SimpleDDA(hdc, x1, y1, x2, y2, color);
 
         return;
     }
@@ -860,11 +852,9 @@ void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int 
     //------------------------------------
     double sqrtDisc = sqrt(disc);
 
-    double t1 =
-        (-b - sqrtDisc) / (2 * a);
+    double t1 = (-b - sqrtDisc) / (2 * a);
 
-    double t2 =
-        (-b + sqrtDisc) / (2 * a);
+    double t2 = (-b + sqrtDisc) / (2 * a);
 
     if (t1 > t2)
         swap(t1, t2);
@@ -874,13 +864,7 @@ void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int 
     //------------------------------------
     if (t1 > 1 || t2 < 0)
     {
-        SimpleDDA(
-            hdc,
-            x1, y1,
-            x2, y2,
-            color
-        );
-
+        SimpleDDA(hdc, x1, y1, x2, y2, color);
         return;
     }
 
@@ -904,35 +888,20 @@ void ClipLineCircle(HDC hdc, int x1, int y1, int x2,int y2, int xc, int yc, int 
     //------------------------------------
     if (tt1 > 0)
     {
-        SimpleDDA(
-            hdc,
-            x1, y1,
-            ix1, iy1,
-            color
-        );
+        SimpleDDA(hdc, x1, y1, ix1, iy1, color);
     }
 
     //------------------------------------
     // Inside Segment (RED)
     //------------------------------------
-    SimpleDDA(
-        hdc,
-        ix1, iy1,
-        ix2, iy2,
-        RGB(0, 0, 0)
-    );
+    SimpleDDA(hdc, ix1, iy1, ix2, iy2, RGB(0, 0, 0));
 
     //------------------------------------
     // Second Outside Segment
     //------------------------------------
     if (tt2 < 1)
     {
-        SimpleDDA(
-            hdc,
-            ix2, iy2,
-            x2, y2,
-            color
-        );
+        SimpleDDA(hdc, ix2, iy2, x2, y2, color);
     }
 }
 
@@ -961,7 +930,7 @@ void DrawHappyFace(HDC hdc, int xc, int yc, int r, COLORREF color)
     mouth.push_back({xc + r/4, yc + r/2});
     mouth.push_back({xc + r/2, yc + r/4});
 
-    DrawBezierCurve(hdc, mouth, 100);
+    DrawBezierCurve(hdc, mouth, 100, color);
 }
 
 void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color)
@@ -989,5 +958,5 @@ void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color)
     mouth.push_back({xc + r/4, yc + r/4});
     mouth.push_back({xc + r/2, yc + r/2});
 
-    DrawBezierCurve(hdc, mouth, 100);
+    DrawBezierCurve(hdc, mouth, 100, color);
 }

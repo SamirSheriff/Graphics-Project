@@ -233,7 +233,6 @@ public:
 //===================
 // Face Class
 //===================
-
 class Face : public shape
 {
 public:

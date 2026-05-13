@@ -294,7 +294,7 @@ BezierCurve::BezierCurve(vector<pair<int,int>>& p, COLORREF col): shape(col)
 
 void BezierCurve::draw(HDC hdc)
 {
-    DrawBezierCurve(hdc, points, 50);
+    DrawBezierCurve(hdc, points, 50, color);
 }
 
 void BezierCurve::save(ofstream& out)
@@ -318,7 +318,7 @@ HermiteCurve::HermiteCurve(pair<int,int> a, pair<int,int> b, pair<int,int> c, pa
 
 void HermiteCurve::draw(HDC hdc)
 {
-    DrawHermiteCurve (hdc, p1, t1, p2, t2 , 50);
+    DrawHermiteCurve (hdc, p1, t1, p2, t2 , 50, color);
 }
 
 void HermiteCurve::save(ofstream& out)
@@ -340,7 +340,7 @@ CardinalSplineCurve::CardinalSplineCurve(vector<pair<int,int>> p, double a, COLO
 
 void CardinalSplineCurve::draw(HDC hdc)
 {
-    DrawCardinalSpline(hdc, points, c, 50);
+    DrawCardinalSpline(hdc, points, c, 50, color);
 }
 
 void CardinalSplineCurve::save(ofstream& out)

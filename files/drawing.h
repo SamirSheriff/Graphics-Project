@@ -50,11 +50,11 @@ double DotProduct(vector<double>& a,vector<double>& b);
 
 vector<double> GetHermiteCoeff(double x0, double s0, double x1, double s1);
 
-void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints);
+void DrawHermiteCurve(HDC hdc, pair<int,int>& P0, pair<int,int>& T0, pair<int,int>& P1, pair<int,int>& T1 ,int numpoints, COLORREF color);
 
-void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints);
+void DrawBezierCurve(HDC hdc, vector<pair<int,int>>& points, int numpoints, COLORREF color);
 
-void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix);
+void DrawCardinalSpline(HDC hdc,vector<pair<int,int>>& P,double c,int numpix, COLORREF color);
 
 
 //=======================
@@ -89,21 +89,18 @@ void InitEdgeTable(vector<pair<int,int>> polygon, int n,EdgeList table[]);
 void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
 
 void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
-
 void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
 
 void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
-
 void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
 
 void FillingCircleWithLines(HDC hdc, int x, int y, int xc, int yc, int r, COLORREF color);
-
 void fillCircleWithCircles(HDC hdc,int x, int y, int xc,int yc, int R,COLORREF color);
+
 
 //=======================
 // Clipping Algorithms
 //=======================
-
 union OutCode
 {
     unsigned All:4;
@@ -154,7 +151,6 @@ void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts, COLORREF color);
 //=======================
 
 void DrawHappyFace(HDC hdc, int xc, int yc, int r, COLORREF color);
-
 void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color);
 
 
