@@ -1,19 +1,18 @@
 #ifndef DRAWING_H_INCLUDED
 #define DRAWING_H_INCLUDED
 
-#include <windows.h>  // <--- ADD THIS (Crucial for HDC and COLORREF)
+#include <windows.h>
 #include <cmath>
 #include <vector>
 #include <list>
 #include <climits>
 #include <stack>
-#include <utility>    // <--- ADD THIS (For std::pair)
+#include <utility>
+#include <string>
 
 using namespace std;
 
 #define MAXENTRIES 600
-
-// ... rest of your function declarations ...
 
 
 //================
@@ -34,6 +33,15 @@ void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
 void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
 void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
 
+//===================
+// Square Algorithm
+//===================
+void drawSquare(HDC hdc,const vector<pair<int,int>>& points,int& left,int& right,int& top,int& bottom,COLORREF color);
+
+//===================
+// Square Algorithm
+//===================
+void drawRect(HDC hdc,const vector<pair<int,int>>& points,int& Left,int& Right,int& Top,int& Bottom,COLORREF color);
 
 //=======================
 // Curve Algorithms
@@ -124,10 +132,10 @@ void HIntersect(double xs,double ys,double xe,double ye,int y,double *xi,double 
 void CohenSuth(HDC hdc,int xs,int ys,int xe,int ye,int xleft,int ytop,int xright,int ybottom);
 
 VertexList ClipWithEdge(VertexList p,int edge,IsInFunc In,IntersectFunc Intersect);
-bool InLeft(Vertex& v,int edge);
-bool InRight(Vertex& v,int edge);
-bool InTop(Vertex& v,int edge);
-bool InBottom(Vertex& v,int edge);
+bool InLeft(const Vertex& v,int edge);
+bool InRight(const Vertex& v,int edge);
+bool InTop(const Vertex& v,int edge);
+bool InBottom(const Vertex& v,int edge);
 Vertex VIntersect(Vertex& v1,Vertex& v2,int xedge);
 Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge);
 void PolygonClip(HDC hdc,const vector<pair<int,int>>& p,int xleft,int ytop,int xright,int ybottom);
@@ -136,6 +144,10 @@ bool PointClippingInsideCircle(int x,int y,int xc,int yc,int r);
 
 void ClipLineCircle(HDC hdc, int x1, int y1, int x2, int y2, int xc, int yc, int r, COLORREF color);
 
+//===================
+// Polygon Algorithm
+//===================
+void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts, COLORREF color);
 
 //=======================
 // Faces Algorithms

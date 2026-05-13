@@ -103,6 +103,67 @@ void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
     }
 }
 
+//===================
+// Square Algorithm
+//===================
+
+void drawSquare(HDC hdc,const vector<pair<int,int>>& points,int& Left,int& Right,int& Top,int& Bottom,COLORREF color)
+{
+    int xc = points[0].first;
+    int yc = points[0].second;
+    int x = points[1].first;
+    int y = points[1].second;
+
+    int halfSide = max(abs(x - xc), abs(y - yc));
+
+    Left   = xc - halfSide;
+    Right  = xc + halfSide;
+    Top    = yc - halfSide;
+    Bottom = yc + halfSide;
+
+    SimpleDDA(hdc, Left, Top, Right, Top, color);
+    SimpleDDA(hdc, Right, Top, Right, Bottom, color);
+    SimpleDDA(hdc, Right, Bottom, Left, Bottom, color);
+    SimpleDDA(hdc, Left, Bottom, Left, Top, color);
+}
+
+//===================
+// Rectangle Algorithm
+//===================
+void drawRect(HDC hdc,const vector<pair<int,int>>& points,int& Left,int& Right,int& Top,int& Bottom,COLORREF color)
+{
+    int xc = points[0].first;
+    int yc = points[0].second;
+    int x1 = points[1].first;
+    int y1 = points[1].second;
+    int x2 = points[2].first;
+    int y2 = points[2].second;
+
+    int halfx = abs(xc - x1);
+    int halfy = abs(yc - y2);
+
+    Left   = xc - halfx;
+    Right  = xc + halfx;
+    Top    = yc - halfy;
+    Bottom = yc + halfy;
+
+    SimpleDDA(hdc, Left, Top, Right, Top, color);
+    SimpleDDA(hdc, Right, Top, Right, Bottom, color);
+    SimpleDDA(hdc, Right, Bottom, Left, Bottom, color);
+    SimpleDDA(hdc, Left, Bottom, Left, Top, color);
+}
+
+//===================
+// Polygon Algorithm
+//===================
+void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts, COLORREF color)
+{
+    for(int i = 0; i < pts.size()-1; i++)
+    {
+        SimpleDDA(hdc,pts[i].first,pts[i].second,pts[i+1].first,pts[i+1].second,color);
+    }
+    SimpleDDA(hdc,pts.back().first,pts.back().second,pts[0].first,pts[0].second,color);
+}
 
 //===================
 // Circle Algorithms
@@ -707,20 +768,25 @@ Vertex HIntersect(Vertex& v1,Vertex& v2,int yedge)
 void PolygonClip(HDC hdc,const vector<pair<int,int>>& p, int xleft,int ytop,int xright,int ybottom)
 {
     VertexList vlist;
+
     for(int i = 0; i < p.size(); i++)
-        vlist.push_back(Vertex(p[i].first, p[i].second));
-    vlist=ClipWithEdge(vlist,xleft,InLeft,VIntersect);
-    vlist=ClipWithEdge(vlist,ytop,InTop,HIntersect);
-    vlist=ClipWithEdge(vlist,xright,InRight,VIntersect);
-    vlist=ClipWithEdge(vlist,ybottom,InBottom,HIntersect);
-    if(vlist.empty()) return;
-    Vertex v1=vlist[vlist.size()-1];
-    for(int i=0;i<(int)vlist.size();i++)
     {
-        Vertex v2=vlist[i];
-        MoveToEx(hdc,round(v1.x),round(v1.y),NULL);
-        LineTo(hdc,round(v2.x),round(v2.y));
-        v1=v2;
+        vlist.push_back(Vertex(p[i].first, p[i].second));
+    }
+
+    vlist = ClipWithEdge(vlist, xleft, InLeft, VIntersect);
+    vlist = ClipWithEdge(vlist, ytop, InTop, HIntersect);
+    vlist = ClipWithEdge(vlist, xright, InRight, VIntersect);
+    vlist = ClipWithEdge(vlist, ybottom, InBottom, HIntersect);
+
+    if(vlist.empty()) return;
+    Vertex v1 = vlist[vlist.size()-1];
+    for(int i = 0; i < (int)vlist.size(); i++)
+    {
+        Vertex v2 = vlist[i];
+        MoveToEx(hdc, round(v1.x), round(v1.y), NULL);
+        LineTo(hdc, round(v2.x), round(v2.y));
+        v1 = v2;
     }
 }
 
