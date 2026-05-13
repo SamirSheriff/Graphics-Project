@@ -150,9 +150,10 @@ class FillingCircles : public shape
 {
 public:
     int xc, yc, r;
+    int x, y;
     int algo;
 
-    FillingCircles(int x, int y, int R, int alg, COLORREF col);
+    FillingCircles(int _x, int _y, int _xc, int _yc, int R, int alg, COLORREF col);
 
     void draw(HDC hdc) override;
     void save(ofstream& out) override;

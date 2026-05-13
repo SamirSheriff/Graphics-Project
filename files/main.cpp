@@ -163,12 +163,12 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
 
         else if(type == "FillingCircles")
         {
-            int algo, xc, yc, rad;
+            int algo, x, y, xc, yc, rad;
             int r,g,b;
 
-            in >> algo >> xc >> yc >> rad >> r >> g >> b;
+            in >> algo >> x >> y >> xc >> yc >> rad >> r >> g >> b;
 
-            shapes.push_back(new FillingCircles(xc,yc,rad,algo,RGB(r,g,b)));
+            shapes.push_back(new FillingCircles(x, y, xc, yc, rad, algo, RGB(r,g,b)));
         }
 
         else if(type == "FillingWithCurves")
@@ -793,15 +793,31 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
             switch(currentAlgo)
             {
-//            case 62:
-//                {
-//                    int algo = currentAlgo - 61;
-//                    shape *s = new FillingWithCurves(p1.first, p1.second, algo, currentColor);
-//                    shapes.push_back(s);
-//                    s->draw(hdc);
-//                    points.clear();
-//                }
-//                break;
+            case 60:
+                {
+                    shape *s = new FillingCircles(p1.first, p1.second, xc, yc, rad, 1, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
+
+            case 61:
+                {
+                    shape *s = new FillingCircles(p1.first, p1.second, xc, yc, rad, 2, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
+            case 62:
+                {
+                    shape *s = new FillingWithCurves(points, 1, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
 
             case 66:
             case 67:
@@ -873,36 +889,22 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             case 33:
             case 34:
             {
-                int dx = p2.first - p1.first;
-                int dy = p2.second - p1.second;
+                xc = p1.first;
+                yc = p1.second;
 
-                int r = sqrt(dx*dx + dy*dy);
+                int dx = p2.first - xc;
+                int dy = p2.second - yc;
+
+                rad = sqrt(dx*dx + dy*dy);
 
                 int algo = currentAlgo - 29;
 
-                shape *s = new Circle(p1.first, p1.second, r, algo, currentColor);
+                shape *s = new Circle(xc, yc, rad, algo, currentColor);
                 shapes.push_back(s);
                 s->draw(hdc);
                 points.clear();
             }
             break;
-
-            case 60:
-            case 61:
-                {
-                    int dx = p2.first - p1.first;
-                    int dy = p2.second - p1.second;
-
-                    int r = sqrt(dx*dx + dy*dy);
-
-                    int algo = currentAlgo - 59;
-
-                    shape *s = new FillingCircles(p1.first, p1.second, r, algo, currentColor);
-                    shapes.push_back(s);
-                    s->draw(hdc);
-                    points.clear();
-                }
-                break;
 
             case 71:
                 {

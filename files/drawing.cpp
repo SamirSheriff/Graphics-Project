@@ -450,16 +450,53 @@ void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c
     }
 }
 
-void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color)
+void fillCircleWithCircles(HDC hdc,int x, int y, int xc,int yc, int R,COLORREF color)
 {
+    int x1 = 0, y1 = R;
+    int d = 1 - R;
+    int c1 = 3, c2 = 5 - 2 * R;
+    SetPixel(hdc, xc, yc, color);
 
-    for(int r = 0; r <= R; r++)
+    while(x1 < y1)
     {
-        CircleFasterBresenham(hdc, xc, yc, r, color);
+        if(d < 0)
+        {
+            d += c1;
+            c2 += 2;
+        }
+        else
+        {
+            d += c2;
+            c2 += 4;
+            y1--;
+        }
+        c1 += 2;
+        x1++;
+
+        if (x > xc && y < yc)   // First Quarter
+        {
+            SetPixel(hdc, xc + x1, yc - y1, color);
+            SetPixel(hdc, xc + y1, yc - x1, color);
+        }
+        else if (x < xc && y < yc)  // second Quarter
+        {
+            SetPixel(hdc, xc - x1, yc - y1, color);
+            SetPixel(hdc, xc - y1, yc - x1, color);
+        }
+        else if (x < xc && y > yc)  // Third Quarter
+        {
+            SetPixel(hdc, xc - x1, yc + y1, color);
+            SetPixel(hdc, xc - y1, yc + x1, color);
+        }
+        else if (x > xc && y > yc) // Fourth Quarter
+        {
+            SetPixel(hdc, xc + x1, yc + y1, color);
+            SetPixel(hdc, xc + y1, yc + x1, color);
+        }
     }
 }
 
-void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
+void FillingCircleWithLines(HDC hdc, int x1, int y1, int xc, int yc, int r, COLORREF color)
 {
     int x = 0, y = r;
     int d = 1 - r;
@@ -467,15 +504,57 @@ void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color)
     while(x <= y)
     {
         // draw horizontal lines instead of points
-        for(int i = xc - x; i <= xc + x; i++)
+        if (x1 > xc && y1 < yc)   // First Quarter
         {
-            SetPixel(hdc, i, yc + y, color);
-            SetPixel(hdc, i, yc - y, color);
+            for(int i = xc; i <= xc + x; i++)
+            {
+                //SetPixel(hdc, i, yc + y, color);
+                SetPixel(hdc, i, yc - y, color);
+            }
+            for(int i = xc; i <= xc + y; i++)
+            {
+                //SetPixel(hdc, i, yc + x, color);
+                SetPixel(hdc, i, yc - x, color);
+            }
         }
-        for(int i = xc - y; i <= xc + y; i++)
+        else if (x1 < xc && y1 < yc)  // second Quarter
         {
-            SetPixel(hdc, i, yc + x, color);
-            SetPixel(hdc, i, yc - x, color);
+            for(int i = xc - x; i <= xc; i++)
+            {
+                //SetPixel(hdc, i, yc + y, color);
+                SetPixel(hdc, i, yc - y, color);
+            }
+            for(int i = xc - y; i <= xc; i++)
+            {
+                //SetPixel(hdc, i, yc + x, color);
+                SetPixel(hdc, i, yc - x, color);
+            }
+        }
+        else if (x1 < xc && y1 > yc)  // Third Quarter
+        {
+            for(int i = xc - x; i <= xc; i++)
+            {
+                SetPixel(hdc, i, yc + y, color);
+                //SetPixel(hdc, i, yc - y, color);
+            }
+            for(int i = xc - y; i <= xc; i++)
+            {
+                SetPixel(hdc, i, yc + x, color);
+                //SetPixel(hdc, i, yc - x, color);
+            }
+        }
+        else if (x1 > xc && y1 > yc) // Fourth Quarter
+        {
+            for(int i = xc; i <= xc + x; i++)
+            {
+                SetPixel(hdc, i, yc + y, color);
+                //SetPixel(hdc, i, yc - y, color);
+            }
+            for(int i = xc; i <= xc + y; i++)
+            {
+                SetPixel(hdc, i, yc + x, color);
+                //SetPixel(hdc, i, yc - x, color);
+            }
         }
 
         if(d < 0)

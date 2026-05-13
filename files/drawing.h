@@ -88,9 +88,9 @@ void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF col
 
 void FillRectangleWithBezier(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
 
-void FillingCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF color);
+void FillingCircleWithLines(HDC hdc, int x, int y, int xc, int yc, int r, COLORREF color);
 
-void fillCircleWithCircles(HDC hdc,int xc,int yc, int R,COLORREF color);
+void fillCircleWithCircles(HDC hdc,int x, int y, int xc,int yc, int R,COLORREF color);
 
 //=======================
 // Clipping Algorithms

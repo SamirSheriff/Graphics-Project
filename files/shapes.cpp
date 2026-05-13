@@ -361,10 +361,12 @@ CardinalSplineCurve::~CardinalSplineCurve() {}
 // Filling Classes
 //===================
 
-FillingCircles::FillingCircles(int x, int y, int R, int alg, COLORREF col): shape(col)
+FillingCircles::FillingCircles(int _x, int _y, int _xc, int _yc, int R, int alg, COLORREF col): shape(col)
 {
-    xc = x;
-    yc = y;
+    x = _x;
+    y = _y;
+    xc = _xc;
+    yc = _yc;
     r = R;
     algo = alg;
 }
@@ -374,10 +376,14 @@ void FillingCircles::draw(HDC hdc)
     switch(algo)
     {
     case 1:
-        FillingCircleWithLines(hdc, xc, yc, r, color);
+        FillingCircleWithLines(hdc, x, y, xc, yc, r, color);
         break;
     case 2:
-        fillCircleWithCircles(hdc, xc, yc, r, color);
+        {
+            for(int R = 0; R < r; R++)
+            fillCircleWithCircles(hdc, x, y, xc, yc, R, color);
+        }
+
         break;
      default:
         cout << "No algo in FillingCircles shape" << endl;
@@ -386,12 +392,8 @@ void FillingCircles::draw(HDC hdc)
 
 void FillingCircles::save(ofstream& out)
 {
-    out << "FillingCircles " << algo << " ";
-//    for(size_t i = 0; i < points.size(); i++)
-//    {
-//        out << points[i].first << " " << points[i].second << " ";
-//    }
-//    out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
+    out << "FillingCircles " << algo << " " << x  << " " << y  << " " << xc << " " << yc << " " << r << " ";;
+    out << (int)GetRValue(color) << " " << (int)GetGValue(color) << " " <<  (int)GetBValue(color) << " " << "\n";
 }
 
 FillingCircles::~FillingCircles() {}
@@ -408,7 +410,7 @@ void FillingWithCurves::draw(HDC hdc)
     switch(algo)
     {
     case 1:
-        //FillSquareWithHermite(hdc, xc - 50, yc, xc + 50, yc, color);
+        FillSquareWithHermite(hdc, pts[0].first - 50, pts[0].second, pts[0].first + 50, pts[0].second, color);
         break;
     case 2:
         FillRectangleWithBezier(hdc, pts[0].first, pts[0].second, pts[1].first, pts[1].second, color);
@@ -553,7 +555,7 @@ void clipping::draw(HDC hdc)
 
 void clipping::save(ofstream& out)
 {
-    if(algo == 1)
+    if(algo == 1 || algo == 2 || algo == 3)
     {
         out << "clipping " << algo << " " << left << " " << right << " " << top << " " << bottom << " ";
         for(size_t i = 0; i < pts.size(); i++)
