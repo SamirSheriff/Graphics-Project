@@ -10,7 +10,7 @@
 #include <commdlg.h>
 
 using namespace std;
-
+COLORREF background_color = RGB(240,240,240); 
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -20,6 +20,8 @@ TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
 
 vector<shape*> shapes;
 COLORREF currentColor = RGB(250,0,0);
+COLORREF currentColor1;
+
 HBRUSH bgBrush = CreateSolidBrush(RGB(240,240,240));
 HCURSOR currentCursor = LoadCursor(NULL, IDC_ARROW);
 int Left, Right, Top, Bottom;
@@ -450,7 +452,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     AppendMenu(file,MF_STRING,2,"Save");
     AppendMenu(file,MF_STRING,3,"Load");
 
-    AppendMenu(Pref,MF_STRING,10,"White background");
+    AppendMenu(Pref,MF_STRING,10,"background Color");
     AppendMenu(Pref,MF_POPUP,(UINT_PTR)Cursor,"Cursor");
     AppendMenu(Pref,MF_STRING,12,"Choose Color");
 
@@ -573,11 +575,27 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         // ================= PREFERENCES =================
 
-        case 10:
-            DeleteObject(bgBrush);
-            bgBrush = CreateSolidBrush(RGB(255,255,255));
-            InvalidateRect(hwnd, NULL, TRUE);
-            break;
+		case 10:
+		{
+			DeleteObject(bgBrush);
+		
+			CHOOSECOLOR gg = { sizeof(CHOOSECOLOR) };
+			static COLORREF colors_2[16];
+		
+			gg.lpCustColors = colors_2;
+			gg.rgbResult = currentColor1;
+			gg.Flags = CC_FULLOPEN | CC_RGBINIT;
+		
+			if (ChooseColor(&gg))
+			{
+				currentColor1 = gg.rgbResult;
+				bgBrush = CreateSolidBrush(currentColor1);
+				background_color = gg.rgbResult;
+			}
+		
+			InvalidateRect(hwnd, NULL, TRUE);
+		}
+			break;
 
         case 111:
             currentCursor = LoadCursor(NULL, IDC_ARROW);
@@ -823,7 +841,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             case 67:
                 {
                     int algo = currentAlgo - 65;
-                    shape *s = new FloodFillShape(p1.first, p1.second, algo, currentColor, currentColor);
+                    shape *s = new FloodFillShape(p1.first, p1.second, algo, background_color, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();
