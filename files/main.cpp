@@ -841,7 +841,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             case 67:
                 {
                     int algo = currentAlgo - 65;
-                    shape *s = new FloodFillShape(p1.first, p1.second, algo, currentColor, currentColor);
+                    shape *s = new FloodFillShape(p1.first, p1.second, algo, background_color, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();
