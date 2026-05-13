@@ -467,15 +467,17 @@ void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
     delete[] table;
 }
 
-void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf)
+void FloodFill(HDC hdc,int x,int y,COLORREF old,COLORREF newColor)
 {
-    COLORREF C=GetPixel(hdc,x,y);
-    if(C != Cb)return;
-    SetPixel(hdc,x,y,Cf);
-    FloodFill(hdc,x+1,y,Cb,Cf);
-    FloodFill(hdc,x-1,y,Cb,Cf);
-    FloodFill(hdc,x,y+1,Cb,Cf);
-    FloodFill(hdc,x,y-1,Cb,Cf);
+    COLORREF oldColor = GetPixel(hdc, x, y);
+    if(oldColor == newColor) return;
+	COLORREF c = GetPixel(hdc,x,y);
+    if(c != oldColor) return;
+    SetPixel(hdc,x,y,newColor);
+    FloodFill(hdc,x+1,y,old,newColor);
+    FloodFill(hdc,x-1,y,old,newColor);
+    FloodFill(hdc,x,y+1,old,newColor);
+    FloodFill(hdc,x,y-1,old,newColor);
 }
 
 void NRFloodFill(HDC hdc,int x,int y,COLORREF old, COLORREF newColor)
