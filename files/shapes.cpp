@@ -482,6 +482,7 @@ void FloodFillShape::draw(HDC hdc)
     {
     case 1:
         FloodFill(hdc,x, y, cb, cf);
+        flip_p();
         break;
     case 2:
         NRFloodFill(hdc, x, y, cb, cf);

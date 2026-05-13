@@ -89,6 +89,7 @@ void InitEdgeTable(vector<pair<int,int>> polygon, int n,EdgeList table[]);
 void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
 
 void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
+void flip_p();
 void NRFloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
 
 void FillSquareWithHermite(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);

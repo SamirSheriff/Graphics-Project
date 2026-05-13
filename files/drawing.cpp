@@ -466,20 +466,37 @@ void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
     }
     delete[] table;
 }
-
+COLORREF OldColor;
+bool center_p = 0;
 void FloodFill(HDC hdc,int x,int y,COLORREF old,COLORREF newColor)
-{
-    COLORREF oldColor = GetPixel(hdc, x, y);
-    if(oldColor == newColor) return;
-	COLORREF c = GetPixel(hdc,x,y);
-    if(c != oldColor) return;
-    SetPixel(hdc,x,y,newColor);
-    FloodFill(hdc,x+1,y,old,newColor);
-    FloodFill(hdc,x-1,y,old,newColor);
-    FloodFill(hdc,x,y+1,old,newColor);
-    FloodFill(hdc,x,y-1,old,newColor);
-}
 
+{
+	if(center_p == 0){
+		
+		OldColor = GetPixel(hdc, x, y);
+		center_p =1;
+		}
+
+    if(OldColor == newColor) return;
+
+	COLORREF c = GetPixel(hdc,x,y);
+
+    if(c != OldColor) return;
+
+    SetPixel(hdc,x,y,newColor);
+
+    FloodFill(hdc,x+1,y,old,newColor);
+
+    FloodFill(hdc,x-1,y,old,newColor);
+
+    FloodFill(hdc,x,y+1,old,newColor);
+
+    FloodFill(hdc,x,y-1,old,newColor);
+
+}
+void flip_p(){
+	center_p=0;
+}
 void NRFloodFill(HDC hdc,int x,int y,COLORREF old, COLORREF newColor)
 {
     COLORREF oldColor = GetPixel(hdc, x, y);

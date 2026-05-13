@@ -670,7 +670,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
             cout << "Enter number of polygon vertices: ";
             cin >> polygonVertices;
-            polygonVertices++;
             break;
 
         case 73:
