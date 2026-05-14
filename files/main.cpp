@@ -491,7 +491,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         case 10:
 		{
-			DeleteObject(bgBrush);
 
 			CHOOSECOLOR gg = { sizeof(CHOOSECOLOR) };
 			static COLORREF colors_2[16];
@@ -502,6 +501,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			if (ChooseColor(&gg))
 			{
+				DeleteObject(bgBrush);
+
 				currentColor1 = gg.rgbResult;
 				bgBrush = CreateSolidBrush(currentColor1);
 				background_color = gg.rgbResult;
