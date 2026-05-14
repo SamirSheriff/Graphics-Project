@@ -607,6 +607,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         case 50:
             currentAlgo = 50;
             points.clear();
+            cout << "Enter number of points on curve: ";
+            cin >> polygonVertices;
             break;
 
 
@@ -625,21 +627,27 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         case 62:
             currentAlgo = 62;
             points.clear();
+
             break;
 
         case 63:
             currentAlgo = 63;
             points.clear();
+
             break;
 
         case 64:
             currentAlgo = 64;
             points.clear();
+            cout << "Enter number of polygon vertices: ";
+            cin >> polygonVertices;
             break;
 
         case 65:
             currentAlgo = 65;
             points.clear();
+            cout << "Enter number of polygon vertices: ";
+            cin >> polygonVertices;
             break;
 
         case 66:

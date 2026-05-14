@@ -950,6 +950,9 @@ void DrawHappyFace(HDC hdc, int xc, int yc, int r, COLORREF color)
     mouth.push_back({xc + r/2, yc + r/4});
 
     DrawBezierCurve(hdc, mouth, 100, color);
+    
+    
+    
 }
 
 void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color)
