@@ -194,8 +194,6 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
             for(size_t i=0;i<temp.size()-3;i+=2)
                 pts.push_back({temp[i], temp[i+1]});
 
-            COLORREF color = RGB(r,g,b);
-
             shapes.push_back(new FillingWithCurves(pts, algo, RGB(r,g,b)));
         }
 

@@ -440,7 +440,11 @@ void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
     InitEdgeTable(polygon, n, table);
     int y=0;
     while(y < MAXENTRIES && table[y].size() == 0) y++;
-    if(y == MAXENTRIES)return;
+    if(y == MAXENTRIES)
+    {
+        delete[] table;
+        return;
+    }
     EdgeList ActiveList = table[y];
     while (ActiveList.size()>0)
     {
@@ -472,7 +476,7 @@ void FloodFill(HDC hdc,int x,int y,COLORREF old,COLORREF newColor)
 
 {
 	if(center_p == 0){
-		
+
 		OldColor = GetPixel(hdc, x, y);
 		center_p =1;
 		}
@@ -950,9 +954,9 @@ void DrawHappyFace(HDC hdc, int xc, int yc, int r, COLORREF color)
     mouth.push_back({xc + r/2, yc + r/4});
 
     DrawBezierCurve(hdc, mouth, 100, color);
-    
-    
-    
+
+
+
 }
 
 void DrawSadFace(HDC hdc, int xc, int yc, int r, COLORREF color)
