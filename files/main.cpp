@@ -1004,7 +1004,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
         }
 
-        else if(points.size() == 4 && currentAlgo == 64)
+        else if(points.size() == polygonVertices && currentAlgo == 64)
         {
             shape *s = new PolygonFilling(points, 4, 1, currentColor);
             shapes.push_back(s);
@@ -1025,7 +1025,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
         }
 
-        else if(points.size() == 6)
+        else if(points.size() == polygonVertices)
         {
             switch(currentAlgo)
             {
@@ -1041,7 +1041,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
         }
 
-        else if(points.size() == 8 && currentAlgo == 65)
+        else if(points.size() == polygonVertices && currentAlgo == 65)
         {
             shape *s = new PolygonFilling(points, 8, 2, currentColor);
             shapes.push_back(s);
