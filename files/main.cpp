@@ -457,7 +457,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     static int currentAlgo = 0;
     static bool isClipWind = true;
     static int xc, yc, rad;
-    static int polygonVertices = 0;
+    static int polygonVertices = 100;
 
     switch (message)
     {
@@ -797,7 +797,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         }
     }
 
-        else if(points.size() == 2)
+        if(points.size() == 2)
         {
             pair<int,int> p1 = points[0];
             pair<int,int> p2 = points[1];
@@ -950,7 +950,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
         }
 
-        else if(points.size() == 3)
+        if(points.size() == 3)
         {
             switch(currentAlgo)
             {
@@ -1004,28 +1004,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
         }
 
-        else if(points.size() == polygonVertices && currentAlgo == 64)
-        {
-            shape *s = new PolygonFilling(points, 4, 1, currentColor);
-            shapes.push_back(s);
-            s->draw(hdc);
-            points.clear();
-        }
-
-        else if(points.size() == polygonVertices && currentAlgo == 72)
-        {
-            if(!isClipWind)
-            {
-                drawPolygon(hdc, points, currentColor);
-                shape *s = new clipping(points, Left, Right, Top, Bottom, 3, currentColor);
-                shapes.push_back(s);
-                s->draw(hdc);
-                points.clear();
-                isClipWind = true;
-            }
-        }
-
-        else if(points.size() == polygonVertices)
+        if(points.size() == polygonVertices)
         {
             switch(currentAlgo)
             {
@@ -1038,15 +1017,38 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 }
                 break;
 
-            }
-        }
+            case 64:
+                {
+                    shape *s = new PolygonFilling(points, polygonVertices, 1, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
 
-        else if(points.size() == polygonVertices && currentAlgo == 65)
-        {
-            shape *s = new PolygonFilling(points, 8, 2, currentColor);
-            shapes.push_back(s);
-            s->draw(hdc);
-            points.clear();
+            case 65:
+                {
+                    shape *s = new PolygonFilling(points, polygonVertices, 2, currentColor);
+                    shapes.push_back(s);
+                    s->draw(hdc);
+                    points.clear();
+                }
+                break;
+
+            case 72:
+                {
+                    if(!isClipWind)
+                    {
+                        drawPolygon(hdc, points, currentColor);
+                        shape *s = new clipping(points, Left, Right, Top, Bottom, 3, currentColor);
+                        shapes.push_back(s);
+                        s->draw(hdc);
+                        points.clear();
+                        isClipWind = true;
+                    }
+                }
+                break;
+            }
         }
 
         ReleaseDC(hwnd, hdc);
