@@ -309,6 +309,85 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
     }
 }
 
+void drawSquare(HDC hdc, const vector<pair<int,int>>& points)
+{
+    int xc = points[0].first;
+    int yc = points[0].second;
+    int x = points[1].first;
+    int y = points[1].second;
+
+    int halfSide = max(abs(x - xc), abs(y - yc));
+
+    Left   = xc - halfSide;
+    Right  = xc + halfSide;
+    Top    = yc - halfSide;
+    Bottom = yc + halfSide;
+
+    shape *s1 = new Line(Left, Top, Right, Top, 2, currentColor);
+    shape *s2 = new Line(Right, Top, Right, Bottom, 2, currentColor);
+    shape *s3 = new Line(Right, Bottom, Left, Bottom, 2, currentColor);
+    shape *s4 = new Line(Left, Bottom, Left, Top, 2, currentColor);
+
+    shapes.push_back(s1);
+    shapes.push_back(s2);
+    shapes.push_back(s3);
+    shapes.push_back(s4);
+
+    s1->draw(hdc);
+    s2->draw(hdc);
+    s3->draw(hdc);
+    s4->draw(hdc);
+}
+
+void drawRect(HDC hdc, const vector<pair<int,int>>& points)
+{
+    int xc = points[0].first;
+    int yc = points[0].second;
+    int x1 = points[1].first;
+    int y1 = points[1].second;
+    int x2 = points[2].first;
+    int y2 = points[2].second;
+
+    int halfx = abs(xc - x1);
+    int halfy = abs(yc - y2);
+
+    Left   = xc - halfx;
+    Right  = xc + halfx;
+    Top    = yc - halfy;
+    Bottom = yc + halfy;
+
+    shape *s1 = new Line(Left, Top, Right, Top, 2, currentColor);
+    shape *s2 = new Line(Right, Top, Right, Bottom, 2, currentColor);
+    shape *s3 = new Line(Right, Bottom, Left, Bottom, 2, currentColor);
+    shape *s4 = new Line(Left, Bottom, Left, Top, 2, currentColor);
+
+    shapes.push_back(s1);
+    shapes.push_back(s2);
+    shapes.push_back(s3);
+    shapes.push_back(s4);
+
+    s1->draw(hdc);
+    s2->draw(hdc);
+    s3->draw(hdc);
+    s4->draw(hdc);
+}
+
+//===================
+// Polygon Algorithm
+//===================
+void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts)
+{
+    for(int i = 0; i < pts.size()-1; i++)
+    {
+        shape *edge = new Line(pts[i].first, pts[i].second, pts[i+1].first, pts[i+1].second, 2, currentColor);
+        shapes.push_back(edge);
+        edge->draw(hdc);
+    }
+    shape *edge = new Line(pts.back().first, pts.back().second, pts[0].first, pts[0].second, 2, currentColor);
+    shapes.push_back(edge);
+    edge->draw(hdc);
+}
+
 int WINAPI WinMain (HINSTANCE hThisInstance,
                      HINSTANCE hPrevInstance,
                      LPSTR lpszArgument,
@@ -492,7 +571,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
             break;
 
-
         // ================= PREFERENCES =================
 
         case 10:
@@ -544,7 +622,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             }
             break;
 
-
         // ================= LINE =================
 
         case 20: // Parametric
@@ -561,7 +638,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             currentAlgo = 22;
             points.clear();
             break;
-
 
         // ================= CIRCLE =================
 
@@ -590,7 +666,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             points.clear();
             break;
 
-
         // ================= ELLIPSE =================
 
         case 40:
@@ -608,7 +683,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             points.clear();
             break;
 
-
         // ================= CURVES =================
 
         case 50:
@@ -617,7 +691,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             cout << "Enter number of points on curve: ";
             cin >> polygonVertices;
             break;
-
 
         // ================= FILLING =================
 
@@ -634,13 +707,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         case 62:
             currentAlgo = 62;
             points.clear();
-
             break;
 
         case 63:
             currentAlgo = 63;
             points.clear();
-
             break;
 
         case 64:
@@ -800,8 +871,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     }
                 }
                 break;
+            }
         }
-    }
 
         if(points.size() == 2)
         {
@@ -869,7 +940,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 {
                     if(isClipWind)
                     {
-                        drawSquare(hdc,points,Left,Right,Top,Bottom,currentColor);
+                        drawSquare(hdc, points);
                         points.clear();
                         isClipWind = false;
                     }
@@ -880,7 +951,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 {
                     if(isClipWind)
                     {
-                        drawSquare(hdc,points,Left,Right,Top,Bottom,currentColor);
+                        drawSquare(hdc, points);
                         points.clear();
                         isClipWind = false;
                     }
@@ -982,7 +1053,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
             case 63:
                 {
-                    drawRect(hdc,points,Left,Right,Top,Bottom,currentColor);
+                    drawRect(hdc, points);
                     points.clear();
 
                     points.push_back(make_pair(Left + 1, Top + 1));
@@ -1001,7 +1072,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 {
                     if(isClipWind)
                     {
-                        drawRect(hdc,points,Left,Right,Top,Bottom,currentColor);
+                        drawRect(hdc, points);
                         points.clear();
                         isClipWind = false;
                     }
@@ -1024,17 +1095,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 break;
 
             case 64:
-                {
-                    shape *s = new PolygonFilling(points, 1, currentColor);
-                    shapes.push_back(s);
-                    s->draw(hdc);
-                    points.clear();
-                }
-                break;
-
             case 65:
                 {
-                    shape *s = new PolygonFilling(points, 2, currentColor);
+                    int alg = currentAlgo - 63;
+                    drawPolygon(hdc, points);
+                    shape *s = new PolygonFilling(points, alg, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();
@@ -1045,7 +1110,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 {
                     if(!isClipWind)
                     {
-                        drawPolygon(hdc, points, currentColor);
+                        drawPolygon(hdc, points);
                         shape *s = new clipping(points, Left, Right, Top, Bottom, 3, currentColor);
                         shapes.push_back(s);
                         s->draw(hdc);
@@ -1056,7 +1121,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 break;
             }
         }
-
         ReleaseDC(hwnd, hdc);
     }
 

@@ -33,16 +33,6 @@ void CircleIterativePolar(HDC hdc,int xc,int yc, int R,COLORREF color);
 void CircleBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
 void CircleFasterBresenham(HDC hdc,int xc,int yc, int R,COLORREF color);
 
-//===================
-// Square Algorithm
-//===================
-void drawSquare(HDC hdc,const vector<pair<int,int>>& points,int& left,int& right,int& top,int& bottom,COLORREF color);
-
-//===================
-// Square Algorithm
-//===================
-void drawRect(HDC hdc,const vector<pair<int,int>>& points,int& Left,int& Right,int& Top,int& Bottom,COLORREF color);
-
 //=======================
 // Curve Algorithms
 //=======================
@@ -141,11 +131,6 @@ void PolygonClip(HDC hdc,const vector<pair<int,int>>& p,int xleft,int ytop,int x
 bool PointClippingInsideCircle(int x,int y,int xc,int yc,int r);
 
 void ClipLineCircle(HDC hdc, int x1, int y1, int x2, int y2, int xc, int yc, int r, COLORREF color);
-
-//===================
-// Polygon Algorithm
-//===================
-void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts, COLORREF color);
 
 //=======================
 // Faces Algorithms

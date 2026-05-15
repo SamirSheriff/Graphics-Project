@@ -104,68 +104,6 @@ void MidPoint(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
 }
 
 //===================
-// Square Algorithm
-//===================
-
-void drawSquare(HDC hdc,const vector<pair<int,int>>& points,int& Left,int& Right,int& Top,int& Bottom,COLORREF color)
-{
-    int xc = points[0].first;
-    int yc = points[0].second;
-    int x = points[1].first;
-    int y = points[1].second;
-
-    int halfSide = max(abs(x - xc), abs(y - yc));
-
-    Left   = xc - halfSide;
-    Right  = xc + halfSide;
-    Top    = yc - halfSide;
-    Bottom = yc + halfSide;
-
-    SimpleDDA(hdc, Left, Top, Right, Top, color);
-    SimpleDDA(hdc, Right, Top, Right, Bottom, color);
-    SimpleDDA(hdc, Right, Bottom, Left, Bottom, color);
-    SimpleDDA(hdc, Left, Bottom, Left, Top, color);
-}
-
-//===================
-// Rectangle Algorithm
-//===================
-void drawRect(HDC hdc,const vector<pair<int,int>>& points,int& Left,int& Right,int& Top,int& Bottom,COLORREF color)
-{
-    int xc = points[0].first;
-    int yc = points[0].second;
-    int x1 = points[1].first;
-    int y1 = points[1].second;
-    int x2 = points[2].first;
-    int y2 = points[2].second;
-
-    int halfx = abs(xc - x1);
-    int halfy = abs(yc - y2);
-
-    Left   = xc - halfx;
-    Right  = xc + halfx;
-    Top    = yc - halfy;
-    Bottom = yc + halfy;
-
-    SimpleDDA(hdc, Left, Top, Right, Top, color);
-    SimpleDDA(hdc, Right, Top, Right, Bottom, color);
-    SimpleDDA(hdc, Right, Bottom, Left, Bottom, color);
-    SimpleDDA(hdc, Left, Bottom, Left, Top, color);
-}
-
-//===================
-// Polygon Algorithm
-//===================
-void drawPolygon(HDC hdc, const vector<pair<int,int>>& pts, COLORREF color)
-{
-    for(int i = 0; i < pts.size()-1; i++)
-    {
-        SimpleDDA(hdc,pts[i].first,pts[i].second,pts[i+1].first,pts[i+1].second,color);
-    }
-    SimpleDDA(hdc,pts.back().first,pts.back().second,pts[0].first,pts[0].second,color);
-}
-
-//===================
 // Circle Algorithms
 //===================
 
@@ -364,35 +302,44 @@ void DrawCardinalSpline(HDC hdc, vector<pair<int,int>>& P,double c,int numpix, C
 //=======================
 void InitEntries(Entry table[])
 {
-    for(int i=0;i<MAXENTRIES;i++)
+    for(int i =0; i < MAXENTRIES; i++)
     {
-        table[i].xmin=INT_MAX;
-        table[i].xmax=-2000000;
+        table[i].xmin = INT_MAX;
+        table[i].xmax = -INT_MAX;
     }
 }
 
-void ScanEdge(pair<int,int> v1,pair<int,int> v2,Entry table[])
+void ScanEdge(pair<int,int> v1, pair<int,int> v2, Entry table[])
 {
-    if(v1.second==v2.second)return;
-    if(v1.second>v2.second)swap(v1,v2);
-    double minv=(double)(v2.first-v1.first)/(v2.second-v1.second);
-    double x=v1.first;
-    int y=v1.second;
-    while(y<v2.second)
+    if(v1.second == v2.second)
+        return;
+
+    if(v1.second > v2.second)
+        swap(v1,v2);
+
+    double minv = (double)(v2.first-v1.first) / (v2.second-v1.second);
+    double x = v1.first;
+    int y = v1.second;
+
+    while(y < v2.second)
     {
-        if(x<table[y].xmin)table[y].xmin=(int)ceil(x);
-        if(x>table[y].xmax)table[y].xmax=(int)floor(x);
+        if(x < table[y].xmin)
+            table[y].xmin = (int)ceil(x);
+
+        if(x > table[y].xmax)
+            table[y].xmax = (int)floor(x);
+
         y++;
-        x+=minv;
+        x += minv;
     }
 }
 
 void DrawSanLines(HDC hdc,Entry table[],COLORREF color)
 {
-    for(int y=0;y<MAXENTRIES;y++)
-        if(table[y].xmin<table[y].xmax)
-            for(int x=table[y].xmin;x<=table[y].xmax;x++)
-                SetPixel(hdc,x,y,color);
+    for(int y=0; y < MAXENTRIES ; y++)
+        if(table[y].xmin < table[y].xmax)
+            for(int x = table[y].xmin; x <= table[y].xmax; x++)
+                SetPixel(hdc, x, y, color);
 }
 
 void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color)
@@ -636,58 +583,37 @@ void FillingCircleWithLines(HDC hdc, int x1, int y1, int xc, int yc, int r, COLO
 
     while(x <= y)
     {
-        // draw horizontal lines instead of points
         if (x1 > xc && y1 < yc)   // First Quarter
         {
             for(int i = xc; i <= xc + x; i++)
-            {
-                //SetPixel(hdc, i, yc + y, color);
                 SetPixel(hdc, i, yc - y, color);
-            }
+
             for(int i = xc; i <= xc + y; i++)
-            {
-                //SetPixel(hdc, i, yc + x, color);
                 SetPixel(hdc, i, yc - x, color);
-            }
         }
         else if (x1 < xc && y1 < yc)  // second Quarter
         {
             for(int i = xc - x; i <= xc; i++)
-            {
-                //SetPixel(hdc, i, yc + y, color);
                 SetPixel(hdc, i, yc - y, color);
-            }
+
             for(int i = xc - y; i <= xc; i++)
-            {
-                //SetPixel(hdc, i, yc + x, color);
                 SetPixel(hdc, i, yc - x, color);
-            }
         }
         else if (x1 < xc && y1 > yc)  // Third Quarter
         {
             for(int i = xc - x; i <= xc; i++)
-            {
                 SetPixel(hdc, i, yc + y, color);
-                //SetPixel(hdc, i, yc - y, color);
-            }
+
             for(int i = xc - y; i <= xc; i++)
-            {
                 SetPixel(hdc, i, yc + x, color);
-                //SetPixel(hdc, i, yc - x, color);
-            }
         }
         else if (x1 > xc && y1 > yc) // Fourth Quarter
         {
             for(int i = xc; i <= xc + x; i++)
-            {
                 SetPixel(hdc, i, yc + y, color);
-                //SetPixel(hdc, i, yc - y, color);
-            }
+
             for(int i = xc; i <= xc + y; i++)
-            {
                 SetPixel(hdc, i, yc + x, color);
-                //SetPixel(hdc, i, yc - x, color);
-            }
         }
 
         if(d < 0)
