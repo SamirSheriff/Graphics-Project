@@ -421,23 +421,30 @@ EdgeRec InitEdgeRec(pair<int,int>& v1, pair<int,int>& v2)
     return rec;
 }
 
-void InitEdgeTable(vector<pair<int,int>> polygon,int n,EdgeList table[])
+void InitEdgeTable(vector<pair<int,int>>& polygon,EdgeList table[])
 {
-    pair<int,int> v1=polygon[n-1];
-    for(int i=0;i<n;i++)
+    pair<int,int> v1 = polygon[polygon.size()-1];
+    for(int i=0; i < polygon.size(); i++)
     {
-        pair<int,int> v2=polygon[i];
-        if(v1.second==v2.second){v1=v2;continue;}
-        EdgeRec rec=InitEdgeRec(v1, v2);
-        table[v1.second].push_back(rec);
-        v1=polygon[i];
+        pair<int,int> v2 = polygon[i];
+        if(v1.second == v2.second)
+        {
+            v1=v2;
+            continue;
+        }
+        EdgeRec rec = InitEdgeRec(v1, v2);
+        if(v1.second >= 0 && v1.second < MAXENTRIES)
+        {
+            table[v1.second].push_back(rec);
+        }
+        v1 = polygon[i];
     }
 }
 
-void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
+void GeneralPolygonFill(HDC hdc,vector<pair<int,int>>& polygon,COLORREF c)
 {
     EdgeList *table = new EdgeList [MAXENTRIES];
-    InitEdgeTable(polygon, n, table);
+    InitEdgeTable(polygon, table);
     int y=0;
     while(y < MAXENTRIES && table[y].size() == 0) y++;
     if(y == MAXENTRIES)
@@ -446,30 +453,57 @@ void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n,COLORREF c)
         return;
     }
     EdgeList ActiveList = table[y];
-    while (ActiveList.size()>0)
+    while (ActiveList.size() > 0)
     {
         ActiveList.sort();
-        for(EdgeList::iterator it=ActiveList.begin(); it != ActiveList.end(); it++)
+
+        for(auto it = ActiveList.begin();
+            it != ActiveList.end(); )
         {
             int x1 = (int)ceil(it->x);
-            it++;
+            ++it;
+
+            if(it == ActiveList.end())
+                break;
+
             int x2 = (int)floor(it->x);
-            for(int x=x1;x<=x2;x++)
+
+            for(int x=x1; x<=x2; x++)
                 SetPixel(hdc,x,y,c);
+
+            ++it;
         }
+
         y++;
-        EdgeList::iterator it = ActiveList.begin();
+
+        auto it = ActiveList.begin();
+
         while(it != ActiveList.end())
+        {
             if(y == it->ymax)
                 it = ActiveList.erase(it);
             else
-                it++;
-        for(EdgeList::iterator it = ActiveList.begin(); it != ActiveList.end(); it++)
+                ++it;
+        }
+
+        for(auto it = ActiveList.begin();
+            it != ActiveList.end(); ++it)
+        {
             it->x += it->minv;
-        ActiveList.insert(ActiveList.end(), table[y].begin(), table[y].end());
+        }
+
+        if(y < MAXENTRIES)
+        {
+            ActiveList.insert(
+                ActiveList.end(),
+                table[y].begin(),
+                table[y].end()
+            );
+        }
     }
     delete[] table;
 }
+
 COLORREF OldColor;
 bool center_p = 0;
 void FloodFill(HDC hdc,int x,int y,COLORREF old,COLORREF newColor)

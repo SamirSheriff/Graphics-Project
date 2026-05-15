@@ -84,9 +84,9 @@ void ScanEdge(pair<int,int> v1,pair<int,int> v2,Entry table[]);
 void DrawSanLines(HDC hdc,Entry table[],COLORREF color);
 void ConvexFill(HDC hdc,vector<pair<int,int>> p,COLORREF color);
 
-EdgeRec InitEdgeRec(pair<int,int>& v1,pair<int,int>& v2);
-void InitEdgeTable(vector<pair<int,int>> polygon, int n,EdgeList table[]);
-void GeneralPolygonFill(HDC hdc,vector<pair<int,int>> polygon,int n ,COLORREF c);
+EdgeRec InitEdgeRec(pair<int,int>& v1, pair<int,int>& v2);
+void InitEdgeTable(vector<pair<int,int>>& polygon, EdgeList table[]);
+void GeneralPolygonFill(HDC hdc, vector<pair<int,int>>& polygon, COLORREF c);
 
 void FloodFill(HDC hdc,int x,int y,COLORREF Cb,COLORREF Cf);
 void flip_p();

@@ -181,10 +181,9 @@ class PolygonFilling : public shape
 {
 public:
     vector<pair<int,int>> points;
-    int sz;
     int algo;
 
-    PolygonFilling(vector<pair<int,int>> p, int n, int alg, COLORREF col);
+    PolygonFilling(vector<pair<int,int>> p, int alg, COLORREF col);
 
     void draw(HDC hdc) override;
     void save(ofstream& out) override;

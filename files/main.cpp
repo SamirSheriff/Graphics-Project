@@ -199,22 +199,30 @@ void LoadShapes(const char* filename, vector<shape*>& shapes)
 
         else if(type == "PolygonFilling")
         {
-            int algo, sz;
-            in >> algo >> sz;
-
+            int algo;
             vector<pair<int,int>> pts;
+            vector<int> temp;
+            int val;
 
-            for(int i=0;i<sz;i++)
-            {
-                int x,y;
-                in >> x >> y;
-                pts.push_back({x,y});
-            }
+            in >> algo;
 
-            int r,g,b;
-            in >> r >> g >> b;
+            string line;
+            getline(in, line);
+            stringstream ss(line);
 
-            shapes.push_back(new PolygonFilling(pts,sz,algo,RGB(r,g,b)));
+            while(ss >> val)
+                temp.push_back(val);
+
+            if(temp.size() < 3) continue;
+
+            int r = temp[temp.size()-3];
+            int g = temp[temp.size()-2];
+            int b = temp[temp.size()-1];
+
+            for(size_t i=0; i < temp.size()-3; i += 2)
+                pts.push_back({temp[i], temp[i+1]});
+
+            shapes.push_back(new PolygonFilling(pts,algo,RGB(r,g,b)));
         }
 
         else if(type == "FloodFill")
@@ -1017,7 +1025,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
             case 64:
                 {
-                    shape *s = new PolygonFilling(points, polygonVertices, 1, currentColor);
+                    shape *s = new PolygonFilling(points, 1, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();
@@ -1026,7 +1034,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
             case 65:
                 {
-                    shape *s = new PolygonFilling(points, polygonVertices, 2, currentColor);
+                    shape *s = new PolygonFilling(points, 2, currentColor);
                     shapes.push_back(s);
                     s->draw(hdc);
                     points.clear();

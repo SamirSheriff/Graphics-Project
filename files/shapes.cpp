@@ -432,10 +432,9 @@ void FillingWithCurves::save(ofstream& out)
 FillingWithCurves::~FillingWithCurves() {}
 
 
-PolygonFilling::PolygonFilling(vector<pair<int,int>> p, int n, int alg, COLORREF col): shape(col)
+PolygonFilling::PolygonFilling(vector<pair<int,int>> p, int alg, COLORREF col): shape(col)
 {
     points = p;
-    sz = n;
     algo = alg;
 }
 
@@ -447,7 +446,7 @@ void PolygonFilling::draw(HDC hdc)
          ConvexFill(hdc, points, color);
         break;
     case 2:
-        GeneralPolygonFill(hdc, points, sz, color);
+        GeneralPolygonFill(hdc, points, color);
         break;
      default:
         cout << "No algo in FillingPolygon shape" << endl;
@@ -456,7 +455,7 @@ void PolygonFilling::draw(HDC hdc)
 
 void PolygonFilling::save(ofstream& out)
 {
-    out << "PolygonFilling " << algo << " " << sz << " ";
+    out << "PolygonFilling " << algo << " ";
     for(size_t i = 0; i < points.size(); i++)
     {
         out << points[i].first << " " << points[i].second << " ";
